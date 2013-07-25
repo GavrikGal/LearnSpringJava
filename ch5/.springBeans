@@ -10,6 +10,8 @@
 		<config>src/main/resources/resource/resource.xml</config>
 		<config>src/main/resources/app-context.xml</config>
 		<config>src/main/resources/META-INF/spring/app-context.xml</config>
+		<config>src/main/resources/profile/kindergarten-config.xml</config>
+		<config>src/main/resources/profile/highschool-config.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
