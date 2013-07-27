@@ -13,6 +13,7 @@
 		<config>src/main/resources/profile/kindergarten-config.xml</config>
 		<config>src/main/resources/profile/highschool-config.xml</config>
 		<config>src/main/resources/env/env.xml</config>
+		<config>src/main/resources/jsr330/jsr330.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
