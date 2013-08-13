@@ -8,6 +8,7 @@
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/resources/pfb.xml</config>
+		<config>src/main/resources/introductions.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
