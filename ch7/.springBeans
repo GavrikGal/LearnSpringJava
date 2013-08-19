@@ -10,6 +10,7 @@
 		<config>src/main/resources/pfb.xml</config>
 		<config>src/main/resources/introductions.xml</config>
 		<config>src/main/resources/aopns.xml</config>
+		<config>src/main/resources/aspectjannotaion.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
