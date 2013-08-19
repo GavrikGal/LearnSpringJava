@@ -9,6 +9,7 @@
 	<configs>
 		<config>src/main/resources/pfb.xml</config>
 		<config>src/main/resources/introductions.xml</config>
+		<config>src/main/resources/aopns.xml</config>
 	</configs>
 	<configSets>
 		<configSet>

@@ -23,6 +23,7 @@ public class IntroductionConfigExample {
 		bean.setName("Rob Harrop");
 		System.out
 				.println("Has been modified?: " + mod.isModified());
+		ctx.close();
 	}
 
 }
