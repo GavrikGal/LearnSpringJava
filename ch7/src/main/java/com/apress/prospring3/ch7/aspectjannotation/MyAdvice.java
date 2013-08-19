@@ -17,11 +17,12 @@ public class MyAdvice {
 	public void fooExecution(int intValue) {		
 	}
 	
-	@Pointcut("bean(myDependency*)")
-	public void inMyDependency() {
-	}
+	//@Pointcut("bean(myDependency*)")
+	//public void inMyDependency() {
+	//}
 	
-	@Before("fooExecution(intValue) && inMyDependency()")
+	//@Before("fooExecution(intValue) && inMyDependency()")
+	@Before("fooExecution(intValue)")
 	public void simpleBeforeAdvice(JoinPoint joinPoint, int intValue) {
 		if (intValue != 100) {
 			System.out.println("Executing: "
@@ -31,7 +32,8 @@ public class MyAdvice {
 		}
 	}
 	
-	@Around("fooExecution(intValue) && inMyDependency()")
+	//@Around("fooExecution(intValue) && inMyDependency()")
+	@Around("fooExecution(intValue)")
 	public Object simpleAroundAdvice(ProceedingJoinPoint pjp, int intValue)
 			throws Throwable {
 

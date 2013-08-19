@@ -11,6 +11,7 @@
 		<config>src/main/resources/introductions.xml</config>
 		<config>src/main/resources/aopns.xml</config>
 		<config>src/main/resources/aspectjannotaion.xml</config>
+		<config>src/main/resources/aspectj.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
