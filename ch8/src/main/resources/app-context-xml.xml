@@ -9,4 +9,10 @@
 		<jdbc:script location="classpath:test-data.sql" />
 	</jdbc:embedded-database>
 
+	<bean id="contactDao" class="com.apress.prospring3.ch8.dao.jdbc.xml.JdbcContactDao">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+	</bean>
+
 </beans>
