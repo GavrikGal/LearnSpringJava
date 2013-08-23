@@ -117,4 +117,16 @@ public class PlainContactDao implements ContactDao {
 		}
 	}
 
+	@Override
+	public String findFirstNameById(Long id) {
+		// TODO Автоматически созданная заглушка метода
+		return null;
+	}
+
+	@Override
+	public String findLastNameById(Long id) {
+		// TODO Автоматически созданная заглушка метода
+		return null;
+	}
+
 }
