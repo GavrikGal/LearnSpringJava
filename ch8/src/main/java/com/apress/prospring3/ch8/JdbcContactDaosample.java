@@ -22,8 +22,8 @@ public class JdbcContactDaosample {
 		System.out.println("Last name for contact id 1 is: "
 				+ contactDao.findLastNameById(1l));
 		
-		List<Contact> contacts = contactDao.findAll();
-		for (Contact contact: contacts) {
+		List<Contact> contactsWithDetail = contactDao.findAllWithDetail();
+		for (Contact contact: contactsWithDetail) {
 			System.out.println(contact);
 			if (contact.getContactTelDetails() != null) {
 				for (ContactTelDetail contactTelDetail:

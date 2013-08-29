@@ -129,4 +129,10 @@ public class PlainContactDao implements ContactDao {
 		return null;
 	}
 
+	@Override
+	public List<Contact> findAllWithDetail() {
+		// TODO Автоматически созданная заглушка метода
+		return null;
+	}
+
 }
