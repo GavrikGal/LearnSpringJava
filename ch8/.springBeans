@@ -8,6 +8,7 @@
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/resources/app-context-xml.xml</config>
+		<config>src/main/resources/app-context-annotation.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
