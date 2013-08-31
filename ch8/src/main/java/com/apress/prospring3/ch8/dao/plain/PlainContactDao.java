@@ -135,4 +135,10 @@ public class PlainContactDao implements ContactDao {
 		return null;
 	}
 
+	@Override
+	public void insertWithDetail(Contact contact) {
+		// TODO Автоматически созданная заглушка метода
+		
+	}
+
 }

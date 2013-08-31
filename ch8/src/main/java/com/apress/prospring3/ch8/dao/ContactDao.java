@@ -21,4 +21,6 @@ public interface ContactDao {
 	public void update(Contact contact);
 
 	public void delete(Long contactId);
+	
+	public void insertWithDetail(Contact contact);
 }

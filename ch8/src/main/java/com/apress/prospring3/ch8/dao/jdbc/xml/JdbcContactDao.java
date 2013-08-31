@@ -145,6 +145,12 @@ public class JdbcContactDao implements ContactDao, InitializingBean {
 			return new ArrayList<Contact>(map.values());
 		}		
 	}
+
+	@Override
+	public void insertWithDetail(Contact contact) {
+		// TODO Автоматически созданная заглушка метода
+		
+	}
 }
 
 
