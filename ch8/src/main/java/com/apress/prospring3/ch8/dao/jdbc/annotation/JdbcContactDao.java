@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import com.apress.prospring3.ch8.dao.ContactDao;
+import com.apress.prospring3.ch8.dao.ContactSfDao;
 import com.apress.prospring3.ch8.domain.Contact;
 import com.apress.prospring3.ch8.domain.ContactTelDetail;
 
@@ -24,7 +25,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository("contactDao")
-public class JdbcContactDao implements ContactDao {
+public class JdbcContactDao implements ContactDao, ContactSfDao {
 
 	private Log log = LogFactory.getLog(JdbcContactDao.class);
 	private DataSource dataSource;
@@ -33,6 +34,7 @@ public class JdbcContactDao implements ContactDao {
 	private UpdateContact updateContact;
 	private InsertContact insertContact;
 	private InsertContactTelDetail insertContactTelDetail;
+	private SfFirstNameById sfFirstNameById;
 
 	@Resource(name = "dataSource")
 	public void setDataSource(DataSource dataSource) {
@@ -41,6 +43,7 @@ public class JdbcContactDao implements ContactDao {
 		selectContactByFirstName = new SelectContactByFirstName(dataSource);
 		updateContact = new UpdateContact(dataSource);
 		insertContact = new InsertContact(dataSource);
+		sfFirstNameById = new SfFirstNameById(dataSource);
 	}
 
 	public DataSource getDataSource() {
@@ -172,6 +175,12 @@ public class JdbcContactDao implements ContactDao {
 		}
 		insertContactTelDetail.flush();
 
+	}
+
+	@Override
+	public String getFirstNameById(Long id) {
+		List<String> result = sfFirstNameById.execute(id);
+		return result.get(0);
 	}
 
 }
