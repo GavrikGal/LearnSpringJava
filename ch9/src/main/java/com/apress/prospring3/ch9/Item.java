@@ -1,4 +1,4 @@
-package com.apress.prospring3;
+package com.apress.prospring3.ch9;
 
 
 import javax.persistence.Entity;
