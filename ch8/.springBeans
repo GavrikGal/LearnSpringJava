@@ -10,6 +10,7 @@
 		<config>src/main/resources/app-context-xml.xml</config>
 		<config>src/main/resources/app-context-annotation.xml</config>
 		<config>src/main/resources/app-context-sf.xml</config>
+		<config>src/main/resources/datasource-dbcp.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
