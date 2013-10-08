@@ -1,4 +1,4 @@
-package com.apress.prospring3;
+package com.apress.prospring3.ch10;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;

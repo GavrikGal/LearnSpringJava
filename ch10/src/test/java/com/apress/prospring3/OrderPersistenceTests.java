@@ -12,6 +12,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.apress.prospring3.ch10.Item;
+import com.apress.prospring3.ch10.Order;
+
 @ContextConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OrderPersistenceTests {

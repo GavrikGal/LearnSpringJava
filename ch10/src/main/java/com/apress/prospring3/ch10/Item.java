@@ -1,5 +1,5 @@
 
-package com.apress.prospring3;
+package com.apress.prospring3.ch10;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
