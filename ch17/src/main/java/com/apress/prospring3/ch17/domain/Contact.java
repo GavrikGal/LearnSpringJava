@@ -1,21 +1,38 @@
+/**
+ * Created on Nov 25, 2011
+ */
 package com.apress.prospring3.ch17.domain;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+/**
+ * @author Clarence
+ *
+ */
 @Entity
 @Table(name = "contact")
 public class Contact implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
 	private Long id;
 	private int version;
 	private String firstName;
@@ -23,56 +40,60 @@ public class Contact implements Serializable {
 	private DateTime birthDate;
 	private String description;
 	private byte[] photo;
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID")
 	public Long getId() {
 		return id;
 	}
-
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	@Version
 	@Column(name = "VERSION")
 	public int getVersion() {
 		return version;
 	}
-
+	
 	public void setVersion(int version) {
 		this.version = version;
 	}
 
+	@NotEmpty(message="{validation.firstname.NotEmpty.message}")
+	@Size(min=3, max=60, message="{validation.firstname.Size.message}")
 	@Column(name = "FIRST_NAME")
 	public String getFirstName() {
 		return firstName;
 	}
-
+	
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
+	
+	@NotEmpty(message="{validation.lastname.NotEmpty.message}")
+	@Size(min=1, max=40, message="{validation.lastname.Size.message}")		
 	@Column(name = "LAST_NAME")
 	public String getLastName() {
 		return lastName;
 	}
-
+	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
+	
 	@Column(name = "BIRTH_DATE")
-	@Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
-	@DateTimeFormat(iso = ISO.DATE)
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	@DateTimeFormat(iso=ISO.DATE)
 	public DateTime getBirthDate() {
 		return birthDate;
 	}
-
+	
 	public void setBirthDate(DateTime birthDate) {
 		this.birthDate = birthDate;
-	}
+	}	
 
 	@Column(name = "DESCRIPTION")
 	public String getDescription() {
@@ -83,29 +104,28 @@ public class Contact implements Serializable {
 		this.description = description;
 	}
 
-	@Basic(fetch = FetchType.LAZY)
-	@Lob
-	@Column(name = "PHOTO")
+	@Basic(fetch=FetchType.LAZY)
+	@Lob @Column(name = "PHOTO")
 	public byte[] getPhoto() {
 		return photo;
 	}
 
 	public void setPhoto(byte[] photo) {
 		this.photo = photo;
-	}
-
+	}	
+	
 	@Transient
 	public String getBirthDateString() {
 		String birthDateString = "";
 		if (birthDate != null)
-			birthDateString = org.joda.time.format.DateTimeFormat.forPattern(
-					"yyyy-MM-dd").print(birthDate);
-		return birthDateString;
-	}
+			birthDateString = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd").print(birthDate);
+	    return birthDateString;
+	}	
 	
-	public String toString() {
-		return "Contact - Id: " + id + ", First name: " + firstName + ", Last name: " + lastName +
-				", Birthday: " + birthDate + ", Description: " +description;
-	}
-
+	public String toString() {		
+		return "Contact - Id: " + id + ", First name: " + firstName 
+				+ ", Last name: " + lastName + ", Birthday: " + birthDate
+				+ ", Description: " + description;
+	}	
+	
 }
