@@ -15,13 +15,6 @@
 		var="labelContactBirthDate" />
 	<spring:message code="date_format_pattern" var="dateFormatPattern" />
 
-	<head>
-		<spring:theme code="styleSheet" var="app_css" />
-		<spring:url value="/${app_css}" var="app_css_url" />
-		<link rel="stylesheet" type="text/css" media="screen"
-			href="${app_css_url}" />
-	</head>
-
 	<h1>${labelContactList}</h1>
 
 	<c:if test="${not empty contacts}">
