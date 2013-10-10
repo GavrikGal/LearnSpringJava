@@ -33,6 +33,10 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @Table(name = "contact")
 public class Contact implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private int version;
 	private String firstName;
