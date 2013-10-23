@@ -6,20 +6,29 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-	<annotation-driven />
+	<annotation-driven validator="validator" />
 
 	<resources mapping="/resources/**" location="/,classpath:/META-INF/web-resources/" />
 
 	<default-servlet-handler />
 
 	<context:component-scan base-package="com.apress.prospring3.ch17.web.controller" />
+	
+	<beans:bean class="org.springframework.web.multipart.support.StandardServletMultipartResolver"
+		id="multipartResolver" />
+
+	<beans:bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<beans:property name="validationMessageSource" ref="messageSource" />
+	</beans:bean>
 
 	<beans:bean class="org.springframework.web.servlet.view.UrlBasedViewResolver"
 		id="tilesViewResolver">
-		<beans:property name="viewClass" 
+		<beans:property name="viewClass"
 			value="org.springframework.web.servlet.view.tiles3.TilesView" />
 	</beans:bean>
-	<beans:bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"
+	<beans:bean
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"
 		id="tilesConfigurer">
 		<beans:property name="definitions">
 			<beans:list>
@@ -28,7 +37,7 @@
 			</beans:list>
 		</beans:property>
 	</beans:bean>
-	
+
 
 	<interceptors>
 		<beans:bean

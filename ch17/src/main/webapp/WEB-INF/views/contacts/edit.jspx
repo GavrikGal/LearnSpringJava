@@ -17,10 +17,27 @@
 	
 	<spring:eval expression="contact.id == null ? labelContactNew:labelContactUpdate" var="formTitle" />
 	
+	<script type="text/javascript">
+    $(function(){ 
+        $('#birthDate').datepicker({ 
+            dateFormat: 'yy-mm-dd',
+            changeYear: true
+        });    
+        
+        $("#contactDescription").ckeditor(
+           {
+               toolbar : 'Basic',
+               uiColor : '#CCCCCC'
+           }              
+      	);
+    });
+    </script>
+	
 	<h1>${formTitle}</h1>
 	
 	<div id="contactUpdate">
-	<form:form modelAttribute="contact" id="contactUpdateForm" method="post">
+	<form:form modelAttribute="contact" id="contactUpdateForm" method="post"
+		enctype="multipart/form-data">
 		<c:if test="${not empty message}">
 			<div id="message" class="${message.type}">${message.message}</div>
 		</c:if>
@@ -60,11 +77,21 @@
 			<form:errors path="description" cssClass="error" />
 		</div>		
 		<p/>
+		
+		<labele for="file">
+			${labelContactPhoto}
+		</labele>
+		<input name="file" type="file"/>
+		<p/>
 				
 		<form:hidden path="version" />		
 				
-		<button tupe="submit">Save</button>
-		<button tupe="reset">Reset</button>		
+		<button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+            <span class="ui-button-text">Save</span>
+        </button> 
+        <button type="reset" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+            <span class="ui-button-text">Reset</span>
+        </button>		
 				
 	</form:form>
 	</div>

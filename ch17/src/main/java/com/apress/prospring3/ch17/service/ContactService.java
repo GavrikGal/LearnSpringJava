@@ -5,6 +5,9 @@ package com.apress.prospring3.ch17.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.apress.prospring3.ch17.domain.Contact;
 
 /**
@@ -19,4 +22,5 @@ public interface ContactService {
 	
 	public Contact save(Contact contact);	
 	
+	public Page<Contact> findAllByPage(Pageable pageable);	
 }
