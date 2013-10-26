@@ -75,7 +75,7 @@ public class ContactController {
 	@RequestMapping(value = "/{id}", params = "form", method = RequestMethod.POST)
 	public String update(@Valid Contact contact, BindingResult bindingResult, Model uiModel,
 			HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes,
-			Locale locale) {
+			Locale locale, @RequestParam(value = "file", required = false) Part file) {
 
 		logger.info("Updating contact");
 		if (bindingResult.hasErrors()) {
@@ -91,6 +91,23 @@ public class ContactController {
 				"message",
 				new Message("success", messageSource.getMessage("contact_save_success",
 						new Object[] {}, locale)));
+		
+		if (file != null) {
+			logger.info("File name: " + file.getName());
+			logger.info("File size: " + file.getSize());
+			logger.info("File content type: " + file.getContentType());
+			byte[] fileContent = null;
+			try {
+				InputStream inputStream = file.getInputStream();
+				if (inputStream == null)
+					logger.info("File inputstream is null");
+				fileContent = IOUtils.toByteArray(inputStream);
+				contact.setPhoto(fileContent);
+			} catch (IOException ex) {
+				logger.error("Error saving upload file");
+			}
+			contact.setPhoto(fileContent);
+		}
 		contactService.save(contact);
 		return "redirect:/contacts/"
 				+ UrlUtil.encodeUrlPathSegment(contact.getId().toString(), httpServletRequest);
