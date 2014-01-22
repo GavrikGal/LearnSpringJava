@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: Clarence
-Build-Jdk: 1.6.0_29
+Built-By: 230
+Build-Jdk: 1.7.0_03
 Created-By: Maven Integration for Eclipse
 
