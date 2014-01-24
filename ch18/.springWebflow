@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <webflow-project-description>
 	<version>1</version>
-	<pluginVersion><![CDATA[3.4.0.201310051539-RELEASE]]></pluginVersion>
+	<pluginVersion><![CDATA[2.8.1.201111220115-RELEASE]]></pluginVersion>
 	<configs>
-		<config>
-			<file>src/main/webapp/WEB-INF/spring/appServlet/webflow.xml</file>
-			<name><![CDATA[webflow]]></name>
-		</config>
 		<config>
 			<file>src/main/webapp/WEB-INF/flows/contacts/flow.xml</file>
 			<name><![CDATA[flow]]></name>

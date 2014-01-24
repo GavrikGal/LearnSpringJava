@@ -108,13 +108,13 @@ public class Contact implements Serializable {
 
 	public void setHobbies(Set<Hobby> hobbies) {
 		this.hobbies = hobbies;
-	}	
+	}
 	
 	@Transient
 	public List<Hobby> getHobbiesAsList() {
 		return new ArrayList<Hobby>(hobbies);
-	}    
-    
+	}
+	
 	public String toString() {		
 		return "Contact - Id: " + id + ", First name: " + firstName 
 				+ ", Last name: " + lastName + ", Birthday: " + birthDate;
