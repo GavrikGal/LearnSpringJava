@@ -8,17 +8,27 @@
 	<H1>Measurements Listing</H1>
 	
 	<c:if test="${not empty measurements}">
-		<table>
+		<table border="1">
 			<thead>
 				<tr>
-					<th>Equipment</th>				
+					<th>№</th>
+					<th>Model</th>
+					<th>s/n</th>	
+					<th>User</th>			
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${measurements}" var="measurement">
 					<tr>
-						<td>${measurement.equipment}</td>
-					</tr>				
+						<td>${measurement.idMeasurements}</td>
+						<td>${measurement.equipment.getModel()}</td>	
+						<td>${measurement.equipment.getSerialNumber()}</td>	
+						<td>
+							<c:forEach items="${measurement.users}" var="user">
+								${user.getShortName()}<br/>
+							</c:forEach>
+						</td>					
+					</tr>									
 				</c:forEach>
 			</tbody>
 		</table>
