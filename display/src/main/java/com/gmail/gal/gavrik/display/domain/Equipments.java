@@ -1,6 +1,7 @@
 package com.gmail.gal.gavrik.display.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ public class Equipments implements Serializable {
 	private Long				idEquipment;
 	private String				model;
 	private int					serialNumber;
-	private Set<Measurements>	measurements;
+	private Set<Measurements>	measurements		= new HashSet<Measurements>();
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

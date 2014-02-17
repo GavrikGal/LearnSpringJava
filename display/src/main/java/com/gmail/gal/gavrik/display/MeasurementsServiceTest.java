@@ -16,41 +16,44 @@ public class MeasurementsServiceTest {
 	 */
 	public static void main(String[] args) {
 
-
 		GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
 		ctx.load("classpath:jpa-app-context.xml");
 		ctx.refresh();
-		
+
 		System.out.println("App context initialized successfully");
-		
-		MeasurementsService measurementsService = ctx.getBean("measurementsService", MeasurementsService.class); 
-		
+
+		MeasurementsService measurementsService = ctx.getBean("measurementsService",
+				MeasurementsService.class);
+
 		List<Measurements> measurements = measurementsService.findAll();
-		
-		for (Measurements measurement: measurements) {
+
+		for (Measurements measurement : measurements) {
 			System.out.println(measurement);
 		}
-		
+
 		System.out.println("by id: " + measurementsService.findById(2l));
-		
-		
-		
-		
+
 		measurements = measurementsService.findAllWithDetail();
-		
-		for (Measurements measurement: measurements) {
+
+		for (Measurements measurement : measurements) {
 			System.out.println(measurement);
-			for (Users users: measurement.getUsers()) {
+			for (Users users : measurement.getUsers()) {
 				System.out.println("Short name: " + users.getShortName());
 			}
-			System.out.println(" Equipment: model: " + measurement.getEquipment().getModel()+ "s/n: " + measurement.getEquipment().getSerialNumber());
-			for (Spectrums spectrums: measurement.getSpectrums()) {
-				System.out.println("------------------spectrum ¹: " + spectrums.getIdSpectrums() + " param: " + spectrums.getSpectrumParameters());
+			System.out.println(" Equipment: model: " + measurement.getEquipment().getModel()
+					+ "s/n: " + measurement.getEquipment().getSerialNumber());
+			for (Spectrums spectrums : measurement.getSpectrums()) {
+				System.out.println("------------------spectrum ¹: "
+						+ spectrums.getIdSpectrums() + " param:\n ------------> measurand: "
+						+ spectrums.getSpectrumParameters().getMeasurand()
+						+ " ------------> type: "
+						+ spectrums.getSpectrumParameters().getType()
+						+ "------------> resolution: "
+						+ spectrums.getSpectrumParameters().getResolution());
 			}
 		}
-		
+
 		ctx.close();
 
 	}
-
 }

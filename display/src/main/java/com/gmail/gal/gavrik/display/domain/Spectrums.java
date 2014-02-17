@@ -13,7 +13,7 @@ public class Spectrums implements Serializable {
 
 	private Long				idSpectrums;
 	private Measurements		measurement;
-	private Long				spectrumParameters;
+	private SpectrumsParameters	spectrumParameters;
 	private Long				date;
 	private Time				time;
 
@@ -42,12 +42,13 @@ public class Spectrums implements Serializable {
 		this.measurement = measurement;
 	}
 
-	@Column(name = "Spectrum_parameters")
-	public Long getSpectrumParameters() {
+	@ManyToOne
+	@JoinColumn(name = "Spectrum_parameters")
+	public SpectrumsParameters getSpectrumParameters() {
 		return spectrumParameters;
 	}
 
-	public void setSpectrumParameters(Long spectrumParameters) {
+	public void setSpectrumParameters(SpectrumsParameters spectrumParameters) {
 		this.spectrumParameters = spectrumParameters;
 	}
 
