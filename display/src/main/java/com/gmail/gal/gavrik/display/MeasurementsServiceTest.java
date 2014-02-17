@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
 import com.gmail.gal.gavrik.display.domain.Measurements;
+import com.gmail.gal.gavrik.display.domain.Spectrums;
 import com.gmail.gal.gavrik.display.domain.Users;
 import com.gmail.gal.gavrik.display.service.MeasurementsService;
 
@@ -43,6 +44,9 @@ public class MeasurementsServiceTest {
 				System.out.println("Short name: " + users.getShortName());
 			}
 			System.out.println(" Equipment: model: " + measurement.getEquipment().getModel()+ "s/n: " + measurement.getEquipment().getSerialNumber());
+			for (Spectrums spectrums: measurement.getSpectrums()) {
+				System.out.println("------------------spectrum ¹: " + spectrums.getIdSpectrums() + " param: " + spectrums.getSpectrumParameters());
+			}
 		}
 		
 		ctx.close();

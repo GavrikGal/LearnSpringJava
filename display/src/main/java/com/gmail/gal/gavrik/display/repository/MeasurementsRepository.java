@@ -10,7 +10,7 @@ import com.gmail.gal.gavrik.display.domain.Measurements;
 
 public interface MeasurementsRepository extends CrudRepository<Measurements, Long> {
 
-	@Query("select distinct m from Measurements m left join fetch m.users u join fetch m.equipment e")
+	@Query("select distinct m from Measurements m left join fetch m.users u join fetch m.equipment e join fetch m.spectrums s")
 	public List<Measurements> findAllWithDetail();
 
 }

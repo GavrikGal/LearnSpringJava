@@ -17,6 +17,7 @@ public class Measurements implements Serializable {
 	private Long				idMeasurements;
 	private Equipments			equipment;
 	private Set<Users>			users				= new HashSet<Users>();
+	private Set<Spectrums>		spectrums			= new HashSet<Spectrums>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +59,16 @@ public class Measurements implements Serializable {
 		return new ArrayList<Users>(users);
 	}
 
+	@OneToMany(mappedBy = "measurement", cascade = CascadeType.ALL, orphanRemoval = true)
+	public Set<Spectrums> getSpectrums() {
+		return spectrums;
+	}
+
+	public void setSpectrums(Set<Spectrums> spectrums) {
+		this.spectrums = spectrums;
+	}
+
 	public String toString() {
-		return "Measurements - Id: " + idMeasurements ;
+		return "Measurements - Id: " + idMeasurements;
 	}
 }

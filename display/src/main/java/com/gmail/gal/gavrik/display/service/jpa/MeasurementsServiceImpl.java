@@ -37,7 +37,6 @@ public class MeasurementsServiceImpl implements MeasurementsService {
 	@Transactional(readOnly=true)
 	public List<Measurements> findAllWithDetail() {
 		return Lists.newArrayList(measurementsRepository.findAllWithDetail());
-		//return Lists.newArrayList(measurementsRepository.findAll());
 	}
 
 }

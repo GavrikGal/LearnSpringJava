@@ -13,7 +13,9 @@
 				<tr>
 					<th>№</th>
 					<th>Model</th>
-					<th>s/n</th>	
+					<th>s/n</th>
+					<th>Spectrums</th>
+					<th>Spectrum prop: </th>	
 					<th>User</th>			
 				</tr>
 			</thead>
@@ -22,11 +24,19 @@
 					<tr>
 						<td>${measurement.idMeasurements}</td>
 						<td>${measurement.equipment.getModel()}</td>	
-						<td>${measurement.equipment.getSerialNumber()}</td>	
+						<td>${measurement.equipment.getSerialNumber()}</td>
+			 			<c:forEach items="${measurement.spectrums}" var="spectrum">
+							<td>
+								${spectrum.getIdSpectrums()}<br/>
+							</td>
+							<td>
+								${spectrum.getSpectrumParameters()}<br/>
+							</td>
+						</c:forEach>  
 						<td>
 							<c:forEach items="${measurement.users}" var="user">
 								${user.getShortName()}<br/>
-							</c:forEach>
+							</c:forEach> 
 						</td>					
 					</tr>									
 				</c:forEach>
