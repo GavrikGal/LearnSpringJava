@@ -2,6 +2,8 @@ package com.gmail.gal.gavrik.display.domain;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -16,9 +18,19 @@ public class Spectrums implements Serializable {
 	private SpectrumsParameters	spectrumParameters;
 	private Long				date;
 	private Time				time;
+	private Set<Harmonics>		harmonics			= new HashSet<Harmonics>();
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	@OneToMany(mappedBy = "spectrum", cascade = CascadeType.ALL, orphanRemoval = true)
+	public Set<Harmonics> getHarmonics() {
+		return this.harmonics;
+	}
+
+	public void setHarmonics(Set<Harmonics> harmonics) {
+		this.harmonics = harmonics;
 	}
 
 	@Id

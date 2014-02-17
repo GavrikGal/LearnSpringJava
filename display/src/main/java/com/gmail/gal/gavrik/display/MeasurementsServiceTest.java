@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.support.GenericXmlApplicationContext;
 
+import com.gmail.gal.gavrik.display.domain.Harmonics;
 import com.gmail.gal.gavrik.display.domain.Measurements;
 import com.gmail.gal.gavrik.display.domain.Spectrums;
 import com.gmail.gal.gavrik.display.domain.Users;
@@ -49,7 +50,12 @@ public class MeasurementsServiceTest {
 						+ " ------------> type: "
 						+ spectrums.getSpectrumParameters().getType()
 						+ "------------> resolution: "
-						+ spectrums.getSpectrumParameters().getResolution());
+						+ spectrums.getSpectrumParameters().getResolution() + "\n");
+				for (Harmonics harmonics : spectrums.getHarmonics()) {
+					System.out.println("        Harmonics: \n" + "          F: "
+							+ harmonics.getFrequency() + "       A: "
+							+ harmonics.getAmplitude());
+				}
 			}
 		}
 

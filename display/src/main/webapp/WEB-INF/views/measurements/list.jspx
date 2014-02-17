@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <div xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	version="2.0">
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
-	
+
 	<H1>Measurements Listing</H1>
-	
+
 	<c:if test="${not empty measurements}">
 		<table border="1">
 			<thead>
@@ -16,43 +15,37 @@
 					<th>s/n</th>
 					<th>Spectrum parameters</th>
 					<th>Spectrums</th>
-						
-					<th>User</th>			
+
+					<th>User</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${measurements}" var="measurement">
 					<tr>
 						<td>${measurement.idMeasurements}</td>
-						<td>${measurement.equipment.getModel()}</td>	
+						<td>${measurement.equipment.getModel()}</td>
 						<td>${measurement.equipment.getSerialNumber()}</td>
-						<td>
-				 			<c:forEach items="${measurement.spectrums}" var="spectrum">
-								
-									${spectrum.getSpectrumParameters().getMeasurand()},
-								
-									${spectrum.getSpectrumParameters().getType()},
-								
-									${spectrum.getSpectrumParameters().getResolution()}<br/>
-								
-									
-								
-							</c:forEach>  
-						</td>
-						<td>
-							<c:forEach items="${measurement.spectrums}" var="spectrum">
-								${spectrum.getIdSpectrums()}<br/>
-							</c:forEach>
-						</td>
-						<td>
-							<c:forEach items="${measurement.users}" var="user">
-								${user.getShortName()}<br/>
-							</c:forEach> 
-						</td>					
-					</tr>									
+						<td><c:forEach items="${measurement.spectrums}"
+								var="spectrum">
+				 					${spectrum.getTime()},							
+									${spectrum.getSpectrumParameters().getMeasurand()},								
+									${spectrum.getSpectrumParameters().getType()},								
+									${spectrum.getSpectrumParameters().getResolution()}<br />
+							</c:forEach></td>
+						<td><c:forEach items="${measurement.spectrums}"
+								var="spectrum">
+								<c:forEach items="${spectrum.harmonics}" var="harmonic">
+									${harmonic.getFrequency()} - ${harmonic.getAmplitude()}/${harmonic.getNoise()};     				
+								</c:forEach>
+								<br />
+							</c:forEach></td>
+						<td><c:forEach items="${measurement.users}" var="user">
+								${user.getShortName()}<br />
+							</c:forEach></td>
+					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</c:if>
-	
+
 </div>
