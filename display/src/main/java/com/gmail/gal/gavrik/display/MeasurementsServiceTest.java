@@ -46,7 +46,8 @@ public class MeasurementsServiceTest {
 			for (Spectrums spectrums : measurement.getSpectrums()) {
 				System.out.println("------------------spectrum ¹: "
 						+ spectrums.getIdSpectrums() + " param:\n ------------> measurand: "
-						+ spectrums.getSpectrumParameters().getMeasurand()
+						+ "!!!!!!!!!!!!!1date: " + spectrums.getDate().getDate()
+						+ "measurand: " +spectrums.getSpectrumParameters().getMeasurand()
 						+ " ------------> type: "
 						+ spectrums.getSpectrumParameters().getType()
 						+ "------------> resolution: "

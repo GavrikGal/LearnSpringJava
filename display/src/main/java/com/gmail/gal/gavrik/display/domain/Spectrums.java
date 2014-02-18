@@ -16,7 +16,7 @@ public class Spectrums implements Serializable {
 	private Long				idSpectrums;
 	private Measurements		measurement;
 	private SpectrumsParameters	spectrumParameters;
-	private Long				date;
+	private DateOfMeasurement	date;
 	private Time				time;
 	private Set<Harmonics>		harmonics			= new HashSet<Harmonics>();
 
@@ -64,12 +64,13 @@ public class Spectrums implements Serializable {
 		this.spectrumParameters = spectrumParameters;
 	}
 
-	@Column(name = "Date")
-	public Long getDate() {
+	@ManyToOne
+	@JoinColumn(name = "Date")
+	public DateOfMeasurement getDate() {
 		return date;
 	}
 
-	public void setDate(Long date) {
+	public void setDate(DateOfMeasurement date) {
 		this.date = date;
 	}
 
