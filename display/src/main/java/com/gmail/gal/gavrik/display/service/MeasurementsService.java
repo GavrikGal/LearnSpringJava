@@ -11,7 +11,7 @@ public interface MeasurementsService {
 
 	public Measurements findById(Long id);
 	
-	public List<Measurements> findAllWithDetail();
+//	public List<Measurements> findAllWithDetail();
 
 	public Measurements save(Measurements measurements);
 

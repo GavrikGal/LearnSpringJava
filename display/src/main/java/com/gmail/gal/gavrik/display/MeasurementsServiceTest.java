@@ -34,7 +34,8 @@ public class MeasurementsServiceTest {
 
 		System.out.println("by id: " + measurementsService.findById(2l));
 
-		measurements = measurementsService.findAllWithDetail();
+		//measurements = measurementsService.findAllWithDetail();
+		measurements = measurementsService.findAll();
 
 		for (Measurements measurement : measurements) {
 			System.out.println(measurement);

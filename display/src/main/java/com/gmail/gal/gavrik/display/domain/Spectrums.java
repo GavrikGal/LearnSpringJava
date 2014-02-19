@@ -2,10 +2,15 @@ package com.gmail.gal.gavrik.display.domain;
 
 import java.io.Serializable;
 import java.sql.Time;
-import java.util.HashSet;
-import java.util.Set;
+//import java.util.ArrayList;
+//import java.util.HashSet;
+import java.util.List;
+//import java.util.Set;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "spectrums")
@@ -18,18 +23,31 @@ public class Spectrums implements Serializable {
 	private SpectrumsParameters	spectrumParameters;
 	private DateOfMeasurement	date;
 	private Time				time;
-	private Set<Harmonics>		harmonics			= new HashSet<Harmonics>();
+	//private Set<Harmonics>		harmonics			= new HashSet<Harmonics>();
+	private List<Harmonics> harmonics;
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
 	@OneToMany(mappedBy = "spectrum", cascade = CascadeType.ALL, orphanRemoval = true)
-	public Set<Harmonics> getHarmonics() {
+	@OrderBy("frequency")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	public List<Harmonics> getHarmonics() {
 		return this.harmonics;
 	}
 
-	public void setHarmonics(Set<Harmonics> harmonics) {
+	
+//	@OneToMany(mappedBy = "spectrum", cascade = CascadeType.ALL, orphanRemoval = true)
+//	public Set<Harmonics> getHarmonics() {
+//		return this.harmonics;
+//	}
+//
+//	public void setHarmonics(Set<Harmonics> harmonics) {
+//		this.harmonics = harmonics;
+//	}
+
+	public void setHarmonics(List<Harmonics> harmonics) {
 		this.harmonics = harmonics;
 	}
 
@@ -82,5 +100,10 @@ public class Spectrums implements Serializable {
 	public void setTime(Time time) {
 		this.time = time;
 	}
+	
+//	@Transient
+//	public List<Harmonics> getHarmonicsAsList() {
+//		return new ArrayList<Harmonics>(harmonics);
+//	}
 
 }

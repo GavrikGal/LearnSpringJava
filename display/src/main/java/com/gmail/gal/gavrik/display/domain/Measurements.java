@@ -1,12 +1,15 @@
 package com.gmail.gal.gavrik.display.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
+//import java.util.ArrayList;
+//import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+//import java.util.Set;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "measurements")
@@ -16,9 +19,11 @@ public class Measurements implements Serializable {
 
 	private Long				idMeasurements;
 	private Equipments			equipment;
-	private Set<Users>			users				= new HashSet<Users>();
-	private Set<Spectrums>		spectrums			= new HashSet<Spectrums>();
-
+//	private Set<Users>			users				= new HashSet<Users>();
+	// private Set<Spectrums> spectrums = new HashSet<Spectrums>();
+	private List<Spectrums>		spectrums;
+	private List<Users> users;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Measurements")
@@ -44,31 +49,58 @@ public class Measurements implements Serializable {
 		this.equipment = equipment;
 	}
 
-	@ManyToMany
-	@JoinTable(name = "users_of_measurement", joinColumns = @JoinColumn(name = "Measurement"), inverseJoinColumns = @JoinColumn(name = "User"))
-	public Set<Users> getUsers() {
-		return this.users;
-	}
+//	@ManyToMany
+//	@JoinTable(name = "users_of_measurement", joinColumns = @JoinColumn(name = "Measurement"), inverseJoinColumns = @JoinColumn(name = "User"))
+//	public Set<Users> getUsers() {
+//		return this.users;
+//	}
+//
+//	public void setUsers(Set<Users> users) {
+//		this.users = users;
+//	}
 
-	public void setUsers(Set<Users> users) {
+	public void setUsers(List<Users> users) {
 		this.users = users;
 	}
+	
+	
 
-	@Transient
-	public List<Users> getUsersAsList() {
-		return new ArrayList<Users>(users);
+	@ManyToMany
+	@JoinTable(name = "users_of_measurement", joinColumns = @JoinColumn(name = "Measurement"), inverseJoinColumns = @JoinColumn(name = "User"))
+	@OrderBy("firstName")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	public List<Users> getUsers() {
+		return users;
 	}
 
+//	@Transient
+//	public List<Users> getUsersAsList() {
+//		return new ArrayList<Users>(users);
+//	}
+
 	@OneToMany(mappedBy = "measurement", cascade = CascadeType.ALL, orphanRemoval = true)
-	public Set<Spectrums> getSpectrums() {
+	@OrderBy("time")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	public List<Spectrums> getSpectrums() {
 		return spectrums;
 	}
 
-	public void setSpectrums(Set<Spectrums> spectrums) {
+	public void setSpectrums(List<Spectrums> spectrums) {
 		this.spectrums = spectrums;
 	}
 
-	public String toString() {
-		return "Measurements - Id: " + idMeasurements;
-	}
+	// @OneToMany(mappedBy = "measurement", cascade = CascadeType.ALL,
+	// orphanRemoval = true)
+	// public Set<Spectrums> getSpectrums() {
+	// return spectrums;
+	// }
+	//
+	// public void setSpectrums(Set<Spectrums> spectrums) {
+	// this.spectrums = spectrums;
+	// }
+	//
+	// public String toString() {
+	// return "Measurements - Id: " + idMeasurements;
+	// }
+
 }
