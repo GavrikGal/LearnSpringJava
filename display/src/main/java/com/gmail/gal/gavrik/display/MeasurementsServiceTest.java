@@ -36,18 +36,19 @@ public class MeasurementsServiceTest {
 
 		//measurements = measurementsService.findAllWithDetail();
 		measurements = measurementsService.findAll();
+		
+		
 
 		for (Measurements measurement : measurements) {
-			System.out.println(measurement);
+			
 			for (Users users : measurement.getUsers()) {
 				System.out.println("Short name: " + users.getShortName());
 			}
 			System.out.println(" Equipment: model: " + measurement.getEquipment().getModel()
 					+ "s/n: " + measurement.getEquipment().getSerialNumber());
 			for (Spectrums spectrums : measurement.getSpectrums()) {
-				System.out.println("------------------spectrum ¹: "
+				System.out.println("------------------spectrum ¹: " 
 						+ spectrums.getIdSpectrums() + " param:\n ------------> measurand: "
-						+ "!!!!!!!!!!!!!1date: " + spectrums.getDate().getDate()
 						+ "measurand: " +spectrums.getSpectrumParameters().getMeasurand()
 						+ " ------------> type: "
 						+ spectrums.getSpectrumParameters().getType()

@@ -18,20 +18,30 @@ public class DateOfMeasurement implements Serializable {
 	private static final long	serialVersionUID	= -544910450691585253L;
 	private Long				idDate;
 	private DateTime			date;
-	private Set<Spectrums>		spectrums			= new HashSet<Spectrums>();
+	private Set<Measurements>	measurements		= new HashSet<Measurements>();
+	private Set<Measurements>	secondMeasurements	= new HashSet<Measurements>();
 
-	@OneToMany(mappedBy = "date", cascade = CascadeType.ALL, orphanRemoval = true)
-	public Set<Spectrums> getSpectrums() {
-		return this.spectrums;
+	@OneToMany(mappedBy = "dateOfSecondMeasurement", cascade = CascadeType.ALL, orphanRemoval = true)
+	public Set<Measurements> getSecondMeasurements() {
+		return secondMeasurements;
 	}
 
-	public void setSpectrums(Set<Spectrums> spectrums) {
-		this.spectrums = spectrums;
+	public void setSecondMeasurements(Set<Measurements> secondMeasurements) {
+		this.secondMeasurements = secondMeasurements;
+	}
+
+	@OneToMany(mappedBy = "dateOfMeasurement", cascade = CascadeType.ALL, orphanRemoval = true)
+	public Set<Measurements> getMeasurements() {
+		return measurements;
+	}
+
+	public void setMeasurements(Set<Measurements> measurements) {
+		this.measurements = measurements;
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Date")
+	@Column(name = "id_Date_of_measurrement")
 	public Long getIdDate() {
 		return idDate;
 	}

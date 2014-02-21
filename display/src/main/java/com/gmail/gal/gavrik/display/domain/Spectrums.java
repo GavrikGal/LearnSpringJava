@@ -21,10 +21,9 @@ public class Spectrums implements Serializable {
 	private Long				idSpectrums;
 	private Measurements		measurement;
 	private SpectrumsParameters	spectrumParameters;
-	private DateOfMeasurement	date;
 	private Time				time;
-	//private Set<Harmonics>		harmonics			= new HashSet<Harmonics>();
-	private List<Harmonics> harmonics;
+	// private Set<Harmonics> harmonics = new HashSet<Harmonics>();
+	private List<Harmonics>		harmonics;
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -37,15 +36,15 @@ public class Spectrums implements Serializable {
 		return this.harmonics;
 	}
 
-	
-//	@OneToMany(mappedBy = "spectrum", cascade = CascadeType.ALL, orphanRemoval = true)
-//	public Set<Harmonics> getHarmonics() {
-//		return this.harmonics;
-//	}
-//
-//	public void setHarmonics(Set<Harmonics> harmonics) {
-//		this.harmonics = harmonics;
-//	}
+	// @OneToMany(mappedBy = "spectrum", cascade = CascadeType.ALL,
+	// orphanRemoval = true)
+	// public Set<Harmonics> getHarmonics() {
+	// return this.harmonics;
+	// }
+	//
+	// public void setHarmonics(Set<Harmonics> harmonics) {
+	// this.harmonics = harmonics;
+	// }
 
 	public void setHarmonics(List<Harmonics> harmonics) {
 		this.harmonics = harmonics;
@@ -82,16 +81,6 @@ public class Spectrums implements Serializable {
 		this.spectrumParameters = spectrumParameters;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "Date")
-	public DateOfMeasurement getDate() {
-		return date;
-	}
-
-	public void setDate(DateOfMeasurement date) {
-		this.date = date;
-	}
-
 	@Column(name = "Time")
 	public Time getTime() {
 		return time;
@@ -100,10 +89,10 @@ public class Spectrums implements Serializable {
 	public void setTime(Time time) {
 		this.time = time;
 	}
-	
-//	@Transient
-//	public List<Harmonics> getHarmonicsAsList() {
-//		return new ArrayList<Harmonics>(harmonics);
-//	}
+
+	// @Transient
+	// public List<Harmonics> getHarmonicsAsList() {
+	// return new ArrayList<Harmonics>(harmonics);
+	// }
 
 }

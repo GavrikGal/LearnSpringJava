@@ -10,13 +10,25 @@ import javax.persistence.*;
 @Table(name = "spectrums_parameters")
 public class SpectrumsParameters implements Serializable {
 
-	private static final long	serialVersionUID	= -8217254806166488713L;
-	private Long				idSpectrumParameters;
-	private Measurands			measurand;
-	private Types				type;
-	private ScreenResolutions	resolution;
-	private Set<Spectrums>		spectrums			= new HashSet<Spectrums>();
-	
+	private static final long		serialVersionUID	= -8217254806166488713L;
+	private Long					idSpectrumParameters;
+	private Measurands				measurand;
+	private Types					type;
+	private ScreenResolutions		resolution;
+	private PurposeOfMeasurement	purposeOfMeasurement;
+
+	@ManyToOne
+	@JoinColumn(name = "Purpose")
+	public PurposeOfMeasurement getPurposeOfMeasurement() {
+		return purposeOfMeasurement;
+	}
+
+	public void setPurposeOfMeasurement(PurposeOfMeasurement purposeOfMeasurement) {
+		this.purposeOfMeasurement = purposeOfMeasurement;
+	}
+
+	private Set<Spectrums>	spectrums	= new HashSet<Spectrums>();
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -71,6 +83,4 @@ public class SpectrumsParameters implements Serializable {
 		this.spectrums = spectrums;
 	}
 
-	
-	
 }

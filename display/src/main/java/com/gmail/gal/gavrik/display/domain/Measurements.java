@@ -21,8 +21,32 @@ public class Measurements implements Serializable {
 	private Equipments			equipment;
 //	private Set<Users>			users				= new HashSet<Users>();
 	// private Set<Spectrums> spectrums = new HashSet<Spectrums>();
+	private DateOfMeasurement	dateOfMeasurement;
+	private DateOfMeasurement	dateOfSecondMeasurement;	
 	private List<Spectrums>		spectrums;
 	private List<Users> users;
+	
+	
+	@ManyToOne
+	@JoinColumn(name = "Date_of_measurement")
+	public DateOfMeasurement getDateOfMeasurement() {
+		return dateOfMeasurement;
+	}
+
+	public void setDateOfMeasurement(DateOfMeasurement date) {
+		this.dateOfMeasurement = date;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "Date_of_second_measurement")
+	public DateOfMeasurement getDateOfSecondMeasurement() {
+		return dateOfSecondMeasurement;
+	}
+
+	public void setDateOfSecondMeasurement(DateOfMeasurement dateOfSecondMeasurement) {
+		this.dateOfSecondMeasurement = dateOfSecondMeasurement;
+	}
+		
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +54,7 @@ public class Measurements implements Serializable {
 	public Long getIdMeasurements() {
 		return idMeasurements;
 	}
+
 
 	@ManyToOne
 	@JoinColumn(name = "Equipment")

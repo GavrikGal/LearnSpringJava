@@ -2,64 +2,86 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:joda="http://www.joda.org/joda/time/tags"
-	version="2.0">
+	xmlns:spring="http://www.springframework.org/tags" version="2.0">
+
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 
-	<H1>Measurements Listing</H1>
+	<spring:message code="label_measurements_list" var="labelMeasurementsList" />
+	<spring:message code="label_measurements_n" var="labelMeasurementsN" />
+	<spring:message code="label_measurements_date" var="labelMeasurementsDate" />
+	<spring:message code="label_measurements_second_date" var="labelMeasurementsSecondDate" />		
+	<spring:message code="label_measurements_model" var="labelMeasurementsModel" />
+	<spring:message code="label_measurements_sn" var="labelMeasurementsSn" />
+	<spring:message code="label_measurements_spectrum_parameters" var="labelMeasurementsSpectrumsParameters" />
+	<spring:message code="label_measurements_spectrums" var="labelMeasurementsSpectrums"/>
+	<spring:message code="label_measurements_users" var="labelMeasurementsUsers"/>
+	<spring:message code="date_format_pattern" var="dateFormatPattern"/>
+	
+	<H1>${labelMeasurementsList}</H1>
 
-	<c:if test="${not empty measurements}">
-		<table border="1">
+			
+	<c:if test="${not empty measurementsViews}">
+		<table border="1" >
 			<thead>
 				<tr>
-					<th>№</th>
-					<th>Model</th>
-					<th>s/n</th>
-					<th>Spectrum parameters</th>
-					<th>Spectrums</th>
-
-					<th>User</th>
-				</tr>
-			</thead>
+					<th>${labelMeasurementsDate}</th>
+					<th>${labelMeasurementsModel}</th>
+					<th>${labelMeasurementsSn}</th>
+					<th>${labelMeasurementsSpectrumsParameters}</th>
+					<th>${labelMeasurementsSpectrums}</th>
+					<th>${labelMeasurementsSecondDate}</th>
+					<th>${labelMeasurementsUsers}</th>				
+				</tr>	
+			</thead>	
 			<tbody>
-				<c:forEach items="${measurements}" var="measurement">
+				<c:forEach items="${measurementsViews}" var="measurementsView">
 					<tr>
-						<td>${measurement.idMeasurements}</td>
-						<td>${measurement.equipment.getModel()}</td>
-						<td>${measurement.equipment.getSerialNumber()}</td>
-						<td><table><c:forEach items="${measurement.spectrums}"
-								var="spectrum">
-								<tr>
-									<td><joda:format value="${spectrum.date.getDate()}" pattern="dd.MM.yyyy" />,</td>
-				 					<td>${spectrum.getTime()},</td>							
-									<td>${spectrum.getSpectrumParameters().getMeasurand()},	</td>							
-									<td>${spectrum.getSpectrumParameters().getType()},</td>								
-									<td>${spectrum.getSpectrumParameters().getResolution()}</td>
-								</tr>
-							</c:forEach>
-							</table>
-							</td>
+						<td>
+							<joda:format value="${measurementsView.dateOfMeasurement}"
+													pattern="${dateFormatPattern}" />
+						</td>
+						<td>${measurementsView.measurements.getEquipment().getModel()}</td>
+						<td>${measurementsView.measurements.getEquipment().getSerialNumber()}</td>
 						<td>
 							<table>
-								<c:forEach items="${measurement.spectrums}"
-										var="spectrum">
-									<tr>	
+								<c:forEach items="${measurementsView.measurements.getSpectrums()}" var="spectrum">
+									<tr>
+										<td>${spectrum.getTime()},</td>
+										<td>${spectrum.getSpectrumParameters().getMeasurand()},</td>
+										<td>${spectrum.getSpectrumParameters().getType()},</td>
+										<td>${spectrum.getSpectrumParameters().getResolution()}</td>
+									</tr>
+								</c:forEach>
+							</table>
+						</td>
+						<td>
+							<table>
+								<c:forEach items="${measurementsView.measurements.getSpectrums()}" var="spectrum">
+									<tr>
 										<c:forEach items="${spectrum.harmonics}" var="harmonic">
-											<td>	
-												${harmonic.getFrequency()} - ${harmonic.getAmplitude()}/${harmonic.getNoise()};     				
-											</td>
+											<td>${harmonic.getFrequency()} -
+												${harmonic.getAmplitude()}/${harmonic.getNoise()};</td>
 										</c:forEach>
 									</tr>
 								</c:forEach>
-							</table>	
+							</table>
 						</td>
-						<td><c:forEach items="${measurement.users}" var="user">
+						<td>
+							<joda:format value="${measurementsView.dateOfSecondMeasurement}"
+													pattern="${dateFormatPattern}" />
+						</td>
+						<td>
+							<c:forEach items="${measurementsView.measurements.getUsers()}" var="user">
 								${user.getShortName()}<br />
-							</c:forEach></td>
+							</c:forEach>
+						</td>						
 					</tr>
 				</c:forEach>
-			</tbody>
+				
+			</tbody>	
 		</table>
 	</c:if>
+		
 
 </div>
