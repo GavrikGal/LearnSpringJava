@@ -57,6 +57,10 @@ public class DateOfMeasurement implements Serializable {
 		return date;
 	}
 
+	public void setDate(DateTime date) {
+		this.date = date;
+	}
+
 	@Transient
 	public String getDateString() {
 		String dateString = "";
@@ -65,10 +69,6 @@ public class DateOfMeasurement implements Serializable {
 					date);
 		}
 		return dateString;
-	}
-
-	public void setDate(DateTime date) {
-		this.date = date;
 	}
 
 	public static long getSerialversionuid() {

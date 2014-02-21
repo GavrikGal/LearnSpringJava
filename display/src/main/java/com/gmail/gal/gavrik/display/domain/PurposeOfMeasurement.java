@@ -13,7 +13,7 @@ public class PurposeOfMeasurement implements Serializable {
 	private String				purpose;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Purpose_of_measurement")
 	public Long getIdPurposeOfMeasurement() {
 		return idPurposeOfMeasurement;

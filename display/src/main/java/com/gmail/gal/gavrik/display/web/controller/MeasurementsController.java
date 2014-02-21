@@ -32,7 +32,6 @@ public class MeasurementsController {
 	public String list(Model uiModel) {
 		logger.info("Listing measurements");
 
-		//List<Measurements> measurements = measurementsService.findAllWithDetail();
 		List<Measurements> measurements = measurementsService.findAll();
 		
 		List<MeasurementsView> measurementsViews = new ArrayList<MeasurementsView>();

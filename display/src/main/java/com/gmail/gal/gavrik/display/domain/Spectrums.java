@@ -22,7 +22,6 @@ public class Spectrums implements Serializable {
 	private Measurements		measurement;
 	private SpectrumsParameters	spectrumParameters;
 	private Time				time;
-	// private Set<Harmonics> harmonics = new HashSet<Harmonics>();
 	private List<Harmonics>		harmonics;
 
 	public static long getSerialversionuid() {
@@ -35,16 +34,6 @@ public class Spectrums implements Serializable {
 	public List<Harmonics> getHarmonics() {
 		return this.harmonics;
 	}
-
-	// @OneToMany(mappedBy = "spectrum", cascade = CascadeType.ALL,
-	// orphanRemoval = true)
-	// public Set<Harmonics> getHarmonics() {
-	// return this.harmonics;
-	// }
-	//
-	// public void setHarmonics(Set<Harmonics> harmonics) {
-	// this.harmonics = harmonics;
-	// }
 
 	public void setHarmonics(List<Harmonics> harmonics) {
 		this.harmonics = harmonics;
@@ -89,10 +78,5 @@ public class Spectrums implements Serializable {
 	public void setTime(Time time) {
 		this.time = time;
 	}
-
-	// @Transient
-	// public List<Harmonics> getHarmonicsAsList() {
-	// return new ArrayList<Harmonics>(harmonics);
-	// }
 
 }

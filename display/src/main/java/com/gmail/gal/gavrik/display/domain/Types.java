@@ -37,7 +37,7 @@ public class Types implements Serializable {
 	public void setIdType(String idType) {
 		this.idType = idType;
 	}
-	
+
 	public String toString() {
 		return idType;
 	}

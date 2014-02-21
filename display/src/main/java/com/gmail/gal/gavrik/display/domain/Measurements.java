@@ -19,14 +19,11 @@ public class Measurements implements Serializable {
 
 	private Long				idMeasurements;
 	private Equipments			equipment;
-//	private Set<Users>			users				= new HashSet<Users>();
-	// private Set<Spectrums> spectrums = new HashSet<Spectrums>();
 	private DateOfMeasurement	dateOfMeasurement;
-	private DateOfMeasurement	dateOfSecondMeasurement;	
+	private DateOfMeasurement	dateOfSecondMeasurement;
 	private List<Spectrums>		spectrums;
-	private List<Users> users;
-	
-	
+	private List<Users>			users;
+
 	@ManyToOne
 	@JoinColumn(name = "Date_of_measurement")
 	public DateOfMeasurement getDateOfMeasurement() {
@@ -46,15 +43,13 @@ public class Measurements implements Serializable {
 	public void setDateOfSecondMeasurement(DateOfMeasurement dateOfSecondMeasurement) {
 		this.dateOfSecondMeasurement = dateOfSecondMeasurement;
 	}
-		
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Measurements")
 	public Long getIdMeasurements() {
 		return idMeasurements;
 	}
-
 
 	@ManyToOne
 	@JoinColumn(name = "Equipment")
@@ -74,21 +69,9 @@ public class Measurements implements Serializable {
 		this.equipment = equipment;
 	}
 
-//	@ManyToMany
-//	@JoinTable(name = "users_of_measurement", joinColumns = @JoinColumn(name = "Measurement"), inverseJoinColumns = @JoinColumn(name = "User"))
-//	public Set<Users> getUsers() {
-//		return this.users;
-//	}
-//
-//	public void setUsers(Set<Users> users) {
-//		this.users = users;
-//	}
-
 	public void setUsers(List<Users> users) {
 		this.users = users;
 	}
-	
-	
 
 	@ManyToMany
 	@JoinTable(name = "users_of_measurement", joinColumns = @JoinColumn(name = "Measurement"), inverseJoinColumns = @JoinColumn(name = "User"))
@@ -97,11 +80,6 @@ public class Measurements implements Serializable {
 	public List<Users> getUsers() {
 		return users;
 	}
-
-//	@Transient
-//	public List<Users> getUsersAsList() {
-//		return new ArrayList<Users>(users);
-//	}
 
 	@OneToMany(mappedBy = "measurement", cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("time")
@@ -113,19 +91,5 @@ public class Measurements implements Serializable {
 	public void setSpectrums(List<Spectrums> spectrums) {
 		this.spectrums = spectrums;
 	}
-
-	// @OneToMany(mappedBy = "measurement", cascade = CascadeType.ALL,
-	// orphanRemoval = true)
-	// public Set<Spectrums> getSpectrums() {
-	// return spectrums;
-	// }
-	//
-	// public void setSpectrums(Set<Spectrums> spectrums) {
-	// this.spectrums = spectrums;
-	// }
-	//
-	// public String toString() {
-	// return "Measurements - Id: " + idMeasurements;
-	// }
 
 }

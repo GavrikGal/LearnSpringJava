@@ -47,7 +47,7 @@ public class ScreenResolutions implements Serializable {
 	public void setResolution(String resolution) {
 		this.resolution = resolution;
 	}
-	
+
 	public String toString() {
 		return resolution;
 	}
