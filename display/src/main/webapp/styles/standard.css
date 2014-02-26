@@ -13,19 +13,18 @@ body {
 	text-align: center;
 }
 
-/*
+
 #header {
 	margin-bottom: 1em;
 }
 
 #appname {
-    float: left;
     margin: 5;
     padding: 5px 0px;
     font-size: 150%;
     vertical-align: middle;
 }
-
+/*
 #banner {
     float: left;
     margin: 5;
@@ -44,35 +43,41 @@ body {
     margin: 5;
     padding: 5px 5px;
 } 
-
+*/
 #headerWrapper {
-    width:950px;
-    min-width: 950px;
-    max-width: 950px;
-    margin-right: auto;
-    margin-left: auto;
-
+   width:1270px;
+	min-width: 1270px;
+	max-width: 1270px;
+	margin-right: auto;
+	margin-left: auto;
+	
+	
    
-    width:expression(document.body.clientWidth > 950? "950px": "auto" );
+
+	
+	width:expression(document.body.clientWidth > 1270? "1270px": "auto" );
     
     overflow:hidden;
     display:block;
 }
 
 #wrapper {
-	width:950px;
-	min-width: 950px;
-	max-width: 950px;
+	width:1270px;
+	min-width: 1270px;
+	max-width: 1270px;
 	margin-right: auto;
 	margin-left: auto;
+	
+	
+    
 
 	
-	width:expression(document.body.clientWidth > 950? "950px": "auto" );
+	width:expression(document.body.clientWidth > 1270? "1270px": "auto" );
 	
-	overflow:hidden;
+	
 	display:block;
 }
-*/
+
 /* header and footer elements */
 /*
 #main {
@@ -195,8 +200,85 @@ div.content {
 	box-shadow: 0 0 6px 0 #C2D2EA;
 	width: 1250px;	
 	
-	margin: 20px auto;
+	margin: 15px auto;
 }
+
+div.withModal {
+	display:inline-block; 
+	position: relative;
+	border: 0px solid #bbb;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+
+div.withModal div.modal {
+	display:none; 
+	position:absolute; 
+	left:-10%; 
+	top:-10%;
+}
+
+div.withModal:hover div.modal {
+	display:block;
+	background-color: #FFF;
+	border: 1px solid #EEE;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: px;
+	box-shadow: 0 0 6px 0 #C2D2EA;
+	margin-top: 25px;
+	margin-left: 20px;
+	padding: 10px;
+	z-index: 100;
+	width: 350px;
+	overflow: hidden;
+}
+
+div.models {
+	margin: 0px;
+	margin-top: 5px;
+	border: 0px solid #bbb;
+	float: left;
+	width: 220px; 
+	
+	
+}
+
+img.models {
+	width: 100px;
+	height: 100px;
+	float: left;
+	margin: 10px;
+	
+	border: 0px solid #bfb;
+}
+img.edit {
+	width: 20px;
+	height: 20px;
+	float: right;
+}
+
+p.models {
+		
+}
+
+p.norms {
+	clear: both;
+	border-top: 1px solid #BBB;
+	margin: 0px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	
+	
+}
+
+ul {
+	
+	margin: 0px;
+}
+
+
 
 /* menu elements*/
 /*
@@ -216,8 +298,10 @@ h1 {
 }
 
 h2 {
-	font-size: 18px;
-	line-height: 20px;
+	font-size: 12px;
+	line-height: 15px;
+	margin: 0px auto;
+	text-align: center;
 }
 
 h3 {
@@ -375,16 +459,19 @@ td.levels {
 
 .valid {
 	color: #7db223;
+	margin: 2px;
 	
 }
 
 .invalid {
 	color: red;
+	margin: 0px;
 }
 
 .noise {
-	color: grey;
+	color: #aaa;
 	font-size: xx-small;
+	margin: 0px;
 	
 }
 
@@ -504,22 +591,3 @@ fieldset th {
 }
 */
 
-div.withModal {
-	display:inline-block; position: relative;
-}
-div.withModal div.modal {
-	display:none; position:absolute; left:-10%; top:-10%;
-}
-div.withModal:hover div.modal {
-	display:block;
-	background-color: #FFF;
-	border: 1px solid #EEE;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: px;
-	box-shadow: 0 0 6px 0 #C2D2EA;
-	margin: 20px;
-	padding: 10px;
-	z-index: 100;
-	width: 200px;
-}

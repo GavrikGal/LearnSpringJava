@@ -6,6 +6,7 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 
 import com.gmail.gal.gavrik.display.domain.Harmonics;
 import com.gmail.gal.gavrik.display.domain.Measurements;
+import com.gmail.gal.gavrik.display.domain.Norms;
 import com.gmail.gal.gavrik.display.domain.Spectrums;
 import com.gmail.gal.gavrik.display.domain.Users;
 import com.gmail.gal.gavrik.display.service.MeasurementsService;
@@ -46,6 +47,17 @@ public class MeasurementsServiceTest {
 			}
 			System.out.println(" Equipment: model: " + measurement.getEquipment().getModel()
 					+ "s/n: " + measurement.getEquipment().getSerialNumber());
+			
+			System.out.println("Model descriptions: " + measurement.getEquipment().getModel().getDescription());
+			
+			int i = 1;
+			for (Norms norms : measurement.getEquipment().getModel().getNorms()) {
+				
+				System.out.println("Norm #" + i + " is: " + norms.getShortNorms());
+				i++;
+				
+			}
+			
 			for (Spectrums spectrums : measurement.getSpectrums()) {
 				System.out.println("------------------spectrum ¹: " 
 						+ spectrums.getIdSpectrums() + " param:\n ------------> measurand: "
