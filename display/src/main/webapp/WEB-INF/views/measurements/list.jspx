@@ -28,6 +28,7 @@
 		var="labelMeasurementsNorms" />
 
 	<spring:url value="/models/photo" var="modelsPhotoUrl" />
+	<spring:url value="/measurements" var="listMeasurementsUrl"/>
 
 
 
@@ -116,7 +117,11 @@
 									pattern="${dateFormatPattern}" /></td>
 							<td class="notRight">
 
-								${measurementsView.measurements.getUser().getFirstName()}</td>
+								${measurementsView.measurements.getUser().getFirstName()}
+							</td>
+							<td class="attributes">
+								<a href="${listMeasurementsUrl}/delete/${measurementsView.measurements.getIdMeasurements()}" ><img class="delete" src="styles/icons/Trash.png" /></a>
+							</td>
 						</tr>
 					</c:forEach>
 

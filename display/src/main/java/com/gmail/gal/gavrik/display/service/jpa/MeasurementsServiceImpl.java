@@ -40,6 +40,10 @@ public class MeasurementsServiceImpl implements MeasurementsService {
 		return measurementsRepository.save(measurements);
 	}
 
+	public void delete(Measurements measurements) {
+		measurementsRepository.delete(measurements);
+	}
+
 	// @Transactional(readOnly=true)
 	// public List<Measurements> findAllWithDetail() {
 	// return Lists.newArrayList(measurementsRepository.findAllWithDetail());

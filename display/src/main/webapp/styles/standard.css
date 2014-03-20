@@ -164,6 +164,10 @@ table.navigation {
 	border: 0px;
 }
 */
+
+
+
+
 label {
 	width:150px;
 	float:left;
@@ -284,6 +288,10 @@ div.models {
 	
 }
 
+img.delete {
+	
+}
+
 img.models {
 	width: 100px;
 	height: 100px;
@@ -296,6 +304,12 @@ img.edit {
 	width: 20px;
 	height: 20px;
 	float: right;
+}
+
+img.delete {
+	width: 20px;
+	height: 20px;
+	
 }
 
 p.models {
@@ -454,6 +468,7 @@ table table {
 	
 }
 
+
 table td {
 	text-align: center;
 	border: 1px solid #BBB;
@@ -469,6 +484,10 @@ td.notLeft {
 
 td.notRight {
 	border-right: 0px solid #BBB;
+}
+
+td.attributes {
+	border: 0px solid #BBB;
 }
 
 th.date {

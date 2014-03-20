@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -88,6 +89,7 @@ public class MeasurementsController {
 	@Autowired
 	MessageSource						messageSource;
 
+	// ____________________Request Mapping_________________________________
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model uiModel) {
 		logger.info("Listing measurements");
@@ -100,6 +102,62 @@ public class MeasurementsController {
 		return "measurements/list";
 	}
 
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+	public String delete(@PathVariable("id") Long id, MeasurementsForm measurementsForm,
+			Model uiModel, RedirectAttributes redirectAttributes, Locale locale) {
+
+		Measurements deletedMeasurement = measurementsService.findById(id);
+		System.out.println("deliting Measurement: id - "
+				+ deletedMeasurement.getIdMeasurements() + "; Model - "
+				+ deletedMeasurement.getEquipment().getModel().getModelName()
+				+ ", serial No - " + deletedMeasurement.getEquipment().getSerialNumber()
+				+ ", with date - " + deletedMeasurement.getDateOfMeasurement());
+		
+		
+
+		logger.info("Deliting measutements with id : "
+				+ deletedMeasurement.getIdMeasurements());
+		
+		measurementsService.delete(deletedMeasurement);
+		
+		uiModel.asMap().clear();
+		redirectAttributes.addFlashAttribute("measurementsForm", measurementsForm);
+		redirectAttributes.addFlashAttribute(
+				"message",
+				new Message("success", messageSource.getMessage("measurements_delete_success",
+						new Object[] {}, locale)));
+		return "redirect:/measurements";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String update(@Valid MeasurementsForm measurementsForm,
+			BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest,
+			RedirectAttributes redirectAttributes, Locale locale) {
+
+		logger.info("Updating measutements");
+
+		if (bindingResult.hasErrors()) {
+			uiModel.addAttribute(
+					"message",
+					new Message("error", messageSource.getMessage("measurements_save_fail",
+							new Object[] {}, locale)));
+			uiModel.addAttribute("measurementsForm", measurementsForm);
+			return "measurements/list";
+		}
+
+		saveMeasurements(measurementsForm);
+
+		uiModel.asMap().clear();
+		redirectAttributes.addFlashAttribute("measurementsForm", measurementsForm);
+		redirectAttributes.addFlashAttribute(
+				"message",
+				new Message("success", messageSource.getMessage("measurements_save_success",
+						new Object[] {}, locale)));
+
+		return "redirect:/measurements";
+	}
+
+	// _________________Model Attribute_______________________________________
 	@ModelAttribute("measurementsViews")
 	public List<MeasurementsView> getMeasurementsView() {
 		List<Measurements> measurements = measurementsService.findAll();
@@ -167,34 +225,7 @@ public class MeasurementsController {
 		return stringUserList;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public String update(@Valid MeasurementsForm measurementsForm,
-			BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest,
-			RedirectAttributes redirectAttributes, Locale locale) {
-
-		logger.info("Updating measutements");
-
-		if (bindingResult.hasErrors()) {
-			uiModel.addAttribute(
-					"message",
-					new Message("error", messageSource.getMessage("measurements_save_fail",
-							new Object[] {}, locale)));
-			uiModel.addAttribute("measurementsForm", measurementsForm);
-			return "measurements/list";
-		}
-
-		saveMeasurements(measurementsForm);
-
-		uiModel.asMap().clear();
-		redirectAttributes.addFlashAttribute("measurementsForm", measurementsForm);
-		redirectAttributes.addFlashAttribute(
-				"message",
-				new Message("success", messageSource.getMessage("measurements_save_success",
-						new Object[] {}, locale)));
-
-		return "redirect:/measurements";
-	}
-
+	// _____________Utils_____________________________________
 	private Measurements saveMeasurements(MeasurementsForm measurementsForm) {
 
 		Measurements newMeasurements = new Measurements();
@@ -299,4 +330,5 @@ public class MeasurementsController {
 
 		newSpectrums = spectrumsService.save(newSpectrums);
 	}
+
 }

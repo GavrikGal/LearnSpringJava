@@ -16,5 +16,7 @@ public interface MeasurementsService {
 	public List<Measurements> findByEquipment(Equipments equipments);
 
 	public Measurements save(Measurements measurements);
+	
+	public void delete(Measurements measurements);
 
 }
