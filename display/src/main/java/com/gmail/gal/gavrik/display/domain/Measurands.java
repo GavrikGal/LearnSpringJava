@@ -28,7 +28,6 @@ public class Measurands implements Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Measurand")
 	public String getIdMeasurands() {
 		return idMeasurands;

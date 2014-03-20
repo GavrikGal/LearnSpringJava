@@ -19,8 +19,8 @@ body {
 }
 
 #appname {
-    margin: 5;
-    padding: 5px 0px;
+    margin: 0px;
+    padding: 0px 0px;
     font-size: 150%;
     vertical-align: middle;
 }
@@ -45,20 +45,23 @@ body {
 } 
 */
 #headerWrapper {
-   width:1270px;
-	min-width: 1270px;
-	max-width: 1270px;
-	margin-right: auto;
-	margin-left: auto;
-	
-	
+  
    
-
+   background-color: #FFF;
+	border: 1px solid #EEE;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
 	
-	width:expression(document.body.clientWidth > 1270? "1270px": "auto" );
+	box-shadow: 0 0 6px 0 #C2D2EA;
+	width: 99.9%;	
+	
+	margin: 15px auto;
+	margin-top: -12px;
     
     overflow:hidden;
     display:block;
+       
 }
 
 #wrapper {
@@ -76,6 +79,10 @@ body {
 	
 	
 	display:block;
+}
+
+#currentDate {
+	color: #AAA;
 }
 
 /* header and footer elements */
@@ -165,11 +172,37 @@ label {
 }
 
 input {
-	height:20px;
+	height:100%;
+	width: 100% ;
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+
+textarea {
+	height:100%;
+	width: 100% ;
+	margin: 0px;
+	padding: 0px;
+	resize: none;
+	vertical-align: middle;
+	text-align: center;
+	
+}
+
+button {
+	width: 100%;
+	color: #666;
+	margin: 1px;
+	padding: 0px;
+	
 }
 
 input, textarea, select {
-	border:1px solid #B3B3B3;
+	border:0px solid #B3B3B3;
+	font-family: verdana, Arial, sans-serif;
+	font-size: 12px;
+	color: #666;
 }
 
 input.image {
@@ -179,7 +212,7 @@ input.image {
 }
 
 submit {
-	height:25px;
+	
 }
 
 div {
@@ -206,17 +239,21 @@ div.content {
 div.withModal {
 	display:inline-block; 
 	position: relative;
-	border: 0px solid #bbb;
+	border: 0px solid #Fbb;
 	padding-top: 8px;
 	padding-bottom: 8px;
+
 }
 
 
 div.withModal div.modal {
 	display:none; 
 	position:absolute; 
+	width: 10px;
+	height: 10px;
 	left:-10%; 
 	top:-10%;
+
 }
 
 div.withModal:hover div.modal {
@@ -232,7 +269,9 @@ div.withModal:hover div.modal {
 	padding: 10px;
 	z-index: 100;
 	width: 350px;
+	height: auto;
 	overflow: hidden;
+	
 }
 
 div.models {
@@ -294,7 +333,7 @@ h1,h2,h3 {
 h1 {
 	font-size: 20px;
 	line-height: 26px;
-	margin: 20px;
+	margin: 10px;
 }
 
 h2 {
@@ -360,6 +399,7 @@ ul li {
 }
 /* table elements */
 
+
 table {
 	
 	background: #FFF;
@@ -370,6 +410,11 @@ table {
 	border-collapse: collapse;
 	margin: 20px;
 	
+	
+}
+
+table.maintable {
+	border: 0px solid #BBBBBB;
 	
 }
 /*
@@ -411,6 +456,11 @@ table table {
 
 table td {
 	text-align: center;
+	border: 1px solid #BBB;
+}
+
+td td {
+	border: 0px solid #BBB;
 }
 
 td.notLeft {
@@ -422,7 +472,7 @@ td.notRight {
 }
 
 th.date {
-	width: 6%;	
+	width: 8%;	
 }
 
 th.model {
@@ -442,11 +492,15 @@ th.levels {
 }
 
 th.secondDate {
-	width: 6%;	
+	width: 8%;	
 }
 
 th.users {
 	width: 8%;	
+}
+
+th.buttons {
+	width: 8%;
 }
 
 td.properties {

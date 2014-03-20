@@ -9,7 +9,11 @@ public interface ModelsService {
 	public List<Models> findAll();
 	
 	public Models findById(Long id);
+
+	public Models findByModelName(String modelName);
 	
 	public Models save(Models models);
+	
+
 
 }

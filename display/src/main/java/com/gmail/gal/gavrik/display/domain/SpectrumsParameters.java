@@ -15,17 +15,17 @@ public class SpectrumsParameters implements Serializable {
 	private Measurands				measurand;
 	private Types					type;
 	private ScreenResolutions		resolution;
-	private PurposeOfMeasurement	purposeOfMeasurement;
+//	private PurposeOfMeasurement	purposeOfMeasurement;
 
-	@ManyToOne
-	@JoinColumn(name = "Purpose")
-	public PurposeOfMeasurement getPurposeOfMeasurement() {
-		return purposeOfMeasurement;
-	}
-
-	public void setPurposeOfMeasurement(PurposeOfMeasurement purposeOfMeasurement) {
-		this.purposeOfMeasurement = purposeOfMeasurement;
-	}
+//	@ManyToOne
+//	@JoinColumn(name = "Purpose")
+//	public PurposeOfMeasurement getPurposeOfMeasurement() {
+//		return purposeOfMeasurement;
+//	}
+//
+//	public void setPurposeOfMeasurement(PurposeOfMeasurement purposeOfMeasurement) {
+//		this.purposeOfMeasurement = purposeOfMeasurement;
+//	}
 
 	private Set<Spectrums>	spectrums	= new HashSet<Spectrums>();
 

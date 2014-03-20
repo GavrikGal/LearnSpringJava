@@ -20,9 +20,21 @@ public class Measurements implements Serializable {
 	private Long				idMeasurements;
 	private Equipments			equipment;
 	private DateOfMeasurement	dateOfMeasurement;
+//	private String				description;
 	private DateOfMeasurement	dateOfSecondMeasurement;
 	private List<Spectrums>		spectrums;
-	private List<Users>			users;
+//	private List<Users>			users;
+	private Users user;
+	
+	
+//	@Column(name = "Description")
+//	public String getDescription() {
+//		return description;
+//	}
+//
+//	public void setDescription(String description) {
+//		this.description = description;
+//	}
 
 	@ManyToOne
 	@JoinColumn(name = "Date_of_measurement")
@@ -68,17 +80,29 @@ public class Measurements implements Serializable {
 	public void setEquipment(Equipments equipment) {
 		this.equipment = equipment;
 	}
+	
+	
 
-	public void setUsers(List<Users> users) {
-		this.users = users;
+//	public void setUsers(List<Users> users) {
+//		this.users = users;
+//	}
+//
+//	@ManyToMany
+//	@JoinTable(name = "users_of_measurement", joinColumns = @JoinColumn(name = "Measurement"), inverseJoinColumns = @JoinColumn(name = "User"))
+//	@OrderBy("firstName")
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	public List<Users> getUsers() {
+//		return users;
+//	}
+
+	@ManyToOne
+	@JoinColumn(name = "User")
+	public Users getUser() {
+		return user;
 	}
 
-	@ManyToMany
-	@JoinTable(name = "users_of_measurement", joinColumns = @JoinColumn(name = "Measurement"), inverseJoinColumns = @JoinColumn(name = "User"))
-	@OrderBy("firstName")
-	@LazyCollection(LazyCollectionOption.FALSE)
-	public List<Users> getUsers() {
-		return users;
+	public void setUser(Users user) {
+		this.user = user;
 	}
 
 	@OneToMany(mappedBy = "measurement", cascade = CascadeType.ALL, orphanRemoval = true)

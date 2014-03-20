@@ -21,6 +21,7 @@ public class Spectrums implements Serializable {
 	private Long				idSpectrums;
 	private Measurements		measurement;
 	private SpectrumsParameters	spectrumParameters;
+	private String				description;
 	private Time				time;
 	private List<Harmonics>		harmonics;
 
@@ -51,7 +52,7 @@ public class Spectrums implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Measurement")
+	@JoinColumn(name = "Measurements")
 	public Measurements getMeasurement() {
 		return measurement;
 	}
@@ -79,4 +80,15 @@ public class Spectrums implements Serializable {
 		this.time = time;
 	}
 
+	@Column(name = "Description")
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	
+	
 }

@@ -5,7 +5,8 @@
 	<jsp:output omit-xml-declaration="yes" />
 	<spring:message code="header_text" var="headerText" />
 	
-	<div id="appname" class="content">
-		<h1>${headerText}</h1>
+	<div id="appname">
+		<h1>${headerText}, menu, login</h1>
+		
 	</div>
 </div>

@@ -24,8 +24,7 @@
 	<spring:message code="label_measurements_users"
 		var="labelMeasurementsUsers" />
 	<spring:message code="date_format_pattern" var="dateFormatPattern" />
-	<spring:message code="label_measurements_norms"
-		var="labelMeasurementsNorms" />
+	<spring:message code="label_measurements_norms" var="labelMeasurementsNorms" />
 
 	<spring:url value="/models/photo" var="modelsPhotoUrl" />
 
@@ -35,7 +34,7 @@
 	<div class="content">
 		<c:if test="${not empty measurementsViews}">
 
-			<table class="maintable">
+			<table border="1">
 				<thead>
 					<tr>
 						<th class="date">${labelMeasurementsDate}</th>
@@ -51,8 +50,7 @@
 					<c:forEach items="${measurementsViews}" var="measurementsView">
 						<tr>
 							<td class="notLeft">
-								<joda:format
-									value="${measurementsView.dateOfMeasurement}"
+								<joda:format value="${measurementsView.dateOfMeasurement}"
 									pattern="${dateFormatPattern}" />
 							</td>
 							<td>
@@ -73,7 +71,7 @@
 												<li>${norms.getShortNorms()}</li>
 											</c:forEach>
 										</ul>
-										<a href=""><img class="edit" src="styles/icons/edit.png" /></a>
+										<a href=""><img class="edit" src="styles/icons/edit.png"/></a>
 
 									</div>
 								</div>
@@ -99,24 +97,29 @@
 										items="${measurementsView.measurements.getSpectrums()}"
 										var="spectrum">
 										<tr>
-											<td class="levels"><c:if
-													test="${not empty spectrum.harmonics}">
+											<td class="levels">
+												<c:if test="${not empty spectrum.harmonics}">
 													<c:forEach items="${spectrum.harmonics}" var="harmonic">
 														<span class="valid">${harmonic.getFrequency()} -
 															${harmonic.getAmplitude()}</span>/<span class="noise">${harmonic.getNoise()}</span>;
 													</c:forEach>
-													
-												</c:if> ${spectrum.description}</td>
+												</c:if>	
+												${measurementsView.measurements.getDescription()}
+											</td>
 										</tr>
 									</c:forEach>
 								</table>
 							</td>
-							<td><joda:format
-									value="${measurementsView.dateOfSecondMeasurement}"
-									pattern="${dateFormatPattern}" /></td>
+							<td>
+								<joda:format value="${measurementsView.dateOfSecondMeasurement}"
+									pattern="${dateFormatPattern}" />
+							</td>
 							<td class="notRight">
-
-								${measurementsView.measurements.getUser().getFirstName()}</td>
+								<c:forEach items="${measurementsView.measurements.getUsers()}"
+									var="user">
+								${user.getShortName()}<br />
+								</c:forEach>
+							</td>
 						</tr>
 					</c:forEach>
 

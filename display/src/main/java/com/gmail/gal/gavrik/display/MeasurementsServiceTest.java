@@ -8,7 +8,6 @@ import com.gmail.gal.gavrik.display.domain.Harmonics;
 import com.gmail.gal.gavrik.display.domain.Measurements;
 import com.gmail.gal.gavrik.display.domain.Norms;
 import com.gmail.gal.gavrik.display.domain.Spectrums;
-import com.gmail.gal.gavrik.display.domain.Users;
 import com.gmail.gal.gavrik.display.service.MeasurementsService;
 
 public class MeasurementsServiceTest {
@@ -42,9 +41,9 @@ public class MeasurementsServiceTest {
 
 		for (Measurements measurement : measurements) {
 			
-			for (Users users : measurement.getUsers()) {
-				System.out.println("Short name: " + users.getShortName());
-			}
+//			for (Users users : measurement.getUsers()) {
+//				System.out.println("Short name: " + users.getShortName());
+//			}
 			System.out.println(" Equipment: model: " + measurement.getEquipment().getModel()
 					+ "s/n: " + measurement.getEquipment().getSerialNumber());
 			

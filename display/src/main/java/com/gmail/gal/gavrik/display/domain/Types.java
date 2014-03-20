@@ -28,7 +28,6 @@ public class Types implements Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_Type")
 	public String getIdType() {
 		return idType;

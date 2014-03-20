@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "equipments")
@@ -14,7 +15,7 @@ public class Equipments implements Serializable {
 
 	private Long				idEquipment;
 	private Models				model;
-	private int					serialNumber;
+	private String				serialNumber;
 	private Set<Measurements>	measurements		= new HashSet<Measurements>();
 
 	public static long getSerialversionuid() {
@@ -43,11 +44,11 @@ public class Equipments implements Serializable {
 	}
 
 	@Column(name = "Serial_number")
-	public int getSerialNumber() {
+	public String getSerialNumber() {
 		return serialNumber;
 	}
 
-	public void setSerialNumber(int serialNumber) {
+	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
 	}
 

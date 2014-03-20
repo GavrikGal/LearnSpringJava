@@ -12,17 +12,31 @@ import com.gmail.gal.gavrik.display.repository.UsersRepository;
 import com.gmail.gal.gavrik.display.service.UsersService;
 import com.google.common.collect.Lists;
 
-@Service("UsersService")
+@Service("usersService")
 @Repository
 @Transactional
 public class UsersServiceImpl implements UsersService {
 
 	@Autowired
-	private UsersRepository usersRepository;
-	
-	@Transactional(readOnly=true)
+	private UsersRepository	usersRepository;
+
+	@Transactional(readOnly = true)
 	public List<Users> findAll() {
 		return Lists.newArrayList(usersRepository.findAll());
+	}
+
+	@Transactional(readOnly = true)
+	public Users findById(Long id) {
+		return usersRepository.findOne(id);
+	}
+
+	@Transactional(readOnly = true)
+	public Users findByFirstName(String firstName) {
+		return usersRepository.findByFirstName(firstName);
+	}
+
+	public Users save(Users users) {
+		return usersRepository.save(users);
 	}
 
 }

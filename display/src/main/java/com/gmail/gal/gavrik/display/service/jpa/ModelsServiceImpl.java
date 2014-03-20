@@ -18,19 +18,25 @@ import com.google.common.collect.Lists;
 public class ModelsServiceImpl implements ModelsService {
 
 	@Autowired
-	private ModelsRepository modelsRepository;
-	
-	@Transactional(readOnly=true)
+	private ModelsRepository	modelsRepository;
+
+	@Transactional(readOnly = true)
 	public List<Models> findAll() {
 		return Lists.newArrayList(modelsRepository.findAll());
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Models findById(Long id) {
 		return modelsRepository.findOne(id);
 	}
 
+	@Transactional(readOnly = true)
+	public Models findByModelName(String modelName) {
+		return modelsRepository.findByModelName(modelName);
+	}
+
 	public Models save(Models model) {
+		
 		return modelsRepository.save(model);
 	}
 

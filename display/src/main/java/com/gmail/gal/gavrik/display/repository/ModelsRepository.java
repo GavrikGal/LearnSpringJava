@@ -5,5 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import com.gmail.gal.gavrik.display.domain.Models;
 
 public interface ModelsRepository extends CrudRepository<Models, Long> {
+	
+	public Models findByModelName (String modelName);
 
 }

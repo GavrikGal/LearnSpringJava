@@ -41,7 +41,7 @@ public class DateOfMeasurement implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Date_of_measurrement")
+	@Column(name = "id_Date_of_measurement")
 	public Long getIdDate() {
 		return idDate;
 	}

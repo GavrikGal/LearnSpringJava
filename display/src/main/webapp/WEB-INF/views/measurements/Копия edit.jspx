@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:form="http://www.springframework.org/tags/form" version="2.0">
+
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:message code="label_measurements_new"
+		var="labelMeasurementsNew" />
+	<spring:message code="label_measurements_update"
+		var="labelMeasurementsUpdate" />
+
+
+
+	<h1>formTitle</h1>
+
+	<div id="measurementsUpdate" class="content">
+		<form:form commandName="newMeasurements" method="post">
+			<c:if test="${not empty message}">
+				<div id="message" class="${message.type}">${message.message}</div>
+			</c:if>
+
+			<table>
+				<thead>
+					<tr>
+						<th class="date">date</th>
+						<th class="model">model</th>
+						<th class="serial">serial No</th>
+						<th class="properties">Props</th>
+						<th class="levels">levels</th>
+						<th class="secondDate">second Date</th>
+						<th class="users">users</th>
+						<th>buttons</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<form:input path="dateOfMeasurement.date" type="date" />
+						</td>
+						<td>
+							<form:select path="equipment.model.modelName">
+								<form:options items="${models}" />
+							</form:select>
+						</td>
+						<td>
+							<form:input path="equipment.serialNumber" />
+						</td>
+						<td>
+							<form:select
+								path="spectrums[0].spectrumParameters.measurand.idMeasurands">
+								<form:options items="${measurands}" />
+							</form:select>
+							<form:select path="spectrums[0].spectrumParameters.type.idType">
+								<form:options items="${types}" />
+							</form:select>
+							<form:select
+								path="spectrums[0].spectrumParameters.resolution.resolution">
+								<form:options items="${screenResolutions}" />
+							</form:select>
+						</td>
+						<td>
+							<form:input path="description" />
+						</td>
+						<td>
+							<form:input path="dateOfSecondMeasurement.date" type="date" />
+						</td>
+						<td>
+							<form:select path="users[0].FirstName">
+								<form:options items="${usersList}" />
+
+							</form:select>
+						</td>
+						<td>
+							<button type="submit">Save</button>
+							<button type="Reset">Reset</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form:form>
+	</div>
+
+</div>

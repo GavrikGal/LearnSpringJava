@@ -4,5 +4,9 @@
     <definition extends="default" name="measurements/list">
         <put-attribute name="body"
             value="/WEB-INF/views/measurements/list.jspx" />
+        <put-attribute name="editor"
+            value="/WEB-INF/views/measurements/edit.jspx" />
     </definition>
+   
+
 </tiles-definitions>

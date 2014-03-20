@@ -90,7 +90,7 @@ public class Models implements Serializable {
 	public void setModelName(String modelName) {
 		this.modelName = modelName;
 	}
-	
+
 	
 
 }

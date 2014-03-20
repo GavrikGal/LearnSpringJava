@@ -18,7 +18,6 @@ public class Users implements Serializable {
 	private String				FirstName;
 	private String				LastName;
 	private String				FatherName;
-	private String				shortName;
 	private Set<Measurements>	measurements		= new HashSet<Measurements>();
 
 	@Id
@@ -63,8 +62,9 @@ public class Users implements Serializable {
 		return serialVersionUID;
 	}
 
-	@ManyToMany
-	@JoinTable(name = "users_of_measurement", joinColumns = @JoinColumn(name = "User"), inverseJoinColumns = @JoinColumn(name = "Measurement"))
+//	@ManyToMany
+//	@JoinTable(name = "users_of_measurement", joinColumns = @JoinColumn(name = "User"), inverseJoinColumns = @JoinColumn(name = "Measurement"))
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	public Set<Measurements> getMeasurements() {
 		return this.measurements;
 	}
@@ -76,20 +76,6 @@ public class Users implements Serializable {
 	@Transient
 	public List<Measurements> getMeasurementsAsList() {
 		return new ArrayList<Measurements>(measurements);
-	}
-
-	@Column(name = "Short_name")
-	public String getShortName() {
-		if (shortName == null) {
-			shortName = FirstName + " " + LastName.substring(0, 1).toUpperCase() + "."
-					+ FatherName.substring(0, 1).toUpperCase() + ".";
-		}
-
-		return shortName;
-	}
-
-	public void setShortName(String shortName) {
-		this.shortName = shortName;
 	}
 
 }
