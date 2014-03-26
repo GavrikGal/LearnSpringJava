@@ -32,13 +32,13 @@ body {
     font-size: 150%;
     vertical-align: middle;
 }
-    
+ */   
 #userinfo {
     float: right;
     margin: 5;
     padding: 5px 5px;
 }
-
+/*
 #language {
     margin: 5;
     padding: 5px 5px;
@@ -278,6 +278,29 @@ div.withModal:hover div.modal {
 	
 }
 
+div.smallbutton {
+	
+	display: none;
+	width: 100%;
+	height: 0%;
+}
+
+tr.list:hover div.smallbutton {
+	display: block;
+}
+
+div.nosmallbutton {
+	
+	display: block;
+	background-color: #FFF;
+	width: 20px;
+	height: 20px;
+}
+
+tr.list:hover div.nosmallbutton {
+	display: none;
+}
+
 div.models {
 	margin: 0px;
 	margin-top: 5px;
@@ -288,9 +311,7 @@ div.models {
 	
 }
 
-img.delete {
-	
-}
+
 
 img.models {
 	width: 100px;
@@ -307,9 +328,8 @@ img.edit {
 }
 
 img.delete {
-	width: 20px;
-	height: 20px;
-	
+	width: 10px;
+	height: 10px;
 }
 
 p.models {
@@ -431,6 +451,14 @@ table.maintable {
 	border: 0px solid #BBBBBB;
 	
 }
+
+tr.list {
+	
+}
+tr.list:HOVER {
+	background-color: #EEF;
+}
+
 /*
 table table {
 	margin: 0px 0;
@@ -464,6 +492,7 @@ table table {
 	width: 100%;
 	left: 0px;
 	margin: 0px;
+	background-color: inherit;
 	
 	
 }

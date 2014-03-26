@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <div xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:sec="http://www.springframework.org/security/tags"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:joda="http://www.joda.org/joda/time/tags"
 	xmlns:spring="http://www.springframework.org/tags" version="2.0">
@@ -50,7 +51,8 @@
 				</thead>
 				<tbody>
 					<c:forEach items="${measurementsViews}" var="measurementsView">
-						<tr>
+						<tr class="list">
+							
 							<td class="notLeft">
 								<joda:format
 									value="${measurementsView.dateOfMeasurement}"
@@ -74,8 +76,9 @@
 												<li>${norms.getShortNorms()}</li>
 											</c:forEach>
 										</ul>
+										<sec:authorize access="hasRole('ROLE_USER')">
 										<a href=""><img class="edit" src="styles/icons/edit.png" /></a>
-
+										</sec:authorize>
 									</div>
 								</div>
 							</td>
@@ -120,14 +123,21 @@
 								${measurementsView.measurements.getUser().getFirstName()}
 							</td>
 							<td class="attributes">
-								<a href="${listMeasurementsUrl}/delete/${measurementsView.measurements.getIdMeasurements()}" ><img class="delete" src="styles/icons/Trash.png" /></a>
+								<div class="nosmallbutton"><br/></div>
+								<sec:authorize access="hasRole('ROLE_USER')">
+								<div class="smallbutton">
+									<a href="${listMeasurementsUrl}/delete/${measurementsView.measurements.getIdMeasurements()}" ><img class="delete" src="styles/icons/Error.png" /></a>
+								</div>
+								</sec:authorize>
 							</td>
+							
 						</tr>
+						
 					</c:forEach>
 
 				</tbody>
 			</table>
-
+			
 		</c:if>
 	</div>
 
