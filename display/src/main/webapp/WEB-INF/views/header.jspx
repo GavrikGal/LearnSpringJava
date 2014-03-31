@@ -13,13 +13,7 @@
 	<spring:url var="logoutUrl" value="/j_spring_security_logout" />
 	
 	<div id="appname">
-		<h1>${headerText}, menu, login</h1>
-		<c:if test="${not empty message}">
-				<div id="message" class="${message.type}">
-					${message.message}					
-				</div>
-				
-			</c:if>		
+					
 		<sec:authorize access="isAnonymous()">
 			<div id="login">
 				<form name="loginForm" action="${loginUrl}" method="post">
@@ -45,9 +39,8 @@
 		
 		<div id="userinfo">
 		<sec:authorize access="isAuthenticated()">${labelWelcome}
-			<sec:authentication property="principal.username"/>
-			<br/>
-			<a href="${logoutUrl}">${labelLogout}</a>
+			<b><sec:authentication property="principal.username"/></b>
+			<a href="${logoutUrl}"> ${labelLogout}</a>
 		</sec:authorize>
 		</div>
 		

@@ -2,6 +2,7 @@ package com.gmail.gal.gavrik.display.web.controller;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,8 +37,10 @@ import com.gmail.gal.gavrik.display.domain.Spectrums;
 import com.gmail.gal.gavrik.display.domain.SpectrumsParameters;
 import com.gmail.gal.gavrik.display.domain.Types;
 import com.gmail.gal.gavrik.display.domain.Users;
+import com.gmail.gal.gavrik.display.parser.DescriptionForParsing;
 import com.gmail.gal.gavrik.display.service.DateOfMeasurementService;
 import com.gmail.gal.gavrik.display.service.EquipmentsService;
+import com.gmail.gal.gavrik.display.service.HarmonicsService;
 import com.gmail.gal.gavrik.display.service.MeasurandsService;
 import com.gmail.gal.gavrik.display.service.MeasurementsService;
 import com.gmail.gal.gavrik.display.service.ModelsService;
@@ -87,6 +91,9 @@ public class MeasurementsController {
 	private SpectrumsService			spectrumsService;
 
 	@Autowired
+	private HarmonicsService			harmonicsService;
+
+	@Autowired
 	MessageSource						messageSource;
 
 	// ____________________Request Mapping_________________________________
@@ -96,12 +103,25 @@ public class MeasurementsController {
 
 		if (!uiModel.containsAttribute("measurementsForm")) {
 			MeasurementsForm measurementsForm = new MeasurementsForm();
+			List<MeasurementsView> measurementsViews = getMeasurementsView();
+			measurementsForm.setDescription("");
+			measurementsForm.setMeasurand(measurementsViews.get(0).getMeasurements()
+					.getSpectrums().get(0).getSpectrumParameters().getMeasurand()
+					.getIdMeasurands());
+			measurementsForm.setModel(measurementsViews.get(0).getMeasurements()
+					.getEquipment().getModel().getModelName());
+			measurementsForm.setScreenResolutions(measurementsViews.get(0).getMeasurements()
+					.getSpectrums().get(0).getSpectrumParameters().getResolution()
+					.getResolution());
+			measurementsForm.setType(measurementsViews.get(0).getMeasurements().getSpectrums()
+					.get(0).getSpectrumParameters().getType().getIdType());
 			uiModel.addAttribute("measurementsForm", measurementsForm);
 		}
 
 		return "measurements/list";
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public String delete(@PathVariable("id") Long id, MeasurementsForm measurementsForm,
 			Model uiModel, RedirectAttributes redirectAttributes, Locale locale) {
@@ -112,20 +132,52 @@ public class MeasurementsController {
 				+ deletedMeasurement.getEquipment().getModel().getModelName()
 				+ ", serial No - " + deletedMeasurement.getEquipment().getSerialNumber()
 				+ ", with date - " + deletedMeasurement.getDateOfMeasurement());
-		
-		
 
 		logger.info("Deliting measutements with id : "
 				+ deletedMeasurement.getIdMeasurements());
-		
+
 		measurementsService.delete(deletedMeasurement);
-		
+
 		uiModel.asMap().clear();
 		redirectAttributes.addFlashAttribute("measurementsForm", measurementsForm);
 		redirectAttributes.addFlashAttribute(
 				"message",
 				new Message("success", messageSource.getMessage("measurements_delete_success",
 						new Object[] {}, locale)));
+		return "redirect:/measurements";
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+	public String edit(@PathVariable("id") Long id, MeasurementsForm measurementsForm,
+			Model uiModel, RedirectAttributes redirectAttributes, Locale locale) {
+
+		Measurements editedMeasurement = measurementsService.findById(id);
+		System.out.println("editing Measurement: id - "
+				+ editedMeasurement.getIdMeasurements() + "; Model - "
+				+ editedMeasurement.getEquipment().getModel().getModelName()
+				+ ", serial No - " + editedMeasurement.getEquipment().getSerialNumber()
+				+ ", with date - " + editedMeasurement.getDateOfMeasurement());
+
+		logger.info("Editing measutements with id : " + editedMeasurement.getIdMeasurements());
+
+		measurementsForm.setSerialNumber(editedMeasurement.getEquipment().getSerialNumber());
+		measurementsForm.setModel(editedMeasurement.getEquipment().getModel().getModelName());
+		measurementsForm.setMeasurand(editedMeasurement.getSpectrums().get(0)
+				.getSpectrumParameters().getMeasurand().getIdMeasurands());
+		measurementsForm.setScreenResolutions(editedMeasurement.getSpectrums().get(0)
+				.getSpectrumParameters().getResolution().getResolution());
+		measurementsForm.setType(editedMeasurement.getSpectrums().get(0)
+				.getSpectrumParameters().getType().getIdType());
+		measurementsForm.setDescription("");
+
+		uiModel.asMap().clear();
+		redirectAttributes.addFlashAttribute("measurementsForm", measurementsForm);
+		// redirectAttributes.addFlashAttribute(
+		// "message",
+		// new Message("success",
+		// messageSource.getMessage("measurements_delete_success",
+		// new Object[] {}, locale)));
 		return "redirect:/measurements";
 	}
 
@@ -161,6 +213,7 @@ public class MeasurementsController {
 	@ModelAttribute("measurementsViews")
 	public List<MeasurementsView> getMeasurementsView() {
 		List<Measurements> measurements = measurementsService.findAll();
+		Collections.reverse(measurements);
 		List<MeasurementsView> measurementsViews = new ArrayList<MeasurementsView>();
 
 		DateTime currentMeasurementDate = null;
@@ -179,7 +232,7 @@ public class MeasurementsController {
 						.getDateOfSecondMeasurement().getDate());
 			}
 
-			if (currentMeasurementDate.isBefore(measurement.getDateOfMeasurement().getDate())) {
+			if (currentMeasurementDate.isAfter(measurement.getDateOfMeasurement().getDate())) {
 				currentMeasurementDate = measurement.getDateOfMeasurement().getDate();
 				measurementsView.setDateOfMeasurement(currentMeasurementDate);
 			}
@@ -279,6 +332,10 @@ public class MeasurementsController {
 				if (measurement.getDateOfMeasurement().getIdDate() == newMeasurements
 						.getDateOfMeasurement().getIdDate()) {
 					newMeasurements = measurement;
+				} else {
+					measurement.setDateOfSecondMeasurement(newMeasurements
+							.getDateOfMeasurement());
+					newMeasurements = measurement;
 				}
 				if (newMeasurements.getIdMeasurements() == null) {
 					newMeasurements = measurementsService.save(newMeasurements);
@@ -317,6 +374,7 @@ public class MeasurementsController {
 		}
 		DateTime currentDate = new DateTime();
 		newSpectrums.setTime(new Time(currentDate.getMillis()));
+
 		if (newSpectrums.getDescription() == null) {
 			newSpectrums.setDescription(measurementsForm.getDescription());
 		} else {
@@ -329,6 +387,41 @@ public class MeasurementsController {
 		}
 
 		newSpectrums = spectrumsService.save(newSpectrums);
+		String description = setHarmonics(measurementsForm.getDescription(), newSpectrums);
+		newSpectrums.setDescription(description);
+		newSpectrums = spectrumsService.save(newSpectrums);
+	}
+
+	private String setHarmonics(String description, Spectrums newSpectrums) {
+
+		DescriptionForParsing newDescription = new DescriptionForParsing(description);
+
+		Double frequency, amplitude, noise;
+
+		while (!newDescription.isString()) {
+
+			frequency = newDescription.parseFrequency();
+			if (frequency != null) {
+				Harmonics newHarmonics = new Harmonics();
+				newHarmonics.setFrequency(frequency);
+				amplitude = newDescription.parseAmplitude();
+				if (amplitude != null) {
+					newHarmonics.setAmplitude(amplitude);
+					noise = newDescription.parseNoise();
+					if (noise == null) {
+						noise = 0.0;
+					}
+					newHarmonics.setNoise(noise);
+					newHarmonics.setSpectrum(newSpectrums);
+					harmonicsService.save(newHarmonics);
+				}
+			} else {
+				break;
+			}
+		}
+
+		description = newDescription.getDescription();
+		return description;
 	}
 
 }

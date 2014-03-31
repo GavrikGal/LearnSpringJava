@@ -38,12 +38,12 @@ body {
     margin: 5;
     padding: 5px 5px;
 }
-/*
+
 #language {
     margin: 5;
     padding: 5px 5px;
 } 
-*/
+
 #headerWrapper {
   
    
@@ -54,10 +54,17 @@ body {
 	-webkit-border-radius: 5px;
 	
 	box-shadow: 0 0 6px 0 #C2D2EA;
-	width: 99.9%;	
 	
 	margin: 15px auto;
 	margin-top: -12px;
+	padding: 6px;
+	padding-top: 12px;
+	
+	top: 0px;
+	right:7px;
+	left: 7px;
+	position: fixed;
+	z-index:50;
     
     overflow:hidden;
     display:block;
@@ -65,20 +72,69 @@ body {
 }
 
 #wrapper {
-	width:1270px;
-	min-width: 1270px;
-	max-width: 1270px;
+	border: 0px solid #E00;
+	width:1250px;
+	min-width: 1250px;
+	max-width: 1250px;
 	margin-right: auto;
 	margin-left: auto;
+	 
+	width:expression(document.body.clientWidth > 1250? "1250px": "auto" );
 	
-	
-    
-
-	
-	width:expression(document.body.clientWidth > 1270? "1270px": "auto" );
+	position:relative;
+	margin-top:170px;
+	margin-bottom:100px;
 	
 	
 	display:block;
+}
+
+#footerWrapper{
+	 background-color: #FFF;
+	border: 1px solid #EEE;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	
+	box-shadow: 0 0 6px 0 #C2D2EA;
+
+	
+	margin: 15px auto;
+	margin-bottom: -12px;
+	padding: 6px;
+	padding-bottom: 18px;
+	
+	position: fixed;
+    bottom: 0px;
+    right:7px;
+	left: 7px;
+	
+    
+    overflow:hidden;
+    display:block;
+}
+#preMeasurementsUpdate{
+	border: 0px solid #E66;
+	width: 100%;
+	height: 110px;
+	background-color: #EEF9FE;
+	top:0px;
+	left:0px;
+	padding-top: 40px;
+	position: fixed;
+	z-index: 39;
+}
+
+#measurementsUpdate {
+	margin: auto;
+	position:relative;
+	z-index: 40;
+}
+
+#measurementsList {
+	left: 0px;
+	position: relative;
+	margin: auto;
 }
 
 #currentDate {
@@ -166,8 +222,6 @@ table.navigation {
 */
 
 
-
-
 label {
 	width:150px;
 	float:left;
@@ -237,7 +291,7 @@ div.content {
 	box-shadow: 0 0 6px 0 #C2D2EA;
 	width: 1250px;	
 	
-	margin: 15px auto;
+	
 }
 
 div.withModal {
@@ -407,19 +461,19 @@ a img {
 
 
 a:link {
-	color: #7db223;
+	color: #527BE5;
 }
 
 a:hover {
-	color: #456314;
+	color: #273B6D;
 }
 
 a:active {
-	color: #7db223;
+	color: #527BE5;
 }
 
 a:visited {
-	color: #7db223;
+	color: #527BE5;
 }
 
 li {

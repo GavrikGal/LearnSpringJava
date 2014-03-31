@@ -34,7 +34,7 @@
 
 
 
-	<div class="content">
+	<div id="measurementsList" class="content">
 		<c:if test="${not empty measurementsViews}">
 
 			<table class="maintable">
@@ -51,6 +51,7 @@
 				</thead>
 				<tbody>
 					<c:forEach items="${measurementsViews}" var="measurementsView">
+						
 						<tr class="list">
 							
 							<td class="notLeft">
@@ -82,7 +83,8 @@
 									</div>
 								</div>
 							</td>
-							<td>${measurementsView.measurements.getEquipment().getSerialNumber()}</td>
+							<td><a href="${listMeasurementsUrl}/edit/${measurementsView.measurements.getIdMeasurements()}">${measurementsView.measurements.getEquipment().getSerialNumber()}</a></td>
+							
 							<td>
 								<table>
 									<c:forEach
@@ -132,6 +134,7 @@
 							</td>
 							
 						</tr>
+						
 						
 					</c:forEach>
 
