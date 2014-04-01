@@ -15,5 +15,6 @@ public interface MeasurementsRepository extends CrudRepository<Measurements, Lon
 
 	// @Query("select d from DateOfMeasurement d where d.date = :date")
 	public List<Measurements> findByEquipment(Equipments equipments);
+	
 
 }

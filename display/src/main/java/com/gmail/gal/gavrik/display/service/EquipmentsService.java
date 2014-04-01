@@ -14,5 +14,7 @@ public interface EquipmentsService {
 	public Equipments findBySerialNumberAndModel(String serialNumber, Models models);
 
 	public Equipments save(Equipments equipments);
+	
+	public void delete(Equipments equipments);
 
 }

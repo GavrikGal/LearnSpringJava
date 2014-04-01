@@ -7,9 +7,9 @@ import com.gmail.gal.gavrik.display.domain.Measurements;
 public class MeasurementsView {
 
 	private Measurements	measurements;
+	private String			modelName;
 	private DateTime		dateOfMeasurement;
 	private DateTime		dateOfSecondMeasurement;
-
 
 	public Measurements getMeasurements() {
 		return measurements;
@@ -35,5 +35,12 @@ public class MeasurementsView {
 		this.dateOfSecondMeasurement = dateOfSecondMeasurement;
 	}
 
-	
+	public String getModelName() {
+		return modelName;
+	}
+
+	public void setModelName(String modelName) {
+		this.modelName = modelName;
+	}
+
 }

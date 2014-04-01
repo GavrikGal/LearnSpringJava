@@ -40,14 +40,14 @@ public class SpectrumsParametersServiceImpl implements SpectrumsParametersServic
 												 * , PurposeOfMeasurement
 												 * purposeOfMeasurement
 												 */) {
-		return spectrumsParametersRepository.findWithDetail(measurands, types,
-				screenResolutions/* , purposeOfMeasurement */);
+		return spectrumsParametersRepository.findByMeasurandAndTypeAndResolution(measurands,
+				types, screenResolutions/* , purposeOfMeasurement */);
 	}
 
 	public SpectrumsParameters save(SpectrumsParameters spectrumsParameters) {
-		SpectrumsParameters checkingParameters = spectrumsParametersRepository.findWithDetail(
-				spectrumsParameters.getMeasurand(), spectrumsParameters.getType(),
-				spectrumsParameters.getResolution());
+		SpectrumsParameters checkingParameters = spectrumsParametersRepository
+				.findByMeasurandAndTypeAndResolution(spectrumsParameters.getMeasurand(),
+						spectrumsParameters.getType(), spectrumsParameters.getResolution());
 		if (checkingParameters == null) {
 			return spectrumsParametersRepository.save(spectrumsParameters);
 		} else {

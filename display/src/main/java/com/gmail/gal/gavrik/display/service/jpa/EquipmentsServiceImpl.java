@@ -46,4 +46,8 @@ public class EquipmentsServiceImpl implements EquipmentsService {
 		}
 	}
 
+	public void delete(Equipments equipments) {
+		equipmentsRepository.delete(equipments);		
+	}
+
 }

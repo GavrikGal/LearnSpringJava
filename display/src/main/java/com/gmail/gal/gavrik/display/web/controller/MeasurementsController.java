@@ -49,6 +49,7 @@ import com.gmail.gal.gavrik.display.service.SpectrumsParametersService;
 import com.gmail.gal.gavrik.display.service.SpectrumsService;
 import com.gmail.gal.gavrik.display.service.TypesService;
 import com.gmail.gal.gavrik.display.service.UsersService;
+import com.gmail.gal.gavrik.display.web.controller.util.ListOfMeasurementsViews;
 import com.gmail.gal.gavrik.display.web.controller.util.MeasurementsView;
 import com.gmail.gal.gavrik.display.web.form.MeasurementsForm;
 import com.gmail.gal.gavrik.display.web.form.Message;
@@ -104,6 +105,7 @@ public class MeasurementsController {
 		if (!uiModel.containsAttribute("measurementsForm")) {
 			MeasurementsForm measurementsForm = new MeasurementsForm();
 			List<MeasurementsView> measurementsViews = getMeasurementsView();
+
 			measurementsForm.setDescription("");
 			measurementsForm.setMeasurand(measurementsViews.get(0).getMeasurements()
 					.getSpectrums().get(0).getSpectrumParameters().getMeasurand()
@@ -139,6 +141,7 @@ public class MeasurementsController {
 		measurementsService.delete(deletedMeasurement);
 
 		uiModel.asMap().clear();
+
 		redirectAttributes.addFlashAttribute("measurementsForm", measurementsForm);
 		redirectAttributes.addFlashAttribute(
 				"message",
@@ -153,13 +156,6 @@ public class MeasurementsController {
 			Model uiModel, RedirectAttributes redirectAttributes, Locale locale) {
 
 		Measurements editedMeasurement = measurementsService.findById(id);
-		System.out.println("editing Measurement: id - "
-				+ editedMeasurement.getIdMeasurements() + "; Model - "
-				+ editedMeasurement.getEquipment().getModel().getModelName()
-				+ ", serial No - " + editedMeasurement.getEquipment().getSerialNumber()
-				+ ", with date - " + editedMeasurement.getDateOfMeasurement());
-
-		logger.info("Editing measutements with id : " + editedMeasurement.getIdMeasurements());
 
 		measurementsForm.setSerialNumber(editedMeasurement.getEquipment().getSerialNumber());
 		measurementsForm.setModel(editedMeasurement.getEquipment().getModel().getModelName());
@@ -214,31 +210,32 @@ public class MeasurementsController {
 	public List<MeasurementsView> getMeasurementsView() {
 		List<Measurements> measurements = measurementsService.findAll();
 		Collections.reverse(measurements);
-		List<MeasurementsView> measurementsViews = new ArrayList<MeasurementsView>();
+		ListOfMeasurementsViews listOfMeasurementsViews = new ListOfMeasurementsViews(measurements);
+		List<MeasurementsView> measurementsViews = listOfMeasurementsViews.getMeasurementsViews();
 
-		DateTime currentMeasurementDate = null;
-
-		for (Measurements measurement : measurements) {
-			MeasurementsView measurementsView = new MeasurementsView();
-
-			if (measurementsViews.isEmpty()) {
-				currentMeasurementDate = measurement.getDateOfMeasurement().getDate();
-				measurementsView.setDateOfMeasurement(currentMeasurementDate);
-			}
-
-			measurementsView.setMeasurements(measurement);
-			if (measurement.getDateOfSecondMeasurement() != null) {
-				measurementsView.setDateOfSecondMeasurement(measurement
-						.getDateOfSecondMeasurement().getDate());
-			}
-
-			if (currentMeasurementDate.isAfter(measurement.getDateOfMeasurement().getDate())) {
-				currentMeasurementDate = measurement.getDateOfMeasurement().getDate();
-				measurementsView.setDateOfMeasurement(currentMeasurementDate);
-			}
-
-			measurementsViews.add(measurementsView);
-		}
+//		DateTime currentMeasurementDate = null;
+//
+//		for (Measurements measurement : measurements) {
+//			MeasurementsView measurementsView = new MeasurementsView();
+//
+//			if (measurementsViews.isEmpty()) {
+//				currentMeasurementDate = measurement.getDateOfMeasurement().getDate();
+//				measurementsView.setDateOfMeasurement(currentMeasurementDate);
+//			}
+//
+//			measurementsView.setMeasurements(measurement);
+//			if (measurement.getDateOfSecondMeasurement() != null) {
+//				measurementsView.setDateOfSecondMeasurement(measurement
+//						.getDateOfSecondMeasurement().getDate());
+//			}
+//
+//			if (currentMeasurementDate.isAfter(measurement.getDateOfMeasurement().getDate())) {
+//				currentMeasurementDate = measurement.getDateOfMeasurement().getDate();
+//				measurementsView.setDateOfMeasurement(currentMeasurementDate);
+//			}
+//
+//			measurementsViews.add(measurementsView);
+//		}
 
 		return measurementsViews;
 	}

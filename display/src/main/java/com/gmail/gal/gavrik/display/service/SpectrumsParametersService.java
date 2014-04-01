@@ -18,6 +18,8 @@ public interface SpectrumsParametersService {
 
 	public SpectrumsParameters findWithDetail(Measurands measurands, Types types,
 			ScreenResolutions screenResolutions/*, PurposeOfMeasurement purposeOfMeasurement*/);
+	
+	
 
 	public SpectrumsParameters save(SpectrumsParameters spectrumsParameters);
 }

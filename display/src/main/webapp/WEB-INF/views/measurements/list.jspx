@@ -61,7 +61,8 @@
 							</td>
 							<td>
 								<div class="withModal">
-									${measurementsView.measurements.getEquipment().getModel()}
+									<!-- ${measurementsView.measurements.getEquipment().getModel()} -->
+									${measurementsView.modelName}
 									<div class="modal">
 										<img class="models"
 											src="${modelsPhotoUrl}/${measurementsView.measurements.getEquipment().getModel().getIdModel()}" />
@@ -93,8 +94,8 @@
 										<tr>
 											<td class="properties">${spectrum.getTime()},
 												${spectrum.getSpectrumParameters().getMeasurand()},
-												${spectrum.getSpectrumParameters().getType()},
-												${spectrum.getSpectrumParameters().getResolution()}</td>
+												${spectrum.getSpectrumParameters().getType()}<c:if test="${spectrum.getSpectrumParameters().getResolution() != ' '}">,
+												${spectrum.getSpectrumParameters().getResolution()}</c:if></td>
 										</tr>
 									</c:forEach>
 								</table>
@@ -109,7 +110,7 @@
 													test="${not empty spectrum.harmonics}">
 													<c:forEach items="${spectrum.harmonics}" var="harmonic">
 														<span class="valid">${harmonic.getFrequency()} -
-															${harmonic.getAmplitude()}</span>/<span class="noise">${harmonic.getNoise()}</span>;
+															${harmonic.getAmplitude()}</span><c:if test="${harmonic.getNoise() > 0.0}">/<span class="noise">${harmonic.getNoise()}</span></c:if>;
 													</c:forEach>
 													
 												</c:if> ${spectrum.description}</td>

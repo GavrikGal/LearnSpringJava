@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gmail.gal.gavrik.display.domain.Equipments;
 import com.gmail.gal.gavrik.display.domain.Measurements;
+import com.gmail.gal.gavrik.display.repository.EquipmentsRepository;
 import com.gmail.gal.gavrik.display.repository.MeasurementsRepository;
 import com.gmail.gal.gavrik.display.service.MeasurementsService;
 import com.google.common.collect.Lists;
@@ -20,6 +21,9 @@ public class MeasurementsServiceImpl implements MeasurementsService {
 
 	@Autowired
 	private MeasurementsRepository	measurementsRepository;
+	
+	@Autowired
+	private EquipmentsRepository equipmentsRepository;
 
 	@Transactional(readOnly = true)
 	public List<Measurements> findAll() {
@@ -41,7 +45,12 @@ public class MeasurementsServiceImpl implements MeasurementsService {
 	}
 
 	public void delete(Measurements measurements) {
-		measurementsRepository.delete(measurements);
+		Equipments delitingEquipments = measurements.getEquipment();
+		if (delitingEquipments.getMeasurements().size() > 1) {
+			measurementsRepository.delete(measurements);
+		} else {
+			equipmentsRepository.delete(delitingEquipments);
+		}
 	}
 
 	// @Transactional(readOnly=true)
