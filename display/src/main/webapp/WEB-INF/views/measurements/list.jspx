@@ -36,8 +36,160 @@
 
 	<div id="measurementsList" class="content">
 		<c:if test="${not empty measurementsViews}">
+			<div id="mainTable">
+				<div class="headTable">
+					<div class="column" id="ListDate">${labelMeasurementsDate}</div>
+					<div class="column" id="ListModel">${labelMeasurementsModel}</div>
+					<div class="column" id="ListSerial">${labelMeasurementsSn}</div>
+					<div class="column" id="ListProperties">${labelMeasurementsSpectrumsParameters}</div>
+					<div class="column" id="ListResults">${labelMeasurementsSpectrums}</div>
+					<div class="column" id="ListSecondDate">${labelMeasurementsSecondDate}</div>
+					<div class="column" id="ListUser">${labelMeasurementsUsers}</div>
+					<div class="column" id="ListAttributes"><BR /></div>
+				</div>
+				
+				
+				<c:forEach items="${measurementsViews}" var="measurementsView">
+					<div class="row">
+						<div class="column" id="ListDate">
+							<joda:format
+								value="${measurementsView.dateOfMeasurement}"
+								pattern="${dateFormatPattern}" />
+						</div>
+						<div class="column" id="ListModel">
+							<div class="withModal">
+								<!-- ${measurementsView.measurements.getEquipment().getModel()} -->
+								${measurementsView.modelName}
+								<div class="modal">
+									<div class="modelPopup">
+										<img class="models"
+											src="${modelsPhotoUrl}/${measurementsView.measurements.getEquipment().getModel().getIdModel()}" />
+										<div class="models">
+											<h2>${measurementsView.measurements.getEquipment().getModel()}</h2>
+											<p class="models">${measurementsView.measurements.getEquipment().getModel().getDescription()}</p>
+										</div>
+										<p class="norms">${labelMeasurementsNorms}:</p>
+										<ul>
+											<c:forEach
+												items="${measurementsView.measurements.getEquipment().getModel().getNorms()}"
+												var="norms">
+												<li>${norms.getShortNorms()}</li>
+											</c:forEach>
+										</ul>
+										<sec:authorize access="hasRole('ROLE_USER')">
+										<a href=""><img class="edit" src="styles/icons/edit.png" /></a>
+										</sec:authorize>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="column" id="ListSerial">
+							<a href="${listMeasurementsUrl}/edit/${measurementsView.measurements.getIdMeasurements()}">${measurementsView.measurements.getEquipment().getSerialNumber()}</a>
+						</div>
+						
+							
+							
+								<div class="column" id="ListProperties">
+									<table class="list">
+										<c:forEach
+											items="${measurementsView.measurements.getSpectrums()}"
+											var="spectrum"
+											end="2">
+											<tr>
+												<td class="properties">${spectrum.getTime()},
+													${spectrum.getSpectrumParameters().getMeasurand()},
+													${spectrum.getSpectrumParameters().getType()}<c:if test="${spectrum.getSpectrumParameters().getResolution() != ' '}">,
+													${spectrum.getSpectrumParameters().getResolution()}</c:if></td>
+											</tr>
+										</c:forEach>
+									</table>
+								</div>
+								<div class="column" id="ListResults">
+									<table class="list">
+										<c:forEach
+											items="${measurementsView.measurements.getSpectrums()}"
+											var="spectrum"
+											end="2">
+											<tr>
+												<td class="levels">
+													<c:if test="${not empty spectrum.harmonics}">
+														<c:forEach items="${spectrum.harmonics}" var="harmonic">
+															<span class="valid">${harmonic.getFrequency()} -
+																${harmonic.getAmplitude()}</span><c:if test="${harmonic.getNoise() > 0.0}">/<span class="noise">${harmonic.getNoise()}</span></c:if>;
+														</c:forEach>
+													</c:if> 
+													${spectrum.description}
+												</td>
+											</tr>
+										</c:forEach>
+									</table>
+								</div>
+						<c:if test="${measurementsView.measurements.getSpectrums().size() > 2}">	
+							<div class="withModal">
+								<div id="ListMore">...</div>	
+								<div class="modal">
+									<div class="propAndresultsPopup">
+										<div class="column" id="ListProperties">
+											<table class="list">
+												<c:forEach
+													items="${measurementsView.measurements.getSpectrums()}"
+													var="spectrum">
+													<tr>
+														<td class="properties">${spectrum.getTime()},
+															${spectrum.getSpectrumParameters().getMeasurand()},
+															${spectrum.getSpectrumParameters().getType()}<c:if test="${spectrum.getSpectrumParameters().getResolution() != ' '}">,
+															${spectrum.getSpectrumParameters().getResolution()}</c:if></td>
+													</tr>
+												</c:forEach>
+											</table>
+										</div>
+										<div class="column" id="ListResults">
+											<table class="list">
+												<c:forEach
+													items="${measurementsView.measurements.getSpectrums()}"
+													var="spectrum">
+													<tr>
+														<td class="levels">
+															<c:if test="${not empty spectrum.harmonics}">
+																<c:forEach items="${spectrum.harmonics}" var="harmonic">
+																	<span class="valid">${harmonic.getFrequency()} -
+																		${harmonic.getAmplitude()}</span><c:if test="${harmonic.getNoise() > 0.0}">/<span class="noise">${harmonic.getNoise()}</span></c:if>;
+																</c:forEach>
+															</c:if> 
+															${spectrum.description}
+														</td>
+													</tr>
+												</c:forEach>
+											</table>
+										</div>
+									</div>
+								
+								</div>
+								
+							</div>
+						</c:if>	
+						
+						<div class="column" id="ListSecondDate">
+							<joda:format
+								value="${measurementsView.dateOfSecondMeasurement}"
+								pattern="${dateFormatPattern}" />
+						</div>
+						<div class="column" id="ListUser">
+							${measurementsView.measurements.getUser().getFirstName()}
+						</div>
+						<div class="column" id="ListAttributes">
+							<sec:authorize access="hasRole('ROLE_USER')">
+								<div class="smallbutton">
+									<a href="${listMeasurementsUrl}/delete/${measurementsView.measurements.getIdMeasurements()}" ><img class="delete" src="styles/icons/Error.png" /></a>
+								</div>
+							</sec:authorize>
+						</div>
+					</div>
+				</c:forEach>
+						
+			</div>	
 
-			<table class="maintable">
+	<!-- 		<table >
 				<thead>
 					<tr>
 						<th class="date">${labelMeasurementsDate}</th>
@@ -61,8 +213,7 @@
 							</td>
 							<td>
 								<div class="withModal">
-									<!-- ${measurementsView.measurements.getEquipment().getModel()} -->
-									${measurementsView.modelName}
+ ${measurementsView.measurements.getEquipment().getModel()} 								${measurementsView.modelName}
 									<div class="modal">
 										<img class="models"
 											src="${modelsPhotoUrl}/${measurementsView.measurements.getEquipment().getModel().getIdModel()}" />
@@ -140,7 +291,7 @@
 					</c:forEach>
 
 				</tbody>
-			</table>
+			</table> -->
 			
 		</c:if>
 	</div>

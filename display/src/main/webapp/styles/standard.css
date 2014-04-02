@@ -5,7 +5,7 @@
 body,div,td {
 	font-family: verdana, Arial, sans-serif;
 	font-size: 12px;
-	color: #666;
+
 }
 
 body {
@@ -273,9 +273,7 @@ submit {
 	
 }
 
-div {
-	text-align: left;
-}
+
 
 div .box {
 	display:block;
@@ -294,43 +292,6 @@ div.content {
 	
 }
 
-div.withModal {
-	display:inline-block; 
-	position: relative;
-	border: 0px solid #Fbb;
-	padding-top: 8px;
-	padding-bottom: 8px;
-
-}
-
-
-div.withModal div.modal {
-	display:none; 
-	position:absolute; 
-	width: 10px;
-	height: 10px;
-	left:-10%; 
-	top:-10%;
-
-}
-
-div.withModal:hover div.modal {
-	display:block;
-	background-color: #FFF;
-	border: 1px solid #EEE;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: px;
-	box-shadow: 0 0 6px 0 #C2D2EA;
-	margin-top: 25px;
-	margin-left: 20px;
-	padding: 10px;
-	z-index: 100;
-	width: 350px;
-	height: auto;
-	overflow: hidden;
-	
-}
 
 div.smallbutton {
 	
@@ -364,6 +325,8 @@ div.models {
 	
 	
 }
+
+
 
 
 
@@ -746,4 +709,225 @@ fieldset th {
 	width: 16px;
 }
 */
+div.withModal {
+	display:inline-block; 
+	position: relative;
+	border: 0px solid #Fbb;
+
+}
+
+
+div.withModal div.modal {
+	visibility:hidden;
+	position:absolute; 
+	width: auto;
+	height: 10px;
+	
+
+}
+
+div.withModal:hover div.modal {
+
+	visibility:visible;
+	display:block;
+	z-index: 100;
+}
+
+
+
+div.modelPopup {
+	background-color: #FFF;
+	border: 1px solid #EEE;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	box-shadow: 0 0 6px 0 #C2D2EA;
+	margin-top: 0px;
+	margin-left: 10px;
+	padding: 10px;
+	width: 350px;
+	height: auto;
+	overflow: hidden;
+}
+
+div.propAndresultsPopup {
+	display:inline-block;
+	background-color: #FFF;
+	border: 0px solid #EEE;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	box-shadow: 0 0 60px 0 #BBF;
+	min-height:30px;
+	position:absolute;
+	top:-11px;
+	left: -919px;
+	
+	padding: 0px;
+	width: auto;
+	height: auto;
+	overflow: visible;
+}
+
+
+div.headTable {
+	border: 0px solid #BFB;
+	display: table-header-group;
+	background: #999;
+	height: 30px;
+	overflow: hidden;
+	padding: 0px;
+	margin: 0px;
+	font-size: 0.9em;
+	text-align: center;
+	font-weight: bold;
+	color: #FFF;
+	
+}
+
+div.row {
+	
+	display: table-row;
+	height: 30px;
+	overflow: visible;
+	padding: 0px;
+	margin: 0px;
+	font-size: 0.9em;
+	text-align: center;
+	font-weight: normal;
+	color: #666;
+}
+
+div.row:HOVER {
+	background-color: #EEF;
+}
+
+div.smallbutton {
+	
+	display: none;
+	width: 100%;
+	height: 0%;
+}
+
+div.row:hover div.smallbutton {
+	display: block;
+}
+
+div.nosmallbutton {
+	
+	display: block;
+	background-color: inherit;
+	width: 20px;
+	height: 20px;
+}
+
+div.row:hover div.nosmallbutton {
+	display: none;
+}
+
+div.column {
+	
+	
+	
+	overflow: hidden;
+	height: inherit;
+	float: left;
+}
+
+#ListMore {
+	position: absolute;
+	left: -240px;
+}
+
+
+#mainTable {
+	display: table;
+	overflow: visible;
+	border: 0px solid #F5F;
+	margin: 20px;
+	background-color: #FFF;
+	
+}
+
+#propAndresults {
+	width: 694px;
+ 	float: left;
+ 	border: 0px solid #5FF;
+ 	overflow: visible;
+}
+
+
+#ListDate {
+	border-right: 1px solid #BBB;
+	border-bottom: 1px solid #BBB;
+	width: 95px;
+}
+
+#ListModel {
+	border-right: 1px solid #BBB;
+	border-bottom: 1px solid #BBB;
+	overflow:visible;
+	width: 95px;
+}
+
+#ListSerial {
+	border-bottom: 1px solid #BBB;
+	width: 95px;
+}
+
+#ListProperties {
+	border-right: 1px solid #BBB;
+	border-left: 1px solid #BBB;
+	border-bottom: 1px solid #BBB;
+	width: 190px;
+	float: left;
+	height: inherit;
+	overflow: hidden;
+}
+
+#ListResults {
+ 	border-right: 1px solid #BBB;
+	border-bottom: 1px solid #BBB;
+	width: 515px;
+ 	float: left;
+ 	height: inherit;
+}
+
+#ListSecondDate {
+	border-right: 1px solid #BBB;
+	border-bottom: 1px solid #BBB;
+	width: 95px;
+	
+}
+
+#ListUser {
+	border-bottom: 1px solid #BBB;
+	width: 95px;
+	
+}
+
+#ListAttributes {
+	width: 20px;
+	border-width: 0px;
+	background-color: inherit;
+	
+}
+
+div.headTable #ListAttributes {
+	border-bottom: 1px solid #BBB;
+}
+
+
+table.list {
+	border: 0px solid #bfb;
+	background-color: inherit;
+	padding: 0px;
+	margin: 0px;
+}
+
+table.list td{
+	border: 0px solid #bfb;
+	padding: 0px;
+	margin: 0px;
+}
 

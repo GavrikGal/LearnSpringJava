@@ -45,7 +45,7 @@
 				
 			</c:if>
 
-			<table class="maintable">
+			<table class="editTable">
 				<thead>
 					<tr>
 						<th class="date">${labelMeasurementsDate}</th>
