@@ -7,5 +7,7 @@ import com.gmail.gal.gavrik.display.domain.Users;
 public interface UsersRepository extends CrudRepository<Users, Long> {
 	
 	public Users findByFirstName(String firstName);
+	
+	public Users findByUserName(String userName);
 
 }

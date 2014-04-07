@@ -53,6 +53,7 @@
 						<th class="serial">${labelMeasurementsSn}</th>
 						<th class="properties">${labelMeasurementsSpectrumsParameters}</th>
 						<th class="levels">${labelMeasurementsSpectrums}</th>
+						<th class="users">${labelMeasurementsUsers}</th>
 						<th class="buttons"></th>
 					</tr>
 				</thead>
@@ -87,6 +88,12 @@
 						<td>
 							<form:textarea path="description" placeholder="32.5 - 38.2/24.5; 97.5 - 28.6/0; примечание..."/>
 						</td>
+						<td>
+							<form:select path="user">
+								<form:options items="${usersList}" />
+							</form:select>
+						</td>
+
 						<td class="notRight">
 							<button type="submit">${labelMeasurementsSubmit}</button>
 							<button type="Reset">${labelMeasurementsReset}</button>

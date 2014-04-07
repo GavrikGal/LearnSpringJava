@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,6 +50,7 @@ import com.gmail.gal.gavrik.display.service.SpectrumsParametersService;
 import com.gmail.gal.gavrik.display.service.SpectrumsService;
 import com.gmail.gal.gavrik.display.service.TypesService;
 import com.gmail.gal.gavrik.display.service.UsersService;
+import com.gmail.gal.gavrik.display.service.jpa.CustomUserDetails.CustomUserDetails;
 import com.gmail.gal.gavrik.display.web.controller.util.ListOfMeasurementsViews;
 import com.gmail.gal.gavrik.display.web.controller.util.MeasurementsView;
 import com.gmail.gal.gavrik.display.web.form.MeasurementsForm;
@@ -117,6 +119,7 @@ public class MeasurementsController {
 					.getResolution());
 			measurementsForm.setType(measurementsViews.get(0).getMeasurements().getSpectrums()
 					.get(0).getSpectrumParameters().getType().getIdType());
+				 
 			uiModel.addAttribute("measurementsForm", measurementsForm);
 		}
 
@@ -282,7 +285,7 @@ public class MeasurementsController {
 
 		setCurrentDateOfMeasurement(newMeasurements);
 		setEquipment(newMeasurements, measurementsForm);
-		setUser(newMeasurements, measurementsForm);
+//		setUser(newMeasurements, measurementsForm);
 
 		newMeasurements = saveMeasurement(newMeasurements);
 
@@ -311,30 +314,36 @@ public class MeasurementsController {
 		newMeasurements.setEquipment(newEquipments);
 	}
 
-	private void setUser(Measurements newMeasurements, MeasurementsForm measurementsForm) {
-		Users user = usersService.findByFirstName(measurementsForm.getUser());
-		newMeasurements.setUser(user);
-	}
+//	private void setUser(Measurements newMeasurements, MeasurementsForm measurementsForm) {
+//		Users user = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsersDetails();
+//		newMeasurements.setUser(user);
+//	}
 
 	private Measurements saveMeasurement(Measurements newMeasurements) {
 		List<Measurements> measurementsList = measurementsService
 				.findByEquipment(newMeasurements.getEquipment());
 
+		Users user = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsersDetails();
+		
 		newMeasurements.setSpectrums(new ArrayList<Spectrums>());
 
 		if (measurementsList.isEmpty()) {
+			newMeasurements.setUser(user);
 			newMeasurements = measurementsService.save(newMeasurements);
 		} else {
 			for (Measurements measurement : measurementsList) {
 				if (measurement.getDateOfMeasurement().getIdDate() == newMeasurements
 						.getDateOfMeasurement().getIdDate()) {
 					newMeasurements = measurement;
+					newMeasurements.setUser(user);
 				} else {
 					measurement.setDateOfSecondMeasurement(newMeasurements
 							.getDateOfMeasurement());
 					newMeasurements = measurement;
+					newMeasurements.setUser(user);
 				}
 				if (newMeasurements.getIdMeasurements() == null) {
+					newMeasurements.setUser(user);
 					newMeasurements = measurementsService.save(newMeasurements);
 				}
 
@@ -382,7 +391,7 @@ public class MeasurementsController {
 						+ measurementsForm.getDescription());
 			}
 		}
-
+////////////////////////// Description!!!!!!!?????
 		newSpectrums = spectrumsService.save(newSpectrums);
 		String description = setHarmonics(measurementsForm.getDescription(), newSpectrums);
 		newSpectrums.setDescription(description);

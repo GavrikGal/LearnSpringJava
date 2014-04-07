@@ -39,7 +39,7 @@
 		
 		<div id="userinfo">
 		<sec:authorize access="isAuthenticated()">${labelWelcome}
-			<b><sec:authentication property="principal.username"/>!</b>
+			<b><sec:authentication property="principal.firstName"/><span> </span><sec:authentication property="principal.lastName"/>.</b>
 			<a href="${logoutUrl}"><span>${labelLogout}</span></a>
 		</sec:authorize>
 		</div>
