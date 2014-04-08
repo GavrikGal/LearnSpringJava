@@ -71,6 +71,8 @@
 
 	<beans:bean class="org.springframework.web.servlet.i18n.CookieLocaleResolver"
 		id="localeResolver" p:cookieName="locale" />
+		
+	
 
 
 </beans:beans>

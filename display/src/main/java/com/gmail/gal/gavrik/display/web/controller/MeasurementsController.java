@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -55,13 +57,16 @@ import com.gmail.gal.gavrik.display.web.controller.util.ListOfMeasurementsViews;
 import com.gmail.gal.gavrik.display.web.controller.util.MeasurementsView;
 import com.gmail.gal.gavrik.display.web.form.MeasurementsForm;
 import com.gmail.gal.gavrik.display.web.form.Message;
+import com.google.common.collect.Lists;
 
 @RequestMapping("/measurements")
 @Controller
 public class MeasurementsController {
 
-	final Logger						logger	= LoggerFactory
-														.getLogger(MeasurementsController.class);
+	final int							rowAtPage	= 10;
+
+	final Logger						logger		= LoggerFactory
+															.getLogger(MeasurementsController.class);
 
 	@Autowired
 	private MeasurementsService			measurementsService;
@@ -100,13 +105,16 @@ public class MeasurementsController {
 	MessageSource						messageSource;
 
 	// ____________________Request Mapping_________________________________
+
 	@RequestMapping(method = RequestMethod.GET)
-	public String list(Model uiModel) {
+	public String list(Model uiModel, HttpServletRequest request) {
 		logger.info("Listing measurements");
 
 		if (!uiModel.containsAttribute("measurementsForm")) {
 			MeasurementsForm measurementsForm = new MeasurementsForm();
-			List<MeasurementsView> measurementsViews = getMeasurementsView();
+
+			List<MeasurementsView> measurementsViews = getMeasurementsView(
+					new ListOfMeasurementsViews(), uiModel);
 
 			measurementsForm.setDescription("");
 			measurementsForm.setMeasurand(measurementsViews.get(0).getMeasurements()
@@ -119,11 +127,41 @@ public class MeasurementsController {
 					.getResolution());
 			measurementsForm.setType(measurementsViews.get(0).getMeasurements().getSpectrums()
 					.get(0).getSpectrumParameters().getType().getIdType());
-				 
+
 			uiModel.addAttribute("measurementsForm", measurementsForm);
 		}
 
+		// System.out.println("PageNumber: "+pageable.getPageNumber()
+		// + " PageSize: " + pageable.getPageSize());
+
 		return "measurements/list";
+	}
+
+	@RequestMapping(value = "/page/{page}", method = RequestMethod.GET)
+	public String listNextPage(@PathVariable("page") int page,
+			ListOfMeasurementsViews listOfMeasurementsViews,
+			MeasurementsForm measurementsForm, Model uiModel,
+			RedirectAttributes redirectAttributes, Locale locale) {
+
+		PageRequest pageRequest = null;
+		pageRequest = new PageRequest(page, rowAtPage);
+		Page<Measurements> measurementsPage = measurementsService.findAllByPage(pageRequest);
+		List<Measurements> measurements = Lists.newArrayList(measurementsPage.iterator());
+		Collections.reverse(measurements);
+		for (Measurements measurement : measurements) {
+			listOfMeasurementsViews.addMeasurement(measurement);
+		}
+		List<MeasurementsView> measurementsViews = listOfMeasurementsViews
+				.getMeasurementsViews();
+
+		uiModel.asMap().clear();
+		redirectAttributes.addFlashAttribute("measurementsViews", measurementsViews);
+		redirectAttributes.addFlashAttribute("measurementsForm", measurementsForm);
+		redirectAttributes.addFlashAttribute("listOfMeasurementsViews",
+				listOfMeasurementsViews);
+		redirectAttributes.addFlashAttribute("currentPage", page);
+
+		return "redirect:/measurements";
 	}
 
 	@PreAuthorize("isAuthenticated()")
@@ -209,44 +247,69 @@ public class MeasurementsController {
 	}
 
 	// _________________Model Attribute_______________________________________
-	@ModelAttribute("measurementsViews")
-	public List<MeasurementsView> getMeasurementsView() {
-		List<Measurements> measurements = measurementsService.findAll();
-		Collections.reverse(measurements);
-		ListOfMeasurementsViews listOfMeasurementsViews = new ListOfMeasurementsViews(measurements);
-		List<MeasurementsView> measurementsViews = listOfMeasurementsViews.getMeasurementsViews();
+	@ModelAttribute
+	public List<MeasurementsView> getMeasurementsView(
+			ListOfMeasurementsViews listOfMeasurementsViews, Model uiModel) {
+		// List<Measurements> measurements = measurementsService.findAll();
 
-//		DateTime currentMeasurementDate = null;
-//
-//		for (Measurements measurement : measurements) {
-//			MeasurementsView measurementsView = new MeasurementsView();
-//
-//			if (measurementsViews.isEmpty()) {
-//				currentMeasurementDate = measurement.getDateOfMeasurement().getDate();
-//				measurementsView.setDateOfMeasurement(currentMeasurementDate);
-//			}
-//
-//			measurementsView.setMeasurements(measurement);
-//			if (measurement.getDateOfSecondMeasurement() != null) {
-//				measurementsView.setDateOfSecondMeasurement(measurement
-//						.getDateOfSecondMeasurement().getDate());
-//			}
-//
-//			if (currentMeasurementDate.isAfter(measurement.getDateOfMeasurement().getDate())) {
-//				currentMeasurementDate = measurement.getDateOfMeasurement().getDate();
-//				measurementsView.setDateOfMeasurement(currentMeasurementDate);
-//			}
-//
-//			measurementsViews.add(measurementsView);
-//		}
+		System.out.println(listOfMeasurementsViews);
+		List<MeasurementsView> measurementsViews = null;
 
+		if (listOfMeasurementsViews.getMeasurementsViews().isEmpty()) {
+			Long countOfMeasurements = measurementsService.count();
+			System.out.println(countOfMeasurements);
+			int numberOfLastPage = countOfMeasurements.intValue() / rowAtPage;
+			if (countOfMeasurements == (numberOfLastPage * rowAtPage)) {
+				numberOfLastPage--;
+			}
+
+			PageRequest pageRequest = null;
+			pageRequest = new PageRequest(numberOfLastPage, rowAtPage);
+			Page<Measurements> measurementsPage = measurementsService
+					.findAllByPage(pageRequest);
+			List<Measurements> measurements = Lists.newArrayList(measurementsPage.iterator());
+			if ((measurements.size() < rowAtPage) && (numberOfLastPage > 0)) {
+				numberOfLastPage--;
+				pageRequest = new PageRequest(numberOfLastPage, rowAtPage);
+				measurementsPage = measurementsService.findAllByPage(pageRequest);
+				List<Measurements> newMeasurements = Lists.newArrayList(measurementsPage
+						.iterator());
+				Collections.reverse(measurements);
+				Collections.reverse(newMeasurements);
+				for (Measurements measurement : newMeasurements) {
+					measurements.add(measurement);
+				}
+			} else {
+				Collections.reverse(measurements);
+			}
+			listOfMeasurementsViews = new ListOfMeasurementsViews(measurements);
+			measurementsViews = listOfMeasurementsViews.getMeasurementsViews();
+
+			uiModel.addAttribute("listOfMeasurementsViews", listOfMeasurementsViews);
+			uiModel.addAttribute("measurementsViews", measurementsViews);
+			uiModel.addAttribute("currentPage", numberOfLastPage);
+		} else {
+			measurementsViews = listOfMeasurementsViews.getMeasurementsViews();
+		}
 		return measurementsViews;
+
 	}
 
 	@ModelAttribute("currentDate")
 	public DateTime getCurrentDate() {
 		return new DateTime();
 	}
+
+	// @ModelAttribute("page")
+	// private Long getNumberOfLastPage(){
+	// final Long rowAtPage = 20l;
+	// Long countOfMeasurements = measurementsService.count();
+	// Long numberOfLastPage = countOfMeasurements / rowAtPage;
+	// if (countOfMeasurements > (numberOfLastPage*rowAtPage)) {
+	// numberOfLastPage++;
+	// }
+	// return numberOfLastPage;
+	// }
 
 	@ModelAttribute("models")
 	public List<Models> getAllModels() {
@@ -285,7 +348,7 @@ public class MeasurementsController {
 
 		setCurrentDateOfMeasurement(newMeasurements);
 		setEquipment(newMeasurements, measurementsForm);
-//		setUser(newMeasurements, measurementsForm);
+		// setUser(newMeasurements, measurementsForm);
 
 		newMeasurements = saveMeasurement(newMeasurements);
 
@@ -314,17 +377,20 @@ public class MeasurementsController {
 		newMeasurements.setEquipment(newEquipments);
 	}
 
-//	private void setUser(Measurements newMeasurements, MeasurementsForm measurementsForm) {
-//		Users user = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsersDetails();
-//		newMeasurements.setUser(user);
-//	}
+	// private void setUser(Measurements newMeasurements, MeasurementsForm
+	// measurementsForm) {
+	// Users user = ((CustomUserDetails)
+	// SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsersDetails();
+	// newMeasurements.setUser(user);
+	// }
 
 	private Measurements saveMeasurement(Measurements newMeasurements) {
 		List<Measurements> measurementsList = measurementsService
 				.findByEquipment(newMeasurements.getEquipment());
 
-		Users user = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsersDetails();
-		
+		Users user = ((CustomUserDetails) SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal()).getUsersDetails();
+
 		newMeasurements.setSpectrums(new ArrayList<Spectrums>());
 
 		if (measurementsList.isEmpty()) {
@@ -381,26 +447,27 @@ public class MeasurementsController {
 		DateTime currentDate = new DateTime();
 		newSpectrums.setTime(new Time(currentDate.getMillis()));
 
-		if (newSpectrums.getDescription() == null) {
-			newSpectrums.setDescription(measurementsForm.getDescription());
-		} else {
-			if (newSpectrums.getDescription().isEmpty()) {
-				newSpectrums.setDescription(measurementsForm.getDescription());
-			} else {
-				newSpectrums.setDescription(newSpectrums.getDescription() + "; "
-						+ measurementsForm.getDescription());
-			}
-		}
-////////////////////////// Description!!!!!!!?????
+		// //////////////////////// Description!!!!!!!?????
 		newSpectrums = spectrumsService.save(newSpectrums);
 		String description = setHarmonics(measurementsForm.getDescription(), newSpectrums);
-		newSpectrums.setDescription(description);
+		if (newSpectrums.getDescription() == null) {
+			newSpectrums.setDescription(description);
+		} else {
+			if (newSpectrums.getDescription().isEmpty()) {
+				newSpectrums.setDescription(description);
+			} else {
+				newSpectrums
+						.setDescription(newSpectrums.getDescription() + "; " + description);
+			}
+		}
+		// newSpectrums.setDescription(description);
 		newSpectrums = spectrumsService.save(newSpectrums);
 	}
 
 	private String setHarmonics(String description, Spectrums newSpectrums) {
 
 		DescriptionForParsing newDescription = new DescriptionForParsing(description);
+		final Double deviationFrequency = 0.02;
 
 		Double frequency, amplitude, noise;
 
@@ -409,6 +476,15 @@ public class MeasurementsController {
 			frequency = newDescription.parseFrequency();
 			if (frequency != null) {
 				Harmonics newHarmonics = new Harmonics();
+				List<Harmonics> oldHarmonics = newSpectrums.getHarmonics();
+				for (Harmonics harmonics : oldHarmonics) {
+					if (((harmonics.getFrequency() + deviationFrequency
+							* harmonics.getFrequency()) > frequency)
+							&& ((harmonics.getFrequency() - deviationFrequency
+									* harmonics.getFrequency()) < frequency)) {
+						newHarmonics = harmonics;
+					}
+				}
 				newHarmonics.setFrequency(frequency);
 				amplitude = newDescription.parseAmplitude();
 				if (amplitude != null) {

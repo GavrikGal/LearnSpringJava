@@ -29,8 +29,6 @@ public class DescriptionForParsing {
 					this.description = description.substring(description.indexOf(";") + 1);
 				}
 				sFrequency = description.substring(0, description.indexOf("-"));
-
-				
 				sFrequency = sFrequency.trim();
 
 			}
@@ -48,8 +46,6 @@ public class DescriptionForParsing {
 				}
 			}
 		}
-		System.out.println(" frequency: " + frequency);
-		System.out.println(description);
 		return frequency;
 	}
 
@@ -102,9 +98,6 @@ public class DescriptionForParsing {
 				}
 			}
 		}
-
-		System.out.println(" amplitude: " + amplitude);
-		System.out.println(description);
 		return amplitude;
 	}
 	
@@ -143,8 +136,6 @@ public class DescriptionForParsing {
 				}
 			}
 		}
-		System.out.println(" noise: " + noise);
-		System.out.println(description);
 		return noise;
 	}
 

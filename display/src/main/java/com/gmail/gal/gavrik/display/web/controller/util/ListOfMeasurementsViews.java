@@ -14,6 +14,10 @@ public class ListOfMeasurementsViews {
 	
 	private String currentModelName = null;
 	private DateTime currentMeasurementDate = null;
+	
+	public ListOfMeasurementsViews() {
+		
+	}
 
 	public ListOfMeasurementsViews(List<Measurements> measurements) {
 

@@ -3,6 +3,8 @@ package com.gmail.gal.gavrik.display.service.jpa;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +23,9 @@ public class MeasurementsServiceImpl implements MeasurementsService {
 
 	@Autowired
 	private MeasurementsRepository	measurementsRepository;
-	
+
 	@Autowired
-	private EquipmentsRepository equipmentsRepository;
+	private EquipmentsRepository	equipmentsRepository;
 
 	@Transactional(readOnly = true)
 	public List<Measurements> findAll() {
@@ -53,9 +55,15 @@ public class MeasurementsServiceImpl implements MeasurementsService {
 		}
 	}
 
-	// @Transactional(readOnly=true)
-	// public List<Measurements> findAllWithDetail() {
-	// return Lists.newArrayList(measurementsRepository.findAllWithDetail());
-	// }
+	@Transactional(readOnly = true)
+	public Page<Measurements> findAllByPage(Pageable pageable) {
+		return measurementsRepository.findAll(pageable);
+	}
 
+	@Transactional(readOnly = true)
+	public Long count() {
+		return measurementsRepository.count();
+	}
+
+	
 }
