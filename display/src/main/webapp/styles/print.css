@@ -4,75 +4,25 @@
 /* ---------------------- Оболочки -------------------------------------------------------  */
 /* ______________________ Главная Шапка ________________________  */
 #headerWrapper { 
-    background-color: #FFF;
-	border: 1px solid #F00; /*#EEE*/
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	
-	box-shadow: 0 0 6px 0 #C2D2EA;
-	
-	margin: -12px auto 0px;
-	padding: 12px 0px 0px;
-	
-	
-	top: 0px;
-	right:7px;
-	left: 7px;
-	position: fixed;
-	z-index:50;
-    
-    overflow: visible;
-    display: block;
+    display: none;
 }
 
 /* _____________________ Главное тело ___________________________  */
 #wrapper {
-	border: 1px solid #00E; /* border: 0px solid #E00;*/
-/*	width:1250px;
-	min-width: 1250px;
-	max-width: 1250px;
-	margin-right: auto;
-	margin-left: auto;*/
-	
+	border: 0px solid #00E; /* border: 0px solid #E00;*/
 	margin: 0px auto 0px;
-	 
-/*	width:expression(document.body.clientWidth > 1250? "1250px": "auto" );*/
 	top: 20px;
 	right:0px;
 	left: 0px;
 	bottom: 20px;
 	position:relative;
-/*	margin-top:170px;
-	margin-bottom:100px;*/
-	
 	z-index:10;	
-	
 	display:block;
-	
 }
 
 /* _____________________ Главный подвал ___________________________  */
 #footerWrapper{
-	background-color: #FFF;
-	border: 1px solid #F00; /* #EEE*/
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	
-	box-shadow: 0 0 6px 0 #C2D2EA;
-	
-	margin: 15px auto -12px;
-	padding: 6px 0px 18px;
-	
-	position: fixed;
-    bottom: 0px;
-    right: 7px;
-	left: 7px;
-	z-index: 50;
-	    
-    overflow: hidden;
-    display: block;
+    display: none;
 }
 /* ---------------------------------------------------------------------------------------- */
 
@@ -110,7 +60,7 @@
 /*_________________________ Шаблон контента _______________________________________________ */
 div.content {
 	background-color: #FFF;
-	border: 1px solid #EEE;
+	border: 0px solid #EEE;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: px;
@@ -335,11 +285,7 @@ div.protocolContent {
 
 #backContent {
 	background-color: #FFF;
-	border: 1px solid #EEE;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: px;
-	box-shadow: 0 0 6px 0 #C2D2EA;
+	border: 0px solid #EEE;
 	width: 210mm;
 	height: 297mm;
 		
@@ -364,7 +310,7 @@ div.protocolContent {
 
 /*---------------- название ---------------*/
 #protocolName {
-	width: 16cm;
+	width: 18cm;
 	margin: auto;
 }
 

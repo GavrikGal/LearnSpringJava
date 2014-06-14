@@ -63,7 +63,7 @@ import com.google.common.collect.Lists;
 @Controller
 public class MeasurementsController {
 
-	final int							rowAtPage	= 10;
+	final int							rowAtPage	= 70;
 
 	final Logger						logger		= LoggerFactory
 															.getLogger(MeasurementsController.class);
@@ -191,6 +191,15 @@ public class MeasurementsController {
 		return "redirect:/measurements";
 	}
 
+	@PreAuthorize("isAuthenticated()")
+	@RequestMapping(value = "/protocol/{id}", method = RequestMethod.GET)
+	public String protocol(@PathVariable("id") Long id, Model uiModel,
+			RedirectAttributes redirectAttributes, Locale locale) {
+		Measurements protocolMeasurement = measurementsService.findById(id);
+		uiModel.addAttribute("protocolMeasurement", protocolMeasurement);
+		return "measurements/protocol";
+	}
+	
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
 	public String edit(@PathVariable("id") Long id, MeasurementsForm measurementsForm,

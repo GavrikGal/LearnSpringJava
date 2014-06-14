@@ -17,6 +17,10 @@
 <spring:url value="/${app_css}" var="app_css_url" />
 <link rel="stylesheet" type="text/css" media="screen"
 	href="${app_css_url}" />
+<spring:theme code="stylePrint" var="print_css" />
+<spring:url value="/${print_css}" var="print_css_url" />
+<link rel="stylesheet" type="text/css" media="print"
+	href="${print_css_url}" />
 
 <c:set var="userLocale">
 	<c:set var="plocale">${pageContext.response.locale}</c:set>

@@ -30,7 +30,7 @@
 
 
 	<sec:authorize access="hasRole('ROLE_USER')">
-	<div id="preMeasurementsUpdate">
+	<div id="measurementsEdit">
 	<div id="measurementsUpdate" class="content">
 		<form:form commandName="measurementsForm" method="post">
 			<c:if test="${not empty message}">

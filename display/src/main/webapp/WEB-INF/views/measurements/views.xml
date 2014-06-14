@@ -7,6 +7,11 @@
         <put-attribute name="editor"
             value="/WEB-INF/views/measurements/edit.jspx" />
     </definition>
+    <definition extends="default" name="measurements/protocol">
+        <put-attribute name="body"
+            value="/WEB-INF/views/measurements/protocol.jspx" />
+        
+    </definition>
    
 
 </tiles-definitions>

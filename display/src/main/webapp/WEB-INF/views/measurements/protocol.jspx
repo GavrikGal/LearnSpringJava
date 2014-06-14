@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:joda="http://www.joda.org/joda/time/tags"
+	xmlns:spring="http://www.springframework.org/tags" version="2.0">
+
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	
+	<spring:url value="/models/photo" var="modelsPhotoUrl" />
+	<spring:url value="/measurements" var="listMeasurementsUrl"/>
+
+
+
+
+	<div id="measurementsProtocol" class="protocolContent">
+		
+		<div id="backContent">
+			<div id="protocolName">
+				<p>ПРОТОКОЛ ИЗМЕРЕНИЯ УРОВНЕЙ ИНФОРМАЦИОННЫХ СИГНАЛОВ ВИДЕОМОНИТОРА</p>
+			</div>
+			<div id="protocolHead">
+				<table id="protocolHeadTable">
+					<tr>
+						<td>
+							<p>Изделие ________________________</p>
+						</td>
+						<td>
+							<p>зав. №</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>Дата проведения измерений</p>
+						</td>
+						<td>
+							<p>ОТК</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							
+						</td>
+						<td>
+							<p>ПЗ</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<table id="protocolResultsTable">
+				<thead>
+					<tr>
+						<th class="protocolResultsTableFrequency">
+							<p>Частота сигнала, МГц</p>
+						</th>
+						<th class="protocolResultsTableNorm">
+							<p>Допустимое значение</p>
+							<p>Ui по</p>
+							<p>НВИТ.467846.002 И2.1,</p>
+							<p>дБ, не более</p>
+						</th>
+						<th>
+							<table class="protocolResultsInnerTable">
+								<tr>
+									<td colspan="2" class="protocolResultsTableLevels">
+										<p>Фактическое значение Ui, дБ</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="protocolResultsTableLevels1">
+										<p>Данные ОТК</p>
+										<br/>
+										<br/>
+										<br/>
+									</td>
+									<td class="protocolResultsTableLevels2">
+										<p>Данные ПЗ</p>
+										<br/>
+										<br/>
+										<br/>
+									</td>									
+								</tr>
+							</table>
+						</th>
+						<th class="protocolResultsTableNote">
+							<p>Примечание</p>
+						</th>						
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="data">
+						<td class="protocolResultsTableFrequency">
+							
+						</td>
+						<td class="protocolResultsTableNorm">
+							
+						</td>
+						<td>
+							<table class="protocolResultsInnerTable">
+								<tr>
+									<td class="protocolResultsTableLevels1">
+										
+									</td>
+									<td class="protocolResultsTableLevels2">
+										
+									</td>									
+								</tr>
+							</table>
+						</td>
+						<td class="protocolResultsTableNote">
+							
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div id="protocolFinal">
+				<p>ЗАКЛЮЧЕНИЕ</p>
+				<p>Изделие _________________ зав. №____________________ соответствует 
+					требованиям НВИТ.467846.002 И2.1, принято и годно для использования
+					по назначению.</p>
+				<br/>
+				<p>Изделие _________________ зав. №____________________ не соответствует 
+					требованиям НВИТ.467846.002 И2.1, подлежит возврату ОТК.</p>
+			</div>
+			<table id="protocolFootTable">
+					<tr>
+						<td class="post">
+							<p>Представитель ЦМС</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							
+						</td>
+						<td>
+							<p>(подпись)</p>
+							<br/>
+						</td>
+						<td>
+							<p>(инициалы и фамилия)</p>
+							<br/>
+						</td>
+					</tr>
+					<tr>
+						<td class="post"> 
+							<p>Представитель ОТК</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							
+						</td>
+						<td>
+							<p>(подпись)</p>
+							<br/>
+						</td>
+						<td>
+							<p>(инициалы и фамилия)</p>
+							<br/>
+						</td>
+					</tr>
+					<tr>
+						<td class="post">
+							<p>Представитель 4296 ПЗ</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+						<td>
+							<p>________________________</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							
+						</td>
+						<td>
+							<p>(подпись)</p>
+							<br/>
+						</td>
+						<td>
+							<p>(инициалы и фамилия)</p>
+							<br/>
+						</td>
+					</tr>
+					
+				</table>
+		</div>
+		<c:if test="${not empty protocolMeasurement}">
+			<div id="frontContent">
+				<div id="protocolHeadTableContentBlock">
+					<table class="protocolHeadTableContent">
+						<tr>
+							<td class="protocolHeadTableContentModel">
+								<p>${protocolMeasurement.equipment.getModel()}</p>
+							</td>
+							<td>
+								<p></p>
+							</td>
+							<td class="protocolHeadTableContentNumber">
+								<p>${protocolMeasurement.equipment.getSerialNumber()}</p>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="protocolResultsTableContentBlock">
+					<table id="protocolResultsTableContent">
+						
+					    <c:forEach items="${protocolMeasurement.spectrums}" var="spectrums">
+					    	<c:forEach items="${spectrums.harmonics}" var="harmonics">
+								<tr>
+									<td class="protocolResultsTableFrequency">
+									  <p>${harmonics.frequency}</p>
+									</td>
+									<td class="protocolResultsTableNorm">
+									  <p>20.0</p>
+									</td>
+									<td class="protocolResultsTableLevels1">
+									  <p>${harmonics.amplitude}</p>
+									</td>
+									<td class="protocolResultsTableLevels2">
+									  <p></p>
+									</td>
+									<td class="protocolResultsTableNote">
+									  <p>-</p>
+									</td>
+								</tr>
+							</c:forEach>
+						</c:forEach>
+					</table>
+				</div>
+				<div id="protocolUserNameBlock"> 
+					<p>${protocolMeasurement.user.getLastName()} 
+						${protocolMeasurement.user.getFirstName()}</p>
+				</div>
+			</div>
+		</c:if>
+		
+	</div>
+</div>

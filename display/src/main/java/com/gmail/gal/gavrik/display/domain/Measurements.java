@@ -25,6 +25,8 @@ public class Measurements implements Serializable {
 	private List<Spectrums>		spectrums;
 //	private List<Users>			users;
 	private Users user;
+
+	
 	
 	
 //	@Column(name = "Description")
