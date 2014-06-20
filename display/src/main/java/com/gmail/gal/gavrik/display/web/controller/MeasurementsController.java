@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
 import com.gmail.gal.gavrik.display.domain.DateOfMeasurement;
 import com.gmail.gal.gavrik.display.domain.Equipments;
 import com.gmail.gal.gavrik.display.domain.Harmonics;
@@ -63,7 +65,7 @@ import com.google.common.collect.Lists;
 @Controller
 public class MeasurementsController {
 
-	final int							rowAtPage	= 70;
+	final int							rowAtPage	= 30;
 
 	final Logger						logger		= LoggerFactory
 															.getLogger(MeasurementsController.class);
@@ -107,11 +109,11 @@ public class MeasurementsController {
 	// ____________________Request Mapping_________________________________
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String list(Model uiModel, HttpServletRequest request) {
+	public String list(Model uiModel, MeasurementsForm measurementsForm, HttpServletRequest request) {
 		logger.info("Listing measurements");
 
 		if (!uiModel.containsAttribute("measurementsForm")) {
-			MeasurementsForm measurementsForm = new MeasurementsForm();
+			measurementsForm = new MeasurementsForm();
 
 			List<MeasurementsView> measurementsViews = getMeasurementsView(
 					new ListOfMeasurementsViews(), uiModel);
@@ -129,7 +131,12 @@ public class MeasurementsController {
 					.get(0).getSpectrumParameters().getType().getIdType());
 
 			uiModel.addAttribute("measurementsForm", measurementsForm);
+		} else {
+			measurementsForm.setDescription("");
+			uiModel.addAttribute("measurementsForm", measurementsForm);
 		}
+		
+		
 
 		// System.out.println("PageNumber: "+pageable.getPageNumber()
 		// + " PageSize: " + pageable.getPageSize());
@@ -197,6 +204,21 @@ public class MeasurementsController {
 			RedirectAttributes redirectAttributes, Locale locale) {
 		Measurements protocolMeasurement = measurementsService.findById(id);
 		uiModel.addAttribute("protocolMeasurement", protocolMeasurement);
+		
+		try {
+			Document doc = new Document();
+			DocumentBuilder builder = new DocumentBuilder(doc);
+			
+			builder.writeln("Fucking fuck!!");
+			
+			doc.save("d:\1.doc");
+			
+		} catch (Exception e) {
+			// TODO Автоматически созданный блок catch
+			e.printStackTrace();
+		}
+		
+		
 		return "measurements/protocol";
 	}
 	

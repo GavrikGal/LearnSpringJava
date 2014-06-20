@@ -5,72 +5,50 @@
 /* ______________________ Главная Шапка ________________________  */
 #headerWrapper { 
     background-color: #FFF;
-	border: 1px solid #F00; /*#EEE*/
+	border: 1px solid #EEE; /*#EEE*/
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	
 	box-shadow: 0 0 6px 0 #C2D2EA;
-	
 	margin: -12px auto 0px;
 	padding: 12px 0px 0px;
-	
-	
 	top: 0px;
 	right:7px;
 	left: 7px;
 	position: fixed;
 	z-index:50;
-    
     overflow: visible;
     display: block;
 }
 
 /* _____________________ Главное тело ___________________________  */
 #wrapper {
-	border: 1px solid #00E; /* border: 0px solid #E00;*/
-/*	width:1250px;
-	min-width: 1250px;
-	max-width: 1250px;
-	margin-right: auto;
-	margin-left: auto;*/
-	
+	border: 0px solid #00E; /* border: 0px solid #E00;*/
 	margin: 0px auto 0px;
-	 
-/*	width:expression(document.body.clientWidth > 1250? "1250px": "auto" );*/
 	top: 20px;
 	right:0px;
 	left: 0px;
 	bottom: 20px;
 	position:relative;
-/*	margin-top:170px;
-	margin-bottom:100px;*/
-	
 	z-index:10;	
-	
 	display:block;
-	
 }
 
 /* _____________________ Главный подвал ___________________________  */
 #footerWrapper{
 	background-color: #FFF;
-	border: 1px solid #F00; /* #EEE*/
+	border: 1px solid #EEE; /* #EEE*/
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	
 	box-shadow: 0 0 6px 0 #C2D2EA;
-	
 	margin: 15px auto -12px;
 	padding: 6px 0px 18px;
-	
 	position: fixed;
     bottom: 0px;
     right: 7px;
 	left: 7px;
 	z-index: 50;
-	    
     overflow: hidden;
     display: block;
 }
@@ -79,9 +57,9 @@
 /* ------------------------ Основное содержимое ------------------------------------------- */
 /*_________________________ Блок редактирования ___________________________________________ */
 #measurementsEdit{
-	border: 1px solid #6E6; /*border: 0px solid #E66;*/
+	border: 0px solid #6E6; /*border: 0px solid #E66;*/
 	width: 100%;
-	height: 110px;
+	height: 113px;
 	background-color: #EEF9FE;
 	top:0px;
 	left:0px;
@@ -94,17 +72,23 @@
 
 #measurementsUpdate {
 	margin: auto;
-	border: 1px solid #EE6; /*border: 0px solid #E66;*/
+	border: 1px solid #EEE; /*border: 0px solid #EEE;*/
 	position:relative;
-	z-index: 40;
+	z-index: 60;
 }
 
 /* ________________________ Блок списка ___________________________________________________ */
 #measurementsList {
 	/*left: 0px;*/
-	border: 1px solid #EE6; /*border: 0px solid #E66;*/
+	border: 0px solid #E0E; /*border: 0px solid #E66;*/
 	position: relative;
-	margin: 140px auto 0px;
+	margin: 150px auto 0px;
+}
+
+#mainMeasurementsListTable {
+	margin: auto;
+	border: 1px solid #EEE; /*border: 0px solid #E66;*/
+	position:relative;
 }
 
 /*_________________________ Шаблон контента _______________________________________________ */
@@ -123,6 +107,7 @@ div.content {
 body,div,td {
 	font-family: verdana, Arial, sans-serif;
 	font-size: 12px;
+	color: #555;
 }
 
 body {
@@ -213,68 +198,84 @@ ul li {
 	padding:0;
 }
 
-
 a {
 	text-decoration: underline;
 	font-size: 12px;
 }
+
+a:link {
+	color: #527BE5;
+}
+
+a:hover {
+	color: #273B6D;
+}
+
+a:active {
+	color: #527BE5;
+}
+
+a:visited {
+	color: #527BE5;
+}
+
 
 a img {
 	border: 0 none;
 	vertical-align: middle;
 }
 
-/*table {
-	background: #FFF;
-	margin: 2px 0 0 0;
-	border: 0px solid #BBBBBB;
-	border-bottom: 1px solid #BBB;
-	border-top: 1px solid #BBB;
-	border-collapse: collapse;
-	margin: 20px;
-}
-*/
-/*table th {
-	font-size: 0.9em;
-	text-align: center;
-	font-weight: bold;
-	color: #FFF;
-	background: #999;
-}
-
-table table {
-	border-bottom: 0px;
-	border-top: 0px;
-	width: 100%;
-	left: 0px;
-	margin: 0px;
-	background-color: inherit;
-}
-
-table td {
-	text-align: center;
-	border: 1px solid #BBB;
-}
-
-td td {
-	border: 0px solid #BBB;
-}*/
-
-submit {
-	
-}
-
-
 /* =============================== Частные елементы ======================================= */
+/* ------------------------------- Таблица редактирования --------------------------------- */
+
+#measurementsUpdate table {
+	background: #FFF;
+	margin: 18px auto;
+	border: 0px solid #F6F;
+	border-collapse: collapse;
+}
+
+#measurementsUpdate th {
+	background: #999;
+	color: #FFF;
+	height: 30px;
+	margin: 0px;
+}
+
+#measurementsUpdate th.noBg {
+	background: #FFF;
+}
+
+#measurementsUpdate table.mainMeasurementsListInnerTable {
+	margin: 0px;
+}
+
+#measurementsUpdate table.ListInnerTableData {
+	margin: 0px;
+	background-color:inherit;
+	text-align: left;
+	height: 100%;
+}
+
+#measurementsUpdate tr.row {
+	height: 30px;
+}
+
+#measurementsUpdate tr.innerTableRow {
+	height: 46px;
+}
+
+#measurementsUpdate td.ListResults {
+	padding-left: 0px;
+}
+
+
 /* ------------------------------- Главная таблица ---------------------------------------- */
 #mainMeasurementsListTable table  {
 	background: #FFF;
 	margin: 18px auto;
-	border: 1px solid #F6F;
-/*	border-bottom: 1px solid #BBB;
-	border-top: 1px solid #BBB;*/
+	border: 0px solid #F6F;
 	border-collapse: collapse;
-	/*margin: 20px;*/
 }
 
 #mainMeasurementsListTable th {
@@ -282,57 +283,116 @@ submit {
 	color: #FFF;
 	height: 30px;
 	margin: 0px;
+}
+
+#mainMeasurementsListTable th.noBg {
+	background: #FFF;
+}
+
+#mainMeasurementsListTable table.mainMeasurementsListInnerTable {
+	margin: 0px;
+}
+
+#mainMeasurementsListTable table.ListInnerTableData {
+	margin: 0px;
+	background-color:inherit;
+	text-align: left;
+}
+
+#mainMeasurementsListTable tr.row {
+	height: 30px;
+}
+
+#mainMeasurementsListTable tr.row:HOVER {
+	background-color: #EEF;
+}
+
+tr.innerTableRow {
+	border-bottom: 0px solid #BBB;
+}
+/*------------------------------- Элементы главной таблицы ---------------------------------*/
+.ListDate {
+	border-right: 1px solid #BBB;
+	border-bottom: 1px solid #BBB;
+	width: 100px;
+}
+
+.ListModel {
+	border-right: 1px solid #BBB;
+	border-bottom: 1px solid #BBB;
+	overflow:visible;
+	width: 105px;
+}
+
+.ListSerial {
+	border-bottom: 1px solid #BBB;
+	width: 95px;
+}
+
+.ListSerial a {
+	text-decoration: none;
+	display: block;
+	border: 0px solid #FFF;
+	padding: 7px;
+}
+
+.ListSerial p {
+	margin: 0px auto;
+}
+
+#measurementsUpdate .ListPropsAndresults {
+	width: 786px;
+	border-bottom: 1px solid #BBB;
 	padding: 0px;
-	
 }
 
-/* ---------------------------------------------------------------------------------------- */
-
-#userinfo {
-    float: right;
-    margin: 5;
-    padding: 5px 5px;
+#mainMeasurementsListTable .ListPropsAndresults {
+	width: 690px;
+	border-bottom: 1px solid #BBB;
+	padding: 0px;
 }
 
-#language {
-    margin: 5;
-    padding: 5px 5px;
-} 
+.ListPropsAndresults table {
+	width: 100%;
+	height: 30px;
+}
 
+.ListProperties {
+	border-right: 1px solid #BBB;
+	border-left: 1px solid #BBB;
+	width: 180px;
+	padding-left: 10px;
+}
 
+.ListResults {
+ 	border-right: 1px solid #BBB;
+ 	padding-left: 10px;
+}
 
+.ListSecondDate {
+	border-right: 1px solid #BBB;
+	border-bottom: 1px solid #BBB;
+	width: 95px;
+}
 
+.ListUser {
+	border-bottom: 1px solid #BBB;
+	width: 95px;
+}
 
+.ListAttributes {
+	width: 25px;
+	border-width: 0px;
+	border-bottom: 0px solid #BBB;
+	background-color: inherit;
+}
 
-#currentDate {
+.currentDate {
 	color: #AAA;
 }
+/* ---------------------------------------------------------------------------------------- */
 
-
-
-
-input.image {
-	border: none;
-	height: auto;
-	vertical-align: middle;
-}
-
-
-
-
-div .box {
-	display:block;
-	margin-left:105px;
-}
-
-
-
-div.protocolContent {
-	
-	
-	
-}
-
+/* -------------------------- Протокол -----------------------------------------------------*/
 #backContent {
 	background-color: #FFF;
 	border: 1px solid #EEE;
@@ -346,6 +406,8 @@ div.protocolContent {
 	z-index: 0;
 	display: block;
 	position: absolute;
+	margin-top: 10px;
+	margin-bottom: 40px;
 	margin-left: auto;
 	margin-right: auto;
 	left: 0;
@@ -368,7 +430,6 @@ div.protocolContent {
 	margin: auto;
 }
 
-
 /*--------------- шапка -------------------*/
 
 #protocolHeadTable{
@@ -378,13 +439,11 @@ div.protocolContent {
 
 #protocolHeadTable td{
 	border: 0px solid #E44; 
-	
 }
 
 #protocolHeadTable p {
 	text-align: left;
 }
-
 
 /*----------------таблица протокола--------*/
 #protocolResultsTable{
@@ -398,7 +457,6 @@ div.protocolContent {
 	margin: 0px 5px;;
 	font-size: 1.4em;
 }
-
 
 #protocolResultsTable th{
 	margin: auto;
@@ -418,9 +476,6 @@ table.protocolResultsInnerTable {
 	padding: 0px;
 	border-collapse: collapse;
 	border-spacing: 0px;
-	border: 0px solid #333;
-}
-tbody.protocolResultsInnerTable {
 	border: 0px solid #333;
 }
 
@@ -458,11 +513,9 @@ tr.data td.protocolResultsTableLevels2 {
 	width: 3.5cm;
 	border-left: 1px solid #333;
 }
-
 /*------------------------------------------*/
 
 /*----------заключение протокола ------------*/
-
 #protocolFinal {
 	width: 18.8cm;
 	text-align: left;
@@ -471,7 +524,6 @@ tr.data td.protocolResultsTableLevels2 {
 }
 
 /*--------- подвал протокола ---------------*/
-
 #protocolFootTable{
 	margin-top: 2cm;
 	margin-left: 2cm;
@@ -479,7 +531,6 @@ tr.data td.protocolResultsTableLevels2 {
 }
 
 #protocolFootTable td{
-	
 	border: 0px solid #0fE; 
 }
 
@@ -490,7 +541,6 @@ tr.data td.protocolResultsTableLevels2 {
 td.post {
 	text-align: left;
 }
-
 /*-----------------------------------------*/
 
 /*---------------- Данные ---------*/ 
@@ -501,7 +551,7 @@ td.post {
 	display: block;
 	position: relative;
 	left: 1cm;
-	top: 2.8cm;
+	top: 3cm;
 }
 
 #frontContent p {
@@ -515,7 +565,6 @@ td.post {
 }
 
 /*------------- Данные шапки ----------*/
-
 #protocolHeadTableContentBlock {
 	margin-left: 2.2cm;
 	width: 13.9cm;
@@ -545,16 +594,44 @@ td.post {
 
 /*--------------- Данные пользователя ------*/
 #protocolUserNameBlock {
-	
 	position: absolute;
 	left: 12.3cm;
 	top: 20.9cm;
 	width: 5.5cm;
 }
-/*--------------------------------------*/
+/*-----------------------------------------------------------------------------------------*/
+/*--------------------------------- Элементы шапки --------------------------------------- */
+ 
+#userinfo {
+    float: right;
+    margin: 5;
+    padding: 5px 5px;
+}
+
+#login {
+	float: right;
+}
+
+/*--------------------------------- Элементы подвала -------------------------------------- */
+#language {
+    margin: 5;
+    padding: 5px 5px;
+} 
+
+/*------------------------------------------------------------------------------------------*/
+
+input.image {
+	border: none;
+	height: auto;
+	vertical-align: middle;
+}
+
+div .box {
+	display:block;
+	margin-left:105px;
+}
 
 div.smallbutton {
-	
 	display: none;
 	width: 100%;
 	height: 0%;
@@ -565,7 +642,6 @@ tr.list:hover div.smallbutton {
 }
 
 div.nosmallbutton {
-	
 	display: block;
 	background-color: #FFF;
 	width: 20px;
@@ -582,22 +658,19 @@ div.models {
 	border: 0px solid #bbb;
 	float: left;
 	width: 220px; 
-	
-	
 }
 
 
-
-
-
-img.models {
-	width: 100px;
-	height: 100px;
-	float: left;
-	margin: 10px;
-	
-	border: 0px solid #bfb;
+p.norms {
+	clear: both;
+	border-top: 1px solid #BBB;
+	margin: 0px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
+
+/*------------------------------------ Картинки --------------------------------------------*/
+
 img.edit {
 	width: 20px;
 	height: 20px;
@@ -608,6 +681,7 @@ img.delete {
 	width: 10px;
 	height: 10px;
 }
+
 img.print {
 	float: left;
 	width: 15px;
@@ -615,187 +689,44 @@ img.print {
 	margin-left: 3px;
 }
 
-p.models {
-		
+img.models {
+	width: 100px;
+	height: 100px;
+	float: left;
+	margin: 10px;
+	border: 0px solid #bfb;
 }
 
-p.norms {
-	clear: both;
-	border-top: 1px solid #BBB;
-	margin: 0px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	
-	
-}
-
-
-
-
-/* menu elements*/
-/*
-a.menu, a.menu:link, a.menu:visited {display:block; width:150px; height:25px;} 
-*/
-/* text styles */
-
-
-.errors {
-	color: red;
-	font-weight: bold;
-	display: block;
-	margin-left: 105px;
-}
-
-
-
-a:link {
-	color: #527BE5;
-}
-
-a:hover {
-	color: #273B6D;
-}
-
-a:active {
-	color: #527BE5;
-}
-
-a:visited {
-	color: #527BE5;
-}
-
-
-table.maintable {
-	border: 0px solid #BBBBBB;
-	
-}
-
-tr.list {
-	
-}
-tr.list:HOVER {
-	background-color: #EEF;
-}
-
-/*
-table table {
-	margin: 0px 0;
-	border: 0px hidden #e0e7d3;
+/* ------------------------------- Кнопки -------------------------------------------------*/
+div.smallbutton {
+	display: none;
 	width: 100%;
+	height: 0%;
 }
 
-table td,table th {
-	padding: 2px;
-	border: 0px solid #CCCCCC;
-	border-bottom: 1px solid #CCCCCC;
+tr.row:HOVER div.smallbutton {
+	display: block;
 }
 
-table td form {
-	text-align:center;
-	vertical-align: middle;
-	margin: 0px;
-}
-*/
-
-
-
-td.notLeft {
-	border-left: 0px solid #BBB;
-}
-
-td.notRight {
-	border-right: 0px solid #BBB;
-}
-
-td.attributes {
-	border: 0px solid #BBB;
-}
-
-th.date {
-	width: 8%;	
-}
-
-th.model {
-	width: 8%;	
-}
-
-th.serial {
-	width: 8%;	
-}
-
-th.properties {
-	width: 16%;	
-}
-
-th.levels {
-	width: auto;	
-}
-
-th.secondDate {
-	width: 8%;	
-}
-
-th.users {
-	width: 8%;	
-}
-
-th.buttons {
-	width: 8%;
-}
-
-td.properties {
-	text-align: left;
-}
-
-td.levels {
-	text-align: left;
-}
-
-.valid {
-	color: #7db223;
-	margin: 2px;
-	
-}
-
-.invalid {
-	color: red;
-	margin: 0px;
-}
-
-.noise {
-	color: #aaa;
-	font-size: xx-small;
-	margin: 0px;
-	
-}
-
-
+/*-------------------------------- Всплывающие окна ---------------------------------------*/
 
 div.withModal {
-	display:inline-block; 
 	position: relative;
 	border: 0px solid #Fbb;
-
 }
-
 
 div.withModal div.modal {
 	visibility:hidden;
 	position:absolute; 
 	width: auto;
 	height: 10px;
-	
-
 }
 
 div.withModal:hover div.modal {
-
 	visibility:visible;
 	display:block;
 	z-index: 100;
 }
-
-
 
 div.modelPopup {
 	background-color: #FFF;
@@ -816,186 +747,76 @@ div.propAndresultsPopup {
 	display:inline-block;
 	background-color: #FFF;
 	border: 0px solid #EEE;
-	border-radius: 0px;
-	-moz-border-radius: 0px;
-	-webkit-border-radius: 0px;
+	border-bottom: 1px solid #BBB;
+	
+	border-radius: 0px 0px 6px 6px;
+	
+	-moz-border-radius: 0px 0px 6px 6px;
+	-webkit-border-radius: 0px 0px 6px 6px;
 	box-shadow: 0 0 60px 0 #BBF;
 	min-height:30px;
 	position:absolute;
-	top:-11px;
-	left: -918px;
+	top:-32px;
+	left: 0px;
 	
 	padding: 0px;
-	width: auto;
+	width: 693px;;
 	height: auto;
 	overflow: visible;
 }
 
-
-div.headTable {
-	border: 0px solid #BFB;
-	display: table-header-group;
-	background: #999;
-	height: 30px;
-	overflow: hidden;
-	padding: 0px;
-	margin: 0px;
-	font-size: 0.9em;
-	text-align: center;
+/* --------------------------------- Валидация и меседжи -----------------------------------*/
+.errors {
+	color: red;
 	font-weight: bold;
-	color: #FFF;
-	
+	display: block;
+	margin-left: 105px;
 }
 
-div.row {
-	
-	display: table-row;
-	height: 30px;
-	overflow: visible;
-	padding: 0px;
+.valid {
+	color: #7db223;
+	margin: 2px;
+}
+
+.invalid {
+	color: red;
 	margin: 0px;
-	font-size: 0.9em;
-	text-align: center;
-	font-weight: normal;
-	color: #666;
 }
 
-div.row:HOVER {
-	background-color: #EEF;
+.noise {
+	color: #aaa;
+	font-size: xx-small;
+	margin: 0px;
 }
 
-div.smallbutton {
-	
-	display: none;
-	width: 100%;
-	height: 0%;
-}
-
-div.row:hover div.smallbutton {
-	display: block;
-}
-
-div.nosmallbutton {
-	
-	display: block;
-	background-color: inherit;
-	width: 20px;
-	height: 20px;
-}
-
-div.row:hover div.nosmallbutton {
-	display: none;
-}
-
-div.column {
-	
-	
-	
-	overflow: hidden;
-	height: inherit;
-	float: left;
-}
-
-#login {
-	float: right;
-}
+/*----------------------------------- Всячина ---------------------------------------------*/
 
 #ListMore {
-	position: absolute;
-	left: -240px;
-}
-
-
-#mainTable {
-	display: table;
-	overflow: visible;
 	border: 0px solid #F5F;
-	margin: 20px;
-	background-color: #FFF;
-	
+	position: absolute;
+	margin-right: 2px;
+	right: 0px;
+	bottom: 0px;
 }
 
-#propAndresults {
-	width: 693px;
- 	float: left;
- 	border: 0px solid #5FF;
- 	overflow: visible;
-}
+/*==========================================================================================*/
 
 
-#ListDate {
-	border-right: 1px solid #BBB;
-	border-bottom: 1px solid #BBB;
-	width: 95px;
-}
-
-#ListModel {
-	border-right: 1px solid #BBB;
-	border-bottom: 1px solid #BBB;
-	overflow:visible;
-	width: 95px;
-}
-
-#ListSerial {
-	border-bottom: 1px solid #BBB;
-	width: 95px;
-}
-
-#ListProperties {
-	border-right: 1px solid #BBB;
-	border-left: 1px solid #BBB;
-	border-bottom: 1px solid #BBB;
-	width: 190px;
-	float: left;
-	height: inherit;
-	overflow: hidden;
-}
-
-#ListResults {
- 	border-right: 1px solid #BBB;
-	border-bottom: 1px solid #BBB;
-	width: 505px;
- 	float: left;
- 	height: inherit;
-}
-
-#ListSecondDate {
-	border-right: 1px solid #BBB;
-	border-bottom: 1px solid #BBB;
-	width: 95px;
-	
-}
-
-#ListUser {
-	border-bottom: 1px solid #BBB;
-	width: 95px;
-	
-}
-
-#ListAttributes {
-	width: 20px;
-	border-width: 0px;
-	background-color: inherit;
-	
-}
-
-div.headTable #ListAttributes {
-	border-bottom: 1px solid #BBB;
-}
 
 
-table.list {
-	border: 0px solid #bfb;
-	background-color: inherit;
-	padding: 0px;
-	margin: 0px;
-}
 
-table.list td{
-	border: 0px solid #bfb;
-	padding: 0px;
-	margin: 0px;
-}
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* header and footer elements */
 /*

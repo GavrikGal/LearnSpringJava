@@ -31,71 +31,99 @@
 
 	<sec:authorize access="hasRole('ROLE_USER')">
 	<div id="measurementsEdit">
-	<div id="measurementsUpdate" class="content">
-		<form:form commandName="measurementsForm" method="post">
-			<c:if test="${not empty message}">
-				
-					<div>
-						<form:errors path="serialNumber" cssClass="error" />
-					</div>
-					<div>
-						<form:errors path="description" cssClass="error" />
-					</div>
-				
-				
-			</c:if>
-
-			<table class="editTable">
-				<thead>
-					<tr>
-						<th class="date">${labelMeasurementsDate}</th>
-						<th class="model">${labelMeasurementsModel}</th>
-						<th class="serial">${labelMeasurementsSn}</th>
-						<th class="properties">${labelMeasurementsSpectrumsParameters}</th>
-						<th class="levels">${labelMeasurementsSpectrums}</th>
-						<th class="buttons"></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td id="currentDate" class="notLeft">
-							<joda:format
-									value="${currentDate}"
-									pattern="${dateFormatPattern}" />
+		<div id="measurementsUpdate" class="content">
+			<form:form commandName="measurementsForm" method="post">
+				<c:if test="${not empty message}">
+					
+						<div>
+							<form:errors path="serialNumber" cssClass="error" />
+						</div>
+						<div>
+							<form:errors path="description" cssClass="error" />
+						</div>
+					
+					
+				</c:if>
+	
+				<table>
+					<thead>
+						<tr>
+							<th class="ListAttributes noBg">
+								<BR />
+							</th>
+							<th class="ListDate">${labelMeasurementsDate}</th>
+							<th class="ListModel">${labelMeasurementsModel}</th>
+							<th class="ListSerial">${labelMeasurementsSn}</th>
+							<th class="ListPropsAndresults">
+								<table class="mainMeasurementsListInnerTable">
+									<tr >
+										<th class="ListProperties">
+											${labelMeasurementsSpectrumsParameters}
+										</th>
+										<th class="ListResults">
+											${labelMeasurementsSpectrums}
+										</th>
+									</tr>
+								</table>
+							</th>
+							<th class="ListUser"></th>
+							<th class="ListAttributes noBg">
+								<BR />
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="row">
+							<td class="ListAttributes">
+								<BR />
 							</td>
-						<td>
-							<form:select path="model">
-								<form:options items="${models}" />
-							</form:select>
-						</td>
- 						<td>
- 							<form:input path="serialNumber" /> <!-- placeholder="1400101"  -->
-						</td>
-						<td>
-							<form:select
-								path="measurand">
-								<form:options items="${measurands}" />
-							</form:select>
-							<form:select path="type">
-								<form:options items="${types}" />
-							</form:select>
-							<form:select
-								path="screenResolutions">
-								<form:options items="${screenResolutions}" />
-							</form:select>
-						</td>
-						<td>
-							<form:textarea path="description" placeholder="32.5 - 38.2/24.5; 97.5 - 28.6/0; примечание..."/>
-						</td>
-						<td class="notRight">
-							<button type="submit">${labelMeasurementsSubmit}</button>
-							<button type="Reset">${labelMeasurementsReset}</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</form:form>
-	</div>
+							<td class="ListDate currentDate" > <!-- class="notLeft"--> 
+								<joda:format
+										value="${currentDate}"
+										pattern="${dateFormatPattern}" />
+								</td>
+							<td class="ListModel">
+								<form:select path="model">
+									<form:options items="${models}" />
+								</form:select>
+							</td>
+	 						<td class="ListSerial">
+	 							<form:input path="serialNumber" /> <!-- placeholder="1400101"  -->
+							</td>
+							<td class="ListPropsAndresults">
+								<table class="ListInnerTableData">
+									<tr class="innerTableRow">
+													<td class="ListProperties">
+														<form:select
+															path="measurand">
+															<form:options items="${measurands}" />
+														</form:select>
+														<form:select path="type">
+															<form:options items="${types}" />
+														</form:select>
+														<form:select
+															path="screenResolutions">
+															<form:options items="${screenResolutions}" />
+														</form:select>
+													</td>
+													<td class="ListResults">
+														<form:textarea path="description" placeholder="32.5 - 38.2/24.5; 97.5 - 28.6/0; примечание..."/>
+													</td>	
+									</tr>
+								</table>
+							</td>
+							<td class="ListUser">
+								<button type="submit">${labelMeasurementsSubmit}</button>
+								<button type="Reset">${labelMeasurementsReset}</button>
+							</td>
+							<td class="ListAttributes">
+								<BR />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form:form>
+		</div>
 	</div>
 	</sec:authorize>
 </div>

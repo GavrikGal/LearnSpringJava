@@ -245,7 +245,7 @@
 									  <p></p>
 									</td>
 									<td class="protocolResultsTableNote">
-									  <p>-</p>
+									  <p></p>
 									</td>
 								</tr>
 							</c:forEach>
