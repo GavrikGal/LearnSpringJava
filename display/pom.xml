@@ -211,12 +211,6 @@
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>3.1.4.RELEASE</version>
 		</dependency>
-		<dependency>
-			<groupId>aspose</groupId>
-			<artifactId>aspose.words</artifactId>
-			<version>14.5.0</version>
-			<systemPath>c:\workspace\ExternalLibs\aspose\lib\aspose-words-14.5.0-jdk16.jar</systemPath>
-		</dependency>
 	</dependencies>
     <build>
         <plugins>

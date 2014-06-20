@@ -4,7 +4,6 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,15 +21,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.aspose.words.Document;
-import com.aspose.words.DocumentBuilder;
 import com.gmail.gal.gavrik.display.domain.DateOfMeasurement;
 import com.gmail.gal.gavrik.display.domain.Equipments;
 import com.gmail.gal.gavrik.display.domain.Harmonics;
@@ -204,19 +200,6 @@ public class MeasurementsController {
 			RedirectAttributes redirectAttributes, Locale locale) {
 		Measurements protocolMeasurement = measurementsService.findById(id);
 		uiModel.addAttribute("protocolMeasurement", protocolMeasurement);
-		
-		try {
-			Document doc = new Document();
-			DocumentBuilder builder = new DocumentBuilder(doc);
-			
-			builder.writeln("Fucking fuck!!");
-			
-			doc.save("d:\1.doc");
-			
-		} catch (Exception e) {
-			// TODO Автоматически созданный блок catch
-			e.printStackTrace();
-		}
 		
 		
 		return "measurements/protocol";
