@@ -2,9 +2,6 @@ package com.gmail.gal.gavrik.display.repository;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.gmail.gal.gavrik.display.domain.Equipments;

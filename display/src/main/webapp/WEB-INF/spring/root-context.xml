@@ -8,5 +8,6 @@
 	<import resource="security-context.xml" />
 
 	<context:component-scan base-package="com.gmail.gal.gavrik.display.service.jpa" />
+	<context:component-scan base-package="com.gmail.gal.gavrik.display.service.utils" />
 
 </beans>

@@ -11,6 +11,7 @@ public class Harmonics implements Serializable {
 	private static final long	serialVersionUID	= -3487239594233702920L;
 	private Long				idHarmonics;
 	private Double				frequency;
+	private Double				receiverBandwidth;
 	private Double				amplitude;
 	private Double				Noise;
 	private Spectrums			spectrum;
@@ -35,6 +36,15 @@ public class Harmonics implements Serializable {
 		this.frequency = frequency;
 	}
 
+	@Column(name = "ReceiverBandwidth")
+	public Double getReceiverBandwidth() {
+		return receiverBandwidth;
+	}
+
+	public void setReceiverBandwidth(Double receiverBandwidth) {
+		this.receiverBandwidth = receiverBandwidth;
+	}
+	
 	@Column(name = "Amplitude")
 	public Double getAmplitude() {
 		return amplitude;

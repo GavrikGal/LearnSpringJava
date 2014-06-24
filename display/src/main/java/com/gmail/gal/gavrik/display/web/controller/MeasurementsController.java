@@ -1,6 +1,5 @@
 package com.gmail.gal.gavrik.display.web.controller;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
@@ -17,7 +16,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,30 +25,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.gmail.gal.gavrik.display.domain.DateOfMeasurement;
-import com.gmail.gal.gavrik.display.domain.Equipments;
-import com.gmail.gal.gavrik.display.domain.Harmonics;
 import com.gmail.gal.gavrik.display.domain.Measurands;
 import com.gmail.gal.gavrik.display.domain.Measurements;
 import com.gmail.gal.gavrik.display.domain.Models;
 import com.gmail.gal.gavrik.display.domain.ScreenResolutions;
-import com.gmail.gal.gavrik.display.domain.Spectrums;
-import com.gmail.gal.gavrik.display.domain.SpectrumsParameters;
 import com.gmail.gal.gavrik.display.domain.Types;
 import com.gmail.gal.gavrik.display.domain.Users;
-import com.gmail.gal.gavrik.display.parser.DescriptionForParsing;
 import com.gmail.gal.gavrik.display.service.DateOfMeasurementService;
 import com.gmail.gal.gavrik.display.service.EquipmentsService;
 import com.gmail.gal.gavrik.display.service.HarmonicsService;
 import com.gmail.gal.gavrik.display.service.MeasurandsService;
 import com.gmail.gal.gavrik.display.service.MeasurementsService;
+import com.gmail.gal.gavrik.display.service.MeasurementsUpdaterService;
 import com.gmail.gal.gavrik.display.service.ModelsService;
 import com.gmail.gal.gavrik.display.service.ScreenResolutionsService;
 import com.gmail.gal.gavrik.display.service.SpectrumsParametersService;
 import com.gmail.gal.gavrik.display.service.SpectrumsService;
 import com.gmail.gal.gavrik.display.service.TypesService;
 import com.gmail.gal.gavrik.display.service.UsersService;
-import com.gmail.gal.gavrik.display.service.jpa.CustomUserDetails.CustomUserDetails;
 import com.gmail.gal.gavrik.display.web.controller.util.ListOfMeasurementsViews;
 import com.gmail.gal.gavrik.display.web.controller.util.MeasurementsView;
 import com.gmail.gal.gavrik.display.web.form.MeasurementsForm;
@@ -98,6 +90,9 @@ public class MeasurementsController {
 
 	@Autowired
 	private HarmonicsService			harmonicsService;
+	
+	@Autowired
+	private MeasurementsUpdaterService	measurementsUpdaterService;
 
 	@Autowired
 	MessageSource						messageSource;
@@ -107,6 +102,8 @@ public class MeasurementsController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model uiModel, MeasurementsForm measurementsForm, HttpServletRequest request) {
 		logger.info("Listing measurements");
+		
+		measurementsUpdaterService.updateFromFolder();
 
 		if (!uiModel.containsAttribute("measurementsForm")) {
 			measurementsForm = new MeasurementsForm();
@@ -133,10 +130,6 @@ public class MeasurementsController {
 		}
 		
 		
-
-		// System.out.println("PageNumber: "+pageable.getPageNumber()
-		// + " PageSize: " + pageable.getPageSize());
-
 		return "measurements/list";
 	}
 
@@ -224,11 +217,6 @@ public class MeasurementsController {
 
 		uiModel.asMap().clear();
 		redirectAttributes.addFlashAttribute("measurementsForm", measurementsForm);
-		// redirectAttributes.addFlashAttribute(
-		// "message",
-		// new Message("success",
-		// messageSource.getMessage("measurements_delete_success",
-		// new Object[] {}, locale)));
 		return "redirect:/measurements";
 	}
 
@@ -248,7 +236,12 @@ public class MeasurementsController {
 			return "measurements/list";
 		}
 
-		saveMeasurements(measurementsForm);
+		measurementsUpdaterService.saveMeasurements(
+				measurementsForm.getModel(),
+				measurementsForm.getSerialNumber(),
+				measurementsForm.getMeasurand(), measurementsForm.getType(),
+				measurementsForm.getScreenResolutions(),
+				measurementsForm.getDescription(), measurementsForm.getUser());
 
 		uiModel.asMap().clear();
 		redirectAttributes.addFlashAttribute("measurementsForm", measurementsForm);
@@ -264,7 +257,6 @@ public class MeasurementsController {
 	@ModelAttribute
 	public List<MeasurementsView> getMeasurementsView(
 			ListOfMeasurementsViews listOfMeasurementsViews, Model uiModel) {
-		// List<Measurements> measurements = measurementsService.findAll();
 
 		System.out.println(listOfMeasurementsViews);
 		List<MeasurementsView> measurementsViews = null;
@@ -356,168 +348,5 @@ public class MeasurementsController {
 	}
 
 	// _____________Utils_____________________________________
-	private Measurements saveMeasurements(MeasurementsForm measurementsForm) {
-
-		Measurements newMeasurements = new Measurements();
-
-		setCurrentDateOfMeasurement(newMeasurements);
-		setEquipment(newMeasurements, measurementsForm);
-		// setUser(newMeasurements, measurementsForm);
-
-		newMeasurements = saveMeasurement(newMeasurements);
-
-		saveSpectrum(newMeasurements, measurementsForm);
-
-		return newMeasurements;
-	}
-
-	private void setCurrentDateOfMeasurement(Measurements newMeasurements) {
-		DateOfMeasurement newDateOfMeasurement = new DateOfMeasurement();
-		DateTime currentDate = new DateTime();
-		newDateOfMeasurement.setDate(currentDate.withTime(0, 0, 0, 0));
-		newDateOfMeasurement = dateOfMeasurementService.save(newDateOfMeasurement);
-		newMeasurements.setDateOfMeasurement(newDateOfMeasurement);
-	}
-
-	private void setEquipment(Measurements newMeasurements, MeasurementsForm measurementsForm) {
-		Equipments newEquipments = new Equipments();
-		Models model = new Models();
-		model = modelsService.findByModelName(measurementsForm.getModel());
-
-		newEquipments.setModel(model);
-		newEquipments.setSerialNumber(measurementsForm.getSerialNumber());
-		newEquipments = equipmentsService.save(newEquipments);
-
-		newMeasurements.setEquipment(newEquipments);
-	}
-
-	// private void setUser(Measurements newMeasurements, MeasurementsForm
-	// measurementsForm) {
-	// Users user = ((CustomUserDetails)
-	// SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsersDetails();
-	// newMeasurements.setUser(user);
-	// }
-
-	private Measurements saveMeasurement(Measurements newMeasurements) {
-		List<Measurements> measurementsList = measurementsService
-				.findByEquipment(newMeasurements.getEquipment());
-
-		Users user = ((CustomUserDetails) SecurityContextHolder.getContext()
-				.getAuthentication().getPrincipal()).getUsersDetails();
-
-		newMeasurements.setSpectrums(new ArrayList<Spectrums>());
-
-		if (measurementsList.isEmpty()) {
-			newMeasurements.setUser(user);
-			newMeasurements = measurementsService.save(newMeasurements);
-		} else {
-			for (Measurements measurement : measurementsList) {
-				if (measurement.getDateOfMeasurement().getIdDate() == newMeasurements
-						.getDateOfMeasurement().getIdDate()) {
-					newMeasurements = measurement;
-					newMeasurements.setUser(user);
-				} else {
-					measurement.setDateOfSecondMeasurement(newMeasurements
-							.getDateOfMeasurement());
-					newMeasurements = measurement;
-					newMeasurements.setUser(user);
-				}
-				if (newMeasurements.getIdMeasurements() == null) {
-					newMeasurements.setUser(user);
-					newMeasurements = measurementsService.save(newMeasurements);
-				}
-
-			}
-		}
-		return newMeasurements;
-	}
-
-	private void saveSpectrum(Measurements newMeasurements, MeasurementsForm measurementsForm) {
-		Spectrums newSpectrums = new Spectrums();
-		SpectrumsParameters newSpectrumsParameters = new SpectrumsParameters();
-		Measurands measurands = measurandsService.findById(measurementsForm.getMeasurand());
-
-		newSpectrumsParameters.setMeasurand(measurands);
-
-		ScreenResolutions screenResolutions = screenResolutionsService
-				.findByResolution(measurementsForm.getScreenResolutions());
-
-		newSpectrumsParameters.setResolution(screenResolutions);
-
-		Types type = typesService.findById(measurementsForm.getType());
-		newSpectrumsParameters.setType(type);
-
-		newSpectrumsParameters = spectrumsParametersService.save(newSpectrumsParameters);
-
-		newSpectrums = spectrumsService.findByMeasurementAndSpectrumParameters(
-				newMeasurements, newSpectrumsParameters);
-
-		if (newSpectrums == null) {
-			newSpectrums = new Spectrums();
-			newSpectrums.setMeasurement(newMeasurements);
-			newSpectrums.setSpectrumParameters(newSpectrumsParameters);
-			newSpectrums.setHarmonics(new ArrayList<Harmonics>());
-		}
-		DateTime currentDate = new DateTime();
-		newSpectrums.setTime(new Time(currentDate.getMillis()));
-
-		// //////////////////////// Description!!!!!!!?????
-		newSpectrums = spectrumsService.save(newSpectrums);
-		String description = setHarmonics(measurementsForm.getDescription(), newSpectrums);
-		if (newSpectrums.getDescription() == null) {
-			newSpectrums.setDescription(description);
-		} else {
-			if (newSpectrums.getDescription().isEmpty()) {
-				newSpectrums.setDescription(description);
-			} else {
-				newSpectrums
-						.setDescription(newSpectrums.getDescription() + "; " + description);
-			}
-		}
-		// newSpectrums.setDescription(description);
-		newSpectrums = spectrumsService.save(newSpectrums);
-	}
-
-	private String setHarmonics(String description, Spectrums newSpectrums) {
-
-		DescriptionForParsing newDescription = new DescriptionForParsing(description);
-		final Double deviationFrequency = 0.02;
-
-		Double frequency, amplitude, noise;
-
-		while (!newDescription.isString()) {
-
-			frequency = newDescription.parseFrequency();
-			if (frequency != null) {
-				Harmonics newHarmonics = new Harmonics();
-				List<Harmonics> oldHarmonics = newSpectrums.getHarmonics();
-				for (Harmonics harmonics : oldHarmonics) {
-					if (((harmonics.getFrequency() + deviationFrequency
-							* harmonics.getFrequency()) > frequency)
-							&& ((harmonics.getFrequency() - deviationFrequency
-									* harmonics.getFrequency()) < frequency)) {
-						newHarmonics = harmonics;
-					}
-				}
-				newHarmonics.setFrequency(frequency);
-				amplitude = newDescription.parseAmplitude();
-				if (amplitude != null) {
-					newHarmonics.setAmplitude(amplitude);
-					noise = newDescription.parseNoise();
-					if (noise == null) {
-						noise = 0.0;
-					}
-					newHarmonics.setNoise(noise);
-					newHarmonics.setSpectrum(newSpectrums);
-					harmonicsService.save(newHarmonics);
-				}
-			} else {
-				break;
-			}
-		}
-
-		description = newDescription.getDescription();
-		return description;
-	}
 
 }
