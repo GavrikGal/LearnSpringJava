@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -14,6 +15,8 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.impl.piccolo.io.FileFormatException;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -49,11 +52,16 @@ import com.gmail.gal.gavrik.display.service.jpa.CustomUserDetails.CustomUserDeta
 @Transactional
 public class MeasurementsUpdaterServiceImpl implements
 		MeasurementsUpdaterService {
-	
+
+	final Logger logger = LoggerFactory
+			.getLogger(MeasurementsUpdaterServiceImpl.class);
+
 	final String frequencyCellName = "Частота, МГц";
 	final String amplitudeCellName = "Ес+п, дБмкВ/м";
 	final String noiseCellName = "Еп, дБмкВ/м";
 	final String receiverBandwidthCellName = "ПП, кГц";
+
+	final String rootPathName = "D:\\Данные";
 
 	@Autowired
 	private DateOfMeasurementService dateOfMeasurementService;
@@ -84,105 +92,138 @@ public class MeasurementsUpdaterServiceImpl implements
 
 	@Autowired
 	private SpectrumsParametersService spectrumsParametersService;
-	
+
 	@Autowired
 	private FileFinderService fileFinder;
-	
-	
 
 	public void updateFromFolder() {
 		try {
-			
-			String rootPath = "D:\\Данные";
-			
-			List<File> fileList = fileFinder.findFiles(rootPath, "[\\w[а-яА-Я]]+\\.(docx|doc)");
-			
+
+			// String rootPath = "D:\\Данные";
+
+			List<File> fileList = fileFinder.findFiles(rootPathName,
+					"[\\w[а-яА-Я]]+\\.(docx|doc)");
+
 			for (File file : fileList) {
-				
+
 				// получение данных из путей каталогов
 				// получение типа измерения и разрешения
 				File typeMeasurementsFolder = new File(file.getParent());
-				String[] typeAndResolutions = typeMeasurementsFolder.getName().split(" ");
-				for (String string : typeAndResolutions) {
-					System.out.println(string);
+				String[] typeAndResolutions = typeMeasurementsFolder.getName()
+						.split(" ");
+				String measurandName = typeAndResolutions[0];
+				String screenResolutionsNameOrType = typeAndResolutions[1];
+				String typeName;
+				String screenResolutionsName;
+				if (screenResolutionsNameOrType != "ИРП") {
+					typeName = "СИ";
+					screenResolutionsName = screenResolutionsNameOrType;
+				} else {
+					typeName = "ИРП";
+					screenResolutionsName = "";
 				}
-				
-				// получение модели изделия				
-				File modelMeasurementsFilder = new File(typeMeasurementsFolder.getParent());
-				System.out.println("model: " + modelMeasurementsFilder.getName());
-				
+				System.out.println("Measurand: " + measurandName);
+				System.out.println("Resolution: " + screenResolutionsName);
+				System.out.println("Type: " + typeName);
+
+				// получение модели изделия
+				File modelMeasurementsFilder = new File(
+						typeMeasurementsFolder.getParent());
+				String modelName = modelMeasurementsFilder.getName();
+				System.out.println("model: " + modelName);
+
 				// получение серийного номера
 				String fileName = file.getName();
 				fileName = fileName.trim();
-				System.out.println("sn: " + fileName.substring(0, fileName.indexOf(".doc")));
+				String serialNumber = fileName.substring(0,
+						fileName.indexOf(".doc"));
+				System.out.println("sn: " + serialNumber);
 
 				String absoluteFileName = file.getAbsolutePath();
 
-				if (!(absoluteFileName.endsWith(".doc") || absoluteFileName.endsWith(".docx"))) {
+				if (!(absoluteFileName.endsWith(".doc") || absoluteFileName
+						.endsWith(".docx"))) {
 					throw new FileFormatException();
 				} else {
-					
+
+				//	Measurements newMeasurements = new Measurements();
+
+				//	setCurrentDateOfMeasurement(newMeasurements);
+				//	setEquipment(newMeasurements, modelName, serialNumber);
+
 					int frequencyCellNumber = -1;
 					int amplitudeCellNumber = -1;
 					int noiseCellNumber = -1;
 					int receiverBandwidthCellNumber = -1;
 
-					XWPFDocument document = new XWPFDocument(new FileInputStream(
-							absoluteFileName));
+					XWPFDocument document = new XWPFDocument(
+							new FileInputStream(absoluteFileName));
 
 					List<XWPFTable> tables = document.getTables();
 
 					for (XWPFTable table : tables) {
 						List<XWPFTableRow> rows = table.getRows();
-						
-						List<XWPFTableCell> headTable = rows.get(0).getTableCells();
-						for (int a = 0 ; a< headTable.size(); a++) {
-							if (headTable.get(a).getText().equalsIgnoreCase(frequencyCellName)) {
+
+						List<XWPFTableCell> headTable = rows.get(0)
+								.getTableCells();
+						for (int a = 0; a < headTable.size(); a++) {
+							if (headTable.get(a).getText()
+									.equalsIgnoreCase(frequencyCellName)) {
 								frequencyCellNumber = a;
 							}
-							if (headTable.get(a).getText().equalsIgnoreCase(amplitudeCellName)) {
+							if (headTable.get(a).getText()
+									.equalsIgnoreCase(amplitudeCellName)) {
 								amplitudeCellNumber = a;
 							}
-							if (headTable.get(a).getText().equalsIgnoreCase(noiseCellName)) {
+							if (headTable.get(a).getText()
+									.equalsIgnoreCase(noiseCellName)) {
 								noiseCellNumber = a;
 							}
-							if (headTable.get(a).getText().equalsIgnoreCase(receiverBandwidthCellName)) {
+							if (headTable
+									.get(a)
+									.getText()
+									.equalsIgnoreCase(receiverBandwidthCellName)) {
 								receiverBandwidthCellNumber = a;
 							}
 						}
-						
+
 						if (frequencyCellNumber == -1) {
 							System.out.println("Не найдено колонки частоты");
 							break;
-						} 
-						if (receiverBandwidthCellNumber == -1 ) {
-							System.out.println("Не найдено колонки полосы пропускания");
+						}
+						if (receiverBandwidthCellNumber == -1) {
+							System.out
+									.println("Не найдено колонки полосы пропускания");
 							break;
 						}
-						if (amplitudeCellNumber == -1 ) {
+						if (amplitudeCellNumber == -1) {
 							System.out.println("Не найдено колонки амплитуды");
 							break;
 						}
-						if (noiseCellNumber == -1 ) {
+						if (noiseCellNumber == -1) {
 							System.out.println("Не найдено колонки шума");
 							break;
 						}
-						
-						
+
 						for (int i = 1; i < rows.size(); i++) {
-							List<XWPFTableCell> cells = rows.get(i).getTableCells();
-							System.out.print(cells.get(frequencyCellNumber).getText()+ "\t");
-							System.out.print(cells.get(receiverBandwidthCellNumber).getText()+ "\t");
-							System.out.print(cells.get(amplitudeCellNumber).getText()+ "\t");
-							System.out.print(cells.get(noiseCellNumber).getText());
+							List<XWPFTableCell> cells = rows.get(i)
+									.getTableCells();
+							System.out.print(cells.get(frequencyCellNumber)
+									.getText() + "\t");
+							System.out.print(cells.get(
+									receiverBandwidthCellNumber).getText()
+									+ "\t");
+							System.out.print(cells.get(amplitudeCellNumber)
+									.getText() + "\t");
+							System.out.print(cells.get(noiseCellNumber)
+									.getText());
 							System.out.println();
 						}
 					}
 				}
-				
+
 			}
-			
-			
+
 		} catch (FileFormatException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -190,7 +231,6 @@ public class MeasurementsUpdaterServiceImpl implements
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -198,125 +238,231 @@ public class MeasurementsUpdaterServiceImpl implements
 	public Measurements saveMeasurements(String modelName, String serialNumber,
 			String measurandName, String typeName,
 			String screenResolutionsName, String description, String user) {
-		Measurements newMeasurements = new Measurements();
 
-		setCurrentDateOfMeasurement(newMeasurements);
-		setEquipment(newMeasurements, modelName, serialNumber);
+		// ищем модель, если ее нет, то создаем ее и папку к ней
+		Models model = getModel(modelName);
 
-		newMeasurements = saveMeasurement(newMeasurements);
+		// ищем изделие в базе данных, если не найдено, то создаем новое
+		Equipments equipment = getEquipments(model, serialNumber);
 
-		saveSpectrum(newMeasurements, measurandName, typeName,
-				screenResolutionsName, description);
+		// ищем текущее измерение в БД либо создаем новое
+		Measurements measurement = getMeasurements(equipment);
 
-		return newMeasurements;
+		// пробуем получить параметры спектра из БД, или создаем их
+		SpectrumsParameters spectrumsParameters = getSpectrumsParameters(
+				measurandName, typeName, screenResolutionsName);
+
+		// ищем спектр в БД, или создаем новый
+		Spectrums spectrum = getSpectrums(measurement, spectrumsParameters);
+
+		// Добавить в спектр гармоики из описания. Парсит описание на наличие
+		// гармоник, возвращает часть описания без гармоник
+		String newDescription = setHarmonicsFromDescription(spectrum,
+				description);
+		
+		// Добавляем описание
+		setDescription(spectrum, newDescription);
+
+		return measurement;
 	}
 
-	private void setCurrentDateOfMeasurement(Measurements newMeasurements) {
-		DateOfMeasurement newDateOfMeasurement = new DateOfMeasurement();
+	// получение текущей даты из БД либо создание новой записи в БД
+	private DateOfMeasurement getCurrentDateOfMeasurement() {
 		DateTime currentDate = new DateTime();
-		newDateOfMeasurement.setDate(currentDate.withTime(0, 0, 0, 0));
-		newDateOfMeasurement = dateOfMeasurementService
-				.save(newDateOfMeasurement);
-		newMeasurements.setDateOfMeasurement(newDateOfMeasurement);
+		DateOfMeasurement currentDateOfMeasurement = new DateOfMeasurement();
+		currentDateOfMeasurement.setDate(currentDate.withTime(0, 0, 0, 0));
+		currentDateOfMeasurement = dateOfMeasurementService
+				.save(currentDateOfMeasurement);
+		return currentDateOfMeasurement;
 	}
 
-	private void setEquipment(Measurements newMeasurements, String modelName,
-			String serialNumber) {
-		Equipments newEquipments = new Equipments();
+	// получаем модель из БД, если ее там нет то пробуем создать
+	private Models getModel(String modelName) {
+		Models model = findModel(modelName);
+		if (model == null) {
+			logger.info("Trying create new models");
+			try {
+				model = createNewModel(modelName);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return model;
+	}
+
+	// поиск модели изделия в базе
+	private Models findModel(String modelName) {
+		modelName = modelName.trim();
+		Models model = modelsService.findByModelName(modelName);
+		logger.info("Model found in the database. Id: " + model.getIdModel());
+		return model;
+	}
+
+	// создание новой модели в базе
+	private Models createNewModel(String modelName) {
+		modelName = modelName.trim();
 		Models model = new Models();
-		model = modelsService.findByModelName(modelName);
+		model.setModelName(modelName);
+		model = modelsService.save(model);
 
-		newEquipments.setModel(model);
-		newEquipments.setSerialNumber(serialNumber);
-		newEquipments = equipmentsService.save(newEquipments);
+		// проверяем наличие папки модели, если не найдем то пробуем ее создать
+		try {
+			List<File> searchModelFolder = fileFinder.findDirectories(
+					rootPathName, modelName);
 
-		newMeasurements.setEquipment(newEquipments);
+			if (searchModelFolder.isEmpty()) {
+				File modelFolder = new File(rootPathName + File.separator
+						+ modelName);
+				modelFolder.mkdir();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return model;
 	}
 
-	private Measurements saveMeasurement(Measurements newMeasurements) {
+	// получаем изделие из БД, если его там нет то пробуем создать
+	private Equipments getEquipments(Models model, String serialNumber) {
+		Equipments equipment = new Equipments();
+		equipment.setModel(model);
+		equipment.setSerialNumber(serialNumber);
+		equipment = equipmentsService.save(equipment);
+		if (equipment.getMeasurements() == null) {
+			equipment.setMeasurements(new HashSet<Measurements>());
+		}
+		return equipment;
+	}
+
+	// Получение экземпляпа измерений для текущего изделия и текущей даты
+	// измеренения
+	private Measurements getMeasurements(Equipments equipment) {
+
+		DateOfMeasurement currentDateOfMeasurement = getCurrentDateOfMeasurement();
+		Measurements measurement;
+		// setCurrentDateOfMeasurement(measurement);
+
+		Users user = null;
+
+		if (SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal() != "anonymousUser") {
+			user = ((CustomUserDetails) SecurityContextHolder.getContext()
+					.getAuthentication().getPrincipal()).getUsersDetails();
+		}
+
 		List<Measurements> measurementsList = measurementsService
-				.findByEquipment(newMeasurements.getEquipment());
-
-		Users user = ((CustomUserDetails) SecurityContextHolder.getContext()
-				.getAuthentication().getPrincipal()).getUsersDetails();
-
-		newMeasurements.setSpectrums(new ArrayList<Spectrums>());
+				.findByEquipment(equipment);
 
 		if (measurementsList.isEmpty()) {
-			newMeasurements.setUser(user);
-			newMeasurements = measurementsService.save(newMeasurements);
+			measurement = new Measurements();
+			measurement.setDateOfMeasurement(currentDateOfMeasurement);
+			measurement.setEquipment(equipment);
+			measurement.setSpectrums(new ArrayList<Spectrums>());
+			measurement = measurementsService.save(measurement);
+			equipment.getMeasurements().add(measurement);
 		} else {
-			for (Measurements measurement : measurementsList) {
-				if (measurement.getDateOfMeasurement().getIdDate() == newMeasurements
-						.getDateOfMeasurement().getIdDate()) {
-					newMeasurements = measurement;
-					newMeasurements.setUser(user);
+			Measurements lastMeasurements = measurementsList
+					.get(measurementsList.size() - 1);
+			if (lastMeasurements.getDateOfMeasurement().getIdDate() == currentDateOfMeasurement
+					.getIdDate()) {
+				measurement = lastMeasurements;
+			} else {
+				if (lastMeasurements.getDateOfSecondMeasurement() == null) {
+					lastMeasurements
+							.setDateOfSecondMeasurement(currentDateOfMeasurement);
+					measurement = lastMeasurements;
 				} else {
-					measurement.setDateOfSecondMeasurement(newMeasurements
-							.getDateOfMeasurement());
-					newMeasurements = measurement;
-					newMeasurements.setUser(user);
+					if (lastMeasurements.getDateOfSecondMeasurement()
+							.getIdDate() == currentDateOfMeasurement
+							.getIdDate()) {
+						measurement = lastMeasurements;
+					} else {
+						measurement = new Measurements();
+						measurement
+								.setDateOfMeasurement(currentDateOfMeasurement);
+						measurement.setEquipment(equipment);
+						measurement.setSpectrums(new ArrayList<Spectrums>());
+						measurement = measurementsService.save(measurement);
+						equipment.getMeasurements().add(measurement);
+					}
 				}
-				if (newMeasurements.getIdMeasurements() == null) {
-					newMeasurements.setUser(user);
-					newMeasurements = measurementsService.save(newMeasurements);
-				}
-
 			}
 		}
-		return newMeasurements;
+		if (user != null) {
+			measurement.setUser(user);
+		}
+
+		if (measurement.getIdMeasurements() == null) {
+			System.out
+					.println("Хьюстон. У нас проблемы. IdMeasurements == null");
+		}
+		return measurement;
 	}
 
-	private void saveSpectrum(Measurements newMeasurements,
-			String measurandName, String typeName,
-			String screenResolutionsName, String description) {
-		Spectrums newSpectrums = new Spectrums();
-		SpectrumsParameters newSpectrumsParameters = new SpectrumsParameters();
-		Measurands measurands = measurandsService.findById(measurandName);
-
-		newSpectrumsParameters.setMeasurand(measurands);
-
-		ScreenResolutions screenResolutions = screenResolutionsService
-				.findByResolution(screenResolutionsName);
-
-		newSpectrumsParameters.setResolution(screenResolutions);
-
+	// получаем параметры спектра из БД или создаем новые
+	private SpectrumsParameters getSpectrumsParameters(String measurandName,
+			String typeName, String screenResolutionsName) {
+		Measurands measurand = measurandsService.findById(measurandName);
+		if (measurand == null) {
+			logger.error("Не найден параметр: measurand = " + measurandName
+					+ ". Добавте его в БД");
+		}
+		ScreenResolutions screenResolution = getScreenResolutions(screenResolutionsName);
 		Types type = typesService.findById(typeName);
-		newSpectrumsParameters.setType(type);
+		if (type == null) {
+			logger.error("Не найден параметр: type = " + typeName
+					+ ". Добавте его в БД");
+		}
 
-		newSpectrumsParameters = spectrumsParametersService
-				.save(newSpectrumsParameters);
+		SpectrumsParameters spectrumsParameters = new SpectrumsParameters();
+		spectrumsParameters.setMeasurand(measurand);
+		spectrumsParameters.setResolution(screenResolution);
+		spectrumsParameters.setType(type);
+		spectrumsParameters.setSpectrums(new HashSet<Spectrums>());
 
-		newSpectrums = spectrumsService.findByMeasurementAndSpectrumParameters(
-				newMeasurements, newSpectrumsParameters);
+		spectrumsParameters = spectrumsParametersService
+				.save(spectrumsParameters);
+		return spectrumsParameters;
+	}
 
-		if (newSpectrums == null) {
-			newSpectrums = new Spectrums();
-			newSpectrums.setMeasurement(newMeasurements);
-			newSpectrums.setSpectrumParameters(newSpectrumsParameters);
-			newSpectrums.setHarmonics(new ArrayList<Harmonics>());
+	// получение разрешения экрана, если его нет
+	private ScreenResolutions getScreenResolutions(String screenResolutionsName) {
+		screenResolutionsName = screenResolutionsName.trim();
+		ScreenResolutions screenResolution = screenResolutionsService
+				.findByResolution(screenResolutionsName);
+		if (screenResolution == null) {
+			screenResolution = new ScreenResolutions();
+			screenResolution.setResolution(screenResolutionsName);
+			screenResolution
+					.setSpectrumsParameters(new HashSet<SpectrumsParameters>());
+			screenResolution = screenResolutionsService.save(screenResolution);
+		}
+		return screenResolution;
+	}
+
+	// получаем спект из БД или создаем новый
+	private Spectrums getSpectrums(Measurements measurement,
+			SpectrumsParameters spectrumsParameters) {
+
+		Spectrums spectrum = spectrumsService
+				.findByMeasurementAndSpectrumParameters(measurement,
+						spectrumsParameters);
+
+		if (spectrum == null) {
+			spectrum = new Spectrums();
+			spectrum.setMeasurement(measurement);
+			spectrum.setSpectrumParameters(spectrumsParameters);
+			spectrum.setHarmonics(new ArrayList<Harmonics>());
 		}
 		DateTime currentDate = new DateTime();
-		newSpectrums.setTime(new Time(currentDate.getMillis()));
+		spectrum.setTime(new Time(currentDate.getMillis()));
 
-		// //////////////////////// Description!!!!!!!?????
-		newSpectrums = spectrumsService.save(newSpectrums);
-		String newDescription = setHarmonics(description, newSpectrums);
-		if (newSpectrums.getDescription() == null) {
-			newSpectrums.setDescription(newDescription);
-		} else {
-			if (newSpectrums.getDescription().isEmpty()) {
-				newSpectrums.setDescription(newDescription);
-			} else {
-				newSpectrums.setDescription(newSpectrums.getDescription()
-						+ "; " + newDescription);
-			}
-		}
-		// newSpectrums.setDescription(description);
-		newSpectrums = spectrumsService.save(newSpectrums);
+		spectrum = spectrumsService.save(spectrum);
+		return spectrum;
 	}
 
-	private String setHarmonics(String description, Spectrums newSpectrums) {
+	// Парсим описание на наличие гармоник и устанавливаем их в спектр
+	private String setHarmonicsFromDescription(Spectrums spectrum,
+			String description) {
 
 		DescriptionForParsing newDescription = new DescriptionForParsing(
 				description);
@@ -329,7 +475,7 @@ public class MeasurementsUpdaterServiceImpl implements
 			frequency = newDescription.parseFrequency();
 			if (frequency != null) {
 				Harmonics newHarmonics = new Harmonics();
-				List<Harmonics> oldHarmonics = newSpectrums.getHarmonics();
+				List<Harmonics> oldHarmonics = spectrum.getHarmonics();
 				for (Harmonics harmonics : oldHarmonics) {
 					if (((harmonics.getFrequency() + deviationFrequency
 							* harmonics.getFrequency()) > frequency)
@@ -348,7 +494,7 @@ public class MeasurementsUpdaterServiceImpl implements
 						noise = 0.0;
 					}
 					newHarmonics.setNoise(noise);
-					newHarmonics.setSpectrum(newSpectrums);
+					newHarmonics.setSpectrum(spectrum);
 					harmonicsService.save(newHarmonics);
 				}
 			} else {
@@ -358,6 +504,25 @@ public class MeasurementsUpdaterServiceImpl implements
 
 		description = newDescription.getDescription();
 		return description;
+	}
+	
+	// Проверяем описание в спектре и если надо, то добавляем новое
+	private void setDescription(Spectrums spectrum, String description) {
+		if (description != null) {
+			if (spectrum.getDescription() == null) {
+				spectrum.setDescription(description);
+			} else {
+				if (spectrum.getDescription().isEmpty()) {
+					spectrum.setDescription(description);
+				} else {
+					if (!(spectrum.getDescription().contains(description))) {
+						spectrum.setDescription(spectrum.getDescription()
+								+ "; " + description);
+					} 
+				}
+			}
+			spectrum = spectrumsService.save(spectrum);
+		}
 	}
 
 }

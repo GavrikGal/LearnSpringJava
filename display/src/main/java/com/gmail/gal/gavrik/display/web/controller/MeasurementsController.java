@@ -16,6 +16,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -103,7 +104,15 @@ public class MeasurementsController {
 	public String list(Model uiModel, MeasurementsForm measurementsForm, HttpServletRequest request) {
 		logger.info("Listing measurements");
 		
-		measurementsUpdaterService.updateFromFolder();
+		SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+		
+		if (SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal()!="anonymousUser") {
+			logger.info("Update starting");
+			measurementsUpdaterService.updateFromFolder();
+		}
+		
 
 		if (!uiModel.containsAttribute("measurementsForm")) {
 			measurementsForm = new MeasurementsForm();

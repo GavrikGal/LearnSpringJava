@@ -40,7 +40,7 @@ public class EquipmentsServiceImpl implements EquipmentsService {
 		Equipments checkingEquipments = equipmentsRepository.findBySerialNumberAndModel(
 				equipments.getSerialNumber(), equipments.getModel());
 		if (checkingEquipments == null) {
-		return equipmentsRepository.save(equipments);
+			return equipmentsRepository.save(equipments);
 		} else {
 			return checkingEquipments;
 		}
