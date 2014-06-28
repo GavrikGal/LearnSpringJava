@@ -56,11 +56,11 @@ public class MeasurementsUpdaterServiceImpl implements
 	final Logger logger = LoggerFactory
 			.getLogger(MeasurementsUpdaterServiceImpl.class);
 
+	// TODO заменить константы на значения прочитанные из файла настроек
 	final String frequencyCellName = "Частота, МГц";
 	final String amplitudeCellName = "Ес+п, дБмкВ/м";
 	final String noiseCellName = "Еп, дБмкВ/м";
 	final String receiverBandwidthCellName = "ПП, кГц";
-
 	final String rootPathName = "D:\\Данные";
 
 	@Autowired
@@ -101,6 +101,7 @@ public class MeasurementsUpdaterServiceImpl implements
 
 			// String rootPath = "D:\\Данные";
 
+			final Double deviationFrequency = 0.02;
 			List<File> fileList = fileFinder.findFiles(rootPathName,
 					"[\\w[а-яА-Я]]+\\.(docx|doc)");
 
@@ -146,10 +147,30 @@ public class MeasurementsUpdaterServiceImpl implements
 					throw new FileFormatException();
 				} else {
 
-				//	Measurements newMeasurements = new Measurements();
+					// ищем модель, если ее нет, то создаем ее и папку к ней
+					Models model = getModel(modelName);
 
-				//	setCurrentDateOfMeasurement(newMeasurements);
-				//	setEquipment(newMeasurements, modelName, serialNumber);
+					// ищем изделие в базе данных, если не найдено, то создаем
+					// новое
+					Equipments equipment = getEquipments(model, serialNumber);
+
+					// ищем текущее измерение в БД либо создаем новое
+					Measurements measurement = getMeasurements(equipment);
+
+					// пробуем получить параметры спектра из БД, или создаем их
+					SpectrumsParameters spectrumsParameters = getSpectrumsParameters(
+							measurandName, typeName, screenResolutionsName);
+
+					// ищем спектр в БД, или создаем новый
+					Spectrums spectrum = getSpectrums(measurement,
+							spectrumsParameters);
+
+					
+
+					// Measurements newMeasurements = new Measurements();
+
+					// setCurrentDateOfMeasurement(newMeasurements);
+					// setEquipment(newMeasurements, modelName, serialNumber);
 
 					int frequencyCellNumber = -1;
 					int amplitudeCellNumber = -1;
@@ -208,18 +229,103 @@ public class MeasurementsUpdaterServiceImpl implements
 						for (int i = 1; i < rows.size(); i++) {
 							List<XWPFTableCell> cells = rows.get(i)
 									.getTableCells();
-							System.out.print(cells.get(frequencyCellNumber)
-									.getText() + "\t");
-							System.out.print(cells.get(
-									receiverBandwidthCellNumber).getText()
-									+ "\t");
-							System.out.print(cells.get(amplitudeCellNumber)
-									.getText() + "\t");
-							System.out.print(cells.get(noiseCellNumber)
-									.getText());
-							System.out.println();
+//							System.out.print(cells.get(frequencyCellNumber)
+//									.getText() + "\t");
+//							System.out.print(cells.get(
+//									receiverBandwidthCellNumber).getText()
+//									+ "\t");
+//							System.out.print(cells.get(amplitudeCellNumber)
+//									.getText() + "\t");
+//							System.out.print(cells.get(noiseCellNumber)
+//									.getText());
+//							System.out.println();
+							
+							Double frequency,receiverBandwidth, amplitude, noise;
+							
+							frequency = Double.parseDouble(cells.get(
+									frequencyCellNumber).getText());
+							receiverBandwidth = Double
+									.parseDouble(cells.get(
+											receiverBandwidthCellNumber)
+											.getText());
+							amplitude = Double.parseDouble(cells.get(
+									amplitudeCellNumber).getText());
+							noise = Double.parseDouble(cells.get(
+									noiseCellNumber).getText());
+
+							// Добавить в спектр гармоики из описания. Парсит
+							// описание на наличие
+							// гармоник, возвращает часть описания без гармоник
+
+							Harmonics newHarmonics = new Harmonics();
+							List<Harmonics> oldHarmonics = spectrum.getHarmonics();
+							for (Harmonics harmonics : oldHarmonics) {
+								if (((harmonics.getFrequency() + deviationFrequency
+										* harmonics.getFrequency()) > frequency)
+										&& ((harmonics.getFrequency() - deviationFrequency
+												* harmonics.getFrequency()) < frequency)) {
+									newHarmonics = harmonics;
+								}
+							}
+							newHarmonics.setFrequency(frequency);
+							newHarmonics.setReceiverBandwidth(receiverBandwidth);
+							if (amplitude != null) {
+								newHarmonics.setAmplitude(amplitude);
+								if (noise == null) {
+									noise = 0.0;
+								}
+								newHarmonics.setNoise(noise);
+								newHarmonics.setSpectrum(spectrum);
+								if (newHarmonics.getIdHarmonics() == null) {
+									harmonicsService.save(newHarmonics);
+									spectrum.getHarmonics().add(newHarmonics);
+								}
+								
+								
+							}
+							
+							//spectrum.getHarmonics().add(newHarmonics);
+							
 						}
+						//measurement.getSpectrums().add(spectrum);
+						System.out.println("new spectrum if : " + spectrum.getIdSpectrums());
 					}
+					
+					
+					measurement = getMeasurements(equipment);
+					System.out.println("New Measurement with ID - " + measurement.getIdMeasurements()+ ":");
+					
+					System.out.println("     Date of meas -" + measurement.getDateOfMeasurement().getDateString());
+					System.out.println("     Id model -" + measurement.getEquipment().getModel().getIdModel());
+					System.out.println("     model name - " + measurement.getEquipment().getModel().getModelName());
+					System.out.println("     serial Number - " + measurement.getEquipment().getSerialNumber());
+					System.out.println("     user name - " + measurement.getUser().getFirstName());
+					System.out.println("     Spectrums:");
+					for (Spectrums spectrums : measurement.getSpectrums()) {
+						System.out.println("        Spectrum id - " + spectrums.getIdSpectrums());
+						System.out.println("        getMeasurement() - " + spectrums.getMeasurement().getIdMeasurements());
+						System.out.println("        spectrum parameters:");
+						System.out.println("            spectrum parameters ID -" + spectrums.getSpectrumParameters().getIdSpectrumParameters());
+						System.out.println("            Measurands -" + spectrums.getSpectrumParameters().getMeasurand().getIdMeasurands());
+						System.out.println("            type - " + spectrums.getSpectrumParameters().getType().getIdType());
+						System.out.println("            Resolution - " + spectrums.getSpectrumParameters().getResolution().getResolution());
+						System.out.println("        Harmonics:");
+						for (Harmonics harmonics : spectrums.getHarmonics()) {
+							
+							System.out.print("            " + harmonics.getIdHarmonics());
+							System.out.print("\t" + harmonics.getFrequency());
+							System.out.print("\t" + harmonics.getReceiverBandwidth());
+							System.out.print("\t" + harmonics.getAmplitude());
+							System.out.print("\t" + harmonics.getNoise());
+							System.out.println("            For spectrum with Id: " + harmonics.getSpectrum().getIdSpectrums());
+							
+						}
+						
+					}
+					
+					
+					// Добавляем описание
+					//setDescription(spectrum, newDescription);
 				}
 
 			}
@@ -259,7 +365,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		// гармоник, возвращает часть описания без гармоник
 		String newDescription = setHarmonicsFromDescription(spectrum,
 				description);
-		
+
 		// Добавляем описание
 		setDescription(spectrum, newDescription);
 
@@ -294,7 +400,9 @@ public class MeasurementsUpdaterServiceImpl implements
 	private Models findModel(String modelName) {
 		modelName = modelName.trim();
 		Models model = modelsService.findByModelName(modelName);
-		logger.info("Model found in the database. Id: " + model.getIdModel());
+		if (model != null) {
+			logger.info("Model found in the database. Id: " + model.getIdModel());
+		}
 		return model;
 	}
 
@@ -457,6 +565,10 @@ public class MeasurementsUpdaterServiceImpl implements
 		spectrum.setTime(new Time(currentDate.getMillis()));
 
 		spectrum = spectrumsService.save(spectrum);
+		if (measurement.getSpectrums().isEmpty()) {
+			measurement.getSpectrums().add(spectrum);
+			
+		}
 		return spectrum;
 	}
 
@@ -468,7 +580,9 @@ public class MeasurementsUpdaterServiceImpl implements
 				description);
 		final Double deviationFrequency = 0.02;
 
-		Double frequency, amplitude, noise;
+		Double frequency, receiverBandwidth, amplitude, noise;
+		
+		receiverBandwidth = 30.0;
 
 		while (!newDescription.isString()) {
 
@@ -485,7 +599,7 @@ public class MeasurementsUpdaterServiceImpl implements
 					}
 				}
 				newHarmonics.setFrequency(frequency);
-				newHarmonics.setReceiverBandwidth(30.0);
+				newHarmonics.setReceiverBandwidth(receiverBandwidth);
 				amplitude = newDescription.parseAmplitude();
 				if (amplitude != null) {
 					newHarmonics.setAmplitude(amplitude);
@@ -505,7 +619,7 @@ public class MeasurementsUpdaterServiceImpl implements
 		description = newDescription.getDescription();
 		return description;
 	}
-	
+
 	// Проверяем описание в спектре и если надо, то добавляем новое
 	private void setDescription(Spectrums spectrum, String description) {
 		if (description != null) {
@@ -518,7 +632,7 @@ public class MeasurementsUpdaterServiceImpl implements
 					if (!(spectrum.getDescription().contains(description))) {
 						spectrum.setDescription(spectrum.getDescription()
 								+ "; " + description);
-					} 
+					}
 				}
 			}
 			spectrum = spectrumsService.save(spectrum);

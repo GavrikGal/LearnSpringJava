@@ -86,9 +86,13 @@
 								</div>
 							</td>
 							<td class="ListDate">
-								<joda:format
+								<c:if test="${not empty measurementsView.dateOfMeasurement}">
+								${measurementsView.dateOfMeasurement.toString(dateFormatPattern)}
+								</c:if>
+					<!-- 			<joda:format
 									value="${measurementsView.dateOfMeasurement}"
-									pattern="${dateFormatPattern}" />
+									pattern="${dateFormatPattern}" />  -->
+									
 							</td>
 							<td class="ListModel">
 								<div class="withModal">
@@ -124,6 +128,7 @@
 							<td class="ListPropsAndresults">
 								<div class="withModal">
 									<table class="ListInnerTableData">
+										<c:set var="manyHarmonicsInSpectr" value="0"/>
 										<c:forEach
 												items="${measurementsView.measurements.getSpectrums()}"
 												var="spectrum"
@@ -138,7 +143,10 @@
 													</td>
 													<td class="ListResults">
 														<c:if test="${not empty spectrum.harmonics}">
-															<c:forEach items="${spectrum.harmonics}" var="harmonic" end="3">
+															<c:if test="${spectrum.harmonics.size() > 3}">
+																<c:set var="manyHarmonicsInSpectr" value="1"/>
+															</c:if>
+															<c:forEach items="${spectrum.harmonics}" var="harmonic" end="2">
 																<span class="valid">
 																	${harmonic.getFrequency()} -
 																	${harmonic.getAmplitude()}
@@ -157,7 +165,7 @@
 												</tr>
 											</c:forEach>
 									</table>
-									<c:if test="${measurementsView.measurements.getSpectrums().size() > 2}">	
+									<c:if test="${measurementsView.measurements.getSpectrums().size() > 2 || manyHarmonicsInSpectr > 0}">	
 										<div id="ListMore">...</div>	
 										<div class="modal">
 											<div class="propAndresultsPopup">
@@ -202,9 +210,10 @@
 								</div>
 							</td>
 							<td class="ListSecondDate">
-								<joda:format
-								value="${measurementsView.dateOfSecondMeasurement}"
-								pattern="${dateFormatPattern}" />
+								<c:if test="${not empty measurementsView.dateOfSecondMeasurement}">
+									${measurementsView.dateOfSecondMeasurement.toString(dateFormatPattern)}
+								</c:if>
+								
 							</td>
 							<td class="ListUser">
 								${measurementsView.measurements.getUser().getFirstName()}

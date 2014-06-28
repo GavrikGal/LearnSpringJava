@@ -254,6 +254,7 @@ a img {
 	margin: 0px;
 	background-color:inherit;
 	text-align: left;
+	
 	height: 100%;
 }
 
@@ -263,6 +264,7 @@ a img {
 
 #measurementsUpdate tr.innerTableRow {
 	height: 46px;
+	
 }
 
 #measurementsUpdate td.ListResults {
@@ -281,7 +283,7 @@ a img {
 #mainMeasurementsListTable th {
 	background: #999;
 	color: #FFF;
-	height: 30px;
+	height: 32px;
 	margin: 0px;
 }
 
@@ -296,15 +298,23 @@ a img {
 #mainMeasurementsListTable table.ListInnerTableData {
 	margin: 0px;
 	background-color:inherit;
+	
 	text-align: left;
 }
 
 #mainMeasurementsListTable tr.row {
-	height: 30px;
+	vertical-align: top;
+	height: 32	px;
 }
 
 #mainMeasurementsListTable tr.row:HOVER {
 	background-color: #EEF;
+}
+
+#mainMeasurementsListTable tr.innerTableRow {
+	vertical-align: top;
+	
+	
 }
 
 tr.innerTableRow {
@@ -315,6 +325,7 @@ tr.innerTableRow {
 	border-right: 1px solid #BBB;
 	border-bottom: 1px solid #BBB;
 	width: 100px;
+	height: 32px;
 }
 
 .ListModel {
@@ -322,18 +333,20 @@ tr.innerTableRow {
 	border-bottom: 1px solid #BBB;
 	overflow:visible;
 	width: 105px;
+	height: 32px;
 }
 
 .ListSerial {
 	border-bottom: 1px solid #BBB;
 	width: 95px;
+	height: 32px;
 }
 
 .ListSerial a {
 	text-decoration: none;
 	display: block;
 	border: 0px solid #FFF;
-	padding: 7px;
+	padding-bottom: 13px;
 }
 
 .ListSerial p {
@@ -350,11 +363,12 @@ tr.innerTableRow {
 	width: 690px;
 	border-bottom: 1px solid #BBB;
 	padding: 0px;
+	height: 32px;
 }
 
 .ListPropsAndresults table {
 	width: 100%;
-	height: 30px;
+	height: 35px;
 }
 
 .ListProperties {
@@ -373,11 +387,13 @@ tr.innerTableRow {
 	border-right: 1px solid #BBB;
 	border-bottom: 1px solid #BBB;
 	width: 95px;
+	height: 32px;
 }
 
 .ListUser {
 	border-bottom: 1px solid #BBB;
 	width: 95px;
+	height: 32px;
 }
 
 .ListAttributes {
@@ -385,6 +401,7 @@ tr.innerTableRow {
 	border-width: 0px;
 	border-bottom: 0px solid #BBB;
 	background-color: inherit;
+	height: 32px;
 }
 
 .currentDate {
@@ -756,7 +773,7 @@ div.propAndresultsPopup {
 	box-shadow: 0 0 60px 0 #BBF;
 	min-height:30px;
 	position:absolute;
-	top:-32px;
+	top:-34px;
 	left: 0px;
 	
 	padding: 0px;

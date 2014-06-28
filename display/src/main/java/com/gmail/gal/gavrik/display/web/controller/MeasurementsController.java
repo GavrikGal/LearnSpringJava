@@ -104,14 +104,7 @@ public class MeasurementsController {
 	public String list(Model uiModel, MeasurementsForm measurementsForm, HttpServletRequest request) {
 		logger.info("Listing measurements");
 		
-		SecurityContextHolder.getContext()
-				.getAuthentication().getPrincipal();
 		
-		if (SecurityContextHolder.getContext()
-				.getAuthentication().getPrincipal()!="anonymousUser") {
-			logger.info("Update starting");
-			measurementsUpdaterService.updateFromFolder();
-		}
 		
 
 		if (!uiModel.containsAttribute("measurementsForm")) {
@@ -211,6 +204,8 @@ public class MeasurementsController {
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
 	public String edit(@PathVariable("id") Long id, MeasurementsForm measurementsForm,
 			Model uiModel, RedirectAttributes redirectAttributes, Locale locale) {
+		
+		
 
 		Measurements editedMeasurement = measurementsService.findById(id);
 
@@ -267,7 +262,12 @@ public class MeasurementsController {
 	public List<MeasurementsView> getMeasurementsView(
 			ListOfMeasurementsViews listOfMeasurementsViews, Model uiModel) {
 
-		System.out.println(listOfMeasurementsViews);
+		if (SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal()!="anonymousUser") {
+			logger.info("Update starting");
+			measurementsUpdaterService.updateFromFolder();
+		}
+		
 		List<MeasurementsView> measurementsViews = null;
 
 		if (listOfMeasurementsViews.getMeasurementsViews().isEmpty()) {
@@ -306,6 +306,7 @@ public class MeasurementsController {
 		} else {
 			measurementsViews = listOfMeasurementsViews.getMeasurementsViews();
 		}
+		
 		return measurementsViews;
 
 	}
